@@ -1,0 +1,33 @@
+# Global owners
+* @lead-frontend-dev
+
+# Screens and navigation
+/src/screens/ @frontend-team @ux-team
+/src/navigation/ @frontend-team @lead-frontend-dev
+
+# Components critiques
+/src/components/auth/ @frontend-team @security-team
+/src/components/payment/ @frontend-team @security-team @lead-frontend-dev
+
+# Configuration native
+/android/ @frontend-team @mobile-native-team
+/ios/ @frontend-team @mobile-native-team
+
+# Configuration de build
+/android/app/build.gradle @lead-frontend-dev @devops-team
+/ios/*/Info.plist @lead-frontend-dev @devops-team
+
+# Secrets et configuration
+.env.* @lead-frontend-dev @devops-team
+/android/app/google-services.json @lead-frontend-dev @devops-team
+/ios/*/GoogleService-Info.plist @lead-frontend-dev @devops-team
+
+# Package et dépendances
+package.json @lead-frontend-dev
+package-lock.json @lead-frontend-dev
+yarn.lock @lead-frontend-dev
+
+# Tests
+__tests__/ @frontend-team
+**/*.test.* @frontend-team
+**/*.spec.* @frontend-team
