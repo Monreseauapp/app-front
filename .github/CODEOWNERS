@@ -29,5 +29,5 @@ yarn.lock @lead-frontend-dev
 
 # Tests
 __tests__/ @frontend-team
-*.test.* @frontend-team
+**/*.test.* @frontend-team
 *.spec.* @frontend-team
