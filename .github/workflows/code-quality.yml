@@ -8,6 +8,9 @@ jobs:
   pr-size-check:
     name: 📏 PR Size Analysis
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Check PR size and complexity
         uses: actions/github-script@v6
@@ -148,7 +151,7 @@ jobs:
 
       - name: Run complexity analysis
         run: |
-          npx plato -r -d complexity-report src/
+          npx plato -r -d complexity-report "src/**/*.ts"
           echo "Complexity analysis completed"
 
       - name: Upload complexity report

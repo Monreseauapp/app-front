@@ -354,7 +354,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: --severity-threshold=medium --file=package.json
-        continue-on-failure: true
+        continue-on-error: true
 
       - name: Scan for secrets
         uses: trufflesecurity/trufflehog@master
