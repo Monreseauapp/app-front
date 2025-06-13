@@ -8,7 +8,20 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json}\"",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json}\"",
+    "type-check": "tsc --noEmit",
+    "test:unit": "jest --testPathPattern=__tests__/unit",
+    "test:components": "jest --testPathPattern=__tests__/components",
+    "test:snapshots": "jest --testPathPattern=__tests__/snapshots",
+    "test:coverage": "jest --coverage --watchAll=false",
+    "test:memory-leaks": "jest --testPathPattern=__tests__/memory --detectOpenHandles --forceExit",
+    "e2e:android:build": "detox build --configuration android.emu.debug",
+    "e2e:android:test": "detox test --configuration android.emu.debug",
+    "e2e:ios:build": "detox build --configuration ios.sim.debug",
+    "e2e:ios:test": "detox test --configuration ios.sim.debug"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
