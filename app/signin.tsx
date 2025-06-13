@@ -44,7 +44,7 @@ export default function SignIn() {
                 />
                 <Text
                   onPress={() => {
-                    alert("Franchement force !");
+                    alert("Mot de passe oublié ? Veuillez suivre les instructions pour réinitialiser votre mot de passe.");
                   }}
                   style={{
                     color: Colors.background,
