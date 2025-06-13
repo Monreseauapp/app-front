@@ -11,7 +11,7 @@ export default function Index() {
         backgroundColor: Colors.background,
       }}
     >
-      <Text>gros caca qui pue</Text>
+      <Text>Welcome!</Text>
     </View>
   );
 }
