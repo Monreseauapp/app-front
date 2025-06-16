@@ -47,7 +47,7 @@ export enum CompanyChoiceState {
   REJECTED = "REJECTED",
 }
 
-export enum InvoicesSatus {
+export enum InvoicesStatus {
   DARFT = "DARFT",
   SENT = "SENT",
   PAID = "PAID",
