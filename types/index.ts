@@ -83,7 +83,7 @@ export interface User {
   domainId: string;
   companyId?: string | null;
   isAdmin?: boolean;
-  rententionDate: Date | string;
+  retentionDate: Date | string;
   consentTerms?: boolean;
   consentMarketing?: boolean;
 }
