@@ -1,10 +1,10 @@
-import Input from "@/components/Input";
+import Input from "@/components/form/Input";
 import { Colors } from "@/constants/Colors";
+import { Link, useRouter } from "expo-router";
 import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
@@ -12,6 +12,7 @@ import {
 } from "react-native";
 
 export default function SignIn() {
+  const router = useRouter();
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -44,7 +45,9 @@ export default function SignIn() {
                 />
                 <Text
                   onPress={() => {
-                    alert("Mot de passe oublié ? Veuillez suivre les instructions pour réinitialiser votre mot de passe.");
+                    alert(
+                      "Mot de passe oublié ? Veuillez suivre les instructions pour réinitialiser votre mot de passe."
+                    );
                   }}
                   style={{
                     color: Colors.background,
@@ -59,7 +62,13 @@ export default function SignIn() {
                   Mot de passe oublié ????
                 </Text>
               </View>
-              <Pressable>
+              <Link
+                href="/home"
+                asChild
+                onPress={() => {
+                  router.dismissAll();
+                }}
+              >
                 <Text
                   style={{
                     color: Colors.background,
@@ -76,7 +85,7 @@ export default function SignIn() {
                 >
                   Se connecter
                 </Text>
-              </Pressable>
+              </Link>
               <View style={styles.googleContainer}>
                 <Text
                   style={{
