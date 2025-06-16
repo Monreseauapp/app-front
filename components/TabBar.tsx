@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 10,
     backgroundColor: Colors.accent,
-    borderCurve: "continuous",
   },
   tabBarItem: {
     position: "relative",
