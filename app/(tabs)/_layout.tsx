@@ -1,43 +1,50 @@
+import TabBar from "@/components/TabBar";
 import { Colors } from "@/constants/Colors";
-import { Tabs } from "expo-router";
-import { Platform } from "react-native";
+import { AppContext } from "@/context/context";
+import { Tabs, usePathname } from "expo-router";
+import { useContext } from "react";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 
 export default function TabLayout() {
+  const { isMenuOpen, setIsMenuOpen } = useContext(AppContext);
+  const route = usePathname();
+  const isIndex = route === "/";
   return (
     <Tabs
+      tabBar={
+        (props) => (
+          // isIndex && (
+          <TouchableWithoutFeedback onPress={() => setIsMenuOpen(false)}>
+            <View
+              style={{
+                ...styles.tabBarContainer,
+                width: isMenuOpen ? "100%" : 200,
+                height: isMenuOpen ? "100%" : 90,
+              }}
+            >
+              <Pressable onPress={() => setIsMenuOpen(!isMenuOpen)}>
+                <Text style={styles.menuButton}>Menu</Text>
+              </Pressable>
+              {isMenuOpen && <TabBar {...props} />}
+            </View>
+          </TouchableWithoutFeedback>
+        )
+        // )
+      }
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: Colors.background,
-        tabBarInactiveTintColor: Colors.accent,
-        tabBarStyle: Platform.select({
-          ios: {
-            position: "absolute",
-            width: "50%",
-            alignSelf: "center",
-            borderTopWidth: 0,
-            backgroundColor: "transparent",
-          },
-          default: {
-            backgroundColor: "transparent",
-            borderRadius: 100,
-            elevation: 5,
-            alignSelf: "center",
-            borderTopWidth: 0,
-          },
-        }),
-        tabBarItemStyle: {
-          borderRadius: 100,
-          backgroundColor: Colors.accent,
-        },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Index",
-          tabBarStyle: {
-            display: "none", // Hide the tab bar for the index screen
-          },
         }}
       />
       <Tabs.Screen
@@ -49,3 +56,30 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  menuButton: {
+    position: "absolute",
+    top: 100,
+    left: 40,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    fontSize: 20,
+    fontWeight: "bold",
+    backgroundColor: Colors.accent,
+    color: Colors.background,
+    borderRadius: 25,
+    alignItems: "center",
+    zIndex: 100,
+  },
+  tabBarContainer: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    width: "100%",
+    height: "100%",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+  },
+});

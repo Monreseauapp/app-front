@@ -2,7 +2,7 @@ import { Colors } from "@/constants/Colors";
 import { Text, TextInput, View } from "react-native";
 
 type InputProps = {
-  name: string;
+  name?: string;
   placeholder: string;
   type:
     | "address-line1" // Global
@@ -29,6 +29,7 @@ type InputProps = {
     | "url"; // IOS
   offType?: "date";
   sameLine?: number;
+  multiline?: boolean;
 };
 
 export default function Input({
@@ -37,6 +38,7 @@ export default function Input({
   type,
   offType,
   sameLine = 1,
+  multiline = false,
 }: InputProps) {
   let keyboardType: "default" | "email-address" | "numeric" | "phone-pad" =
     "default";
@@ -63,14 +65,16 @@ export default function Input({
       <TextInput
         autoComplete={type}
         keyboardType={keyboardType}
+        multiline={multiline}
         placeholderTextColor={Colors.accent}
         style={{
           width: sameLine > 1 ? "90%" : "100%",
-          height: 50,
+          height: multiline ? 100 : 50,
           backgroundColor: Colors.background,
           color: Colors.accent,
-          borderRadius: 50,
+          borderRadius: multiline ? 25 : 50,
           paddingHorizontal: 20,
+          paddingVertical: 10,
           fontSize: 16,
           fontWeight: "bold",
         }}

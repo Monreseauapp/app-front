@@ -1,6 +1,6 @@
 import { Colors } from "@/constants/Colors";
 import { Link, useRouter } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StatusBar, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
   const router = useRouter();
@@ -16,6 +16,7 @@ export default function Index() {
         backgroundColor: Colors.background,
       }}
     >
+      <StatusBar barStyle="dark-content" />
       <Text
         style={{
           fontWeight: "bold",

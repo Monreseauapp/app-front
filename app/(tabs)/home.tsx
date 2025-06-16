@@ -1,17 +1,19 @@
 import { Colors } from "@/constants/Colors";
-import { Text, View } from "react-native";
+import { ScrollView, Text } from "react-native";
 
 export default function Index() {
   return (
-    <View
+    <ScrollView
       style={{
+        backgroundColor: Colors.background,
+      }}
+      contentContainerStyle={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: Colors.background,
       }}
     >
       <Text>Welcome!</Text>
-    </View>
+    </ScrollView>
   );
 }
