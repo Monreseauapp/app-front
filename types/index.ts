@@ -241,7 +241,7 @@ export interface Invoice {
   retentionDate?: (Date | string) | null;
   amount: number;
   currency: string;
-  tax_ammount?: number | null;
+  tax_amount?: number | null;
   subscriptionId?: string | null;
   type?: InvoiceType;
 }
