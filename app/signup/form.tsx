@@ -55,15 +55,16 @@ export default function FormSignUp() {
           >
             <Input
               name="Prénom"
-              placeholder="Margot"
+              placeholder="John"
               type={Platform.OS === "android" ? "name-family" : "family-name"}
               sameLine={2}
             />
             <Input
               name="Nom"
-              placeholder="Caron"
+              placeholder="Doe"
               type={Platform.OS === "android" ? "name-given" : "given-name"}
               sameLine={2}
+              inputStyle={{ alignSelf: "flex-end" }}
             />
           </View>
           <Input name="Email" placeholder="exemple@gmail.com" type="email" />

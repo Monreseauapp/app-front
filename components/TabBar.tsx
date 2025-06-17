@@ -6,10 +6,18 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function TabBar({ state, descriptors, navigation }: any) {
   const { setIsMenuOpen } = useContext(AppContext);
+  const invisibleRoutes = [/*"index",*/ "recommendation/form"];
+  const isRouteVisible = (route: string) => {
+    return invisibleRoutes.some(
+      (invisibleRoute) =>
+        route === invisibleRoute || route.startsWith(invisibleRoute + "/")
+    );
+  };
+
   return (
     <View style={styles.tabBar}>
       {state.routes.map((route: any, index: any) => {
-        // if (route.name === "index") return;
+        if (isRouteVisible(route.name)) return;
         const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
@@ -53,7 +61,7 @@ export default function TabBar({ state, descriptors, navigation }: any) {
           >
             <Text
               style={{
-                color: isFocused ? Colors.accent : Colors.accent,
+                color: Colors.accent,
                 fontWeight: "bold",
                 fontSize: 16,
               }}
@@ -70,8 +78,8 @@ export default function TabBar({ state, descriptors, navigation }: any) {
 const styles = StyleSheet.create({
   tabBar: {
     position: "absolute",
-    top: 145,
-    left: 40,
+    top: 115,
+    left: 185,
     width: 200,
     flexDirection: "column",
     justifyContent: "space-around",
