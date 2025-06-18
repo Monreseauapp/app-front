@@ -16,7 +16,7 @@ export default function TabLayout() {
   const { isMenuOpen, setIsMenuOpen } = useContext(AppContext);
   const route = usePathname();
 
-  const isTabBarVisible = ["/", "/recommendation"].some(
+  const isTabBarVisible = ["/", "/recommendation", "/legal"].some(
     (path) => route === path || route.startsWith(path + "/")
   );
   return (
@@ -24,7 +24,7 @@ export default function TabLayout() {
       backBehavior="history"
       tabBar={
         (props) => (
-          // isTabBarVisible && (
+          // !isTabBarVisible && (
           <TouchableWithoutFeedback onPress={() => setIsMenuOpen(false)}>
             <View
               style={{

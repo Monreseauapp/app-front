@@ -1,8 +1,10 @@
 import BackIcon from "@/assets/icons/back.svg";
+import StarIcon from "@/assets/icons/star.svg";
 import Input from "@/components/form/Input";
 import Select from "@/components/form/Select";
 import { Colors } from "@/constants/Colors";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { useState } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -41,6 +43,8 @@ export default function RecommendationForm() {
       text: "JE DEPOSE UN PROJET",
     },
   ];
+  const [starId, setStarId] = useState<number>(0);
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -255,6 +259,51 @@ export default function RecommendationForm() {
                 />
               )}
             </View>
+            {type !== "company" && (
+              <View
+                style={{
+                  alignItems: "flex-start",
+                  marginTop: 10,
+                  width: "100%",
+                  marginBottom: 10,
+                }}
+              >
+                <Text style={styles.priority}>Niveau de priorité</Text>
+                <View
+                  style={{
+                    width: "100%",
+                    flexDirection: "row",
+                    marginTop: 15,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {[...Array(5)].map((_, i) => (
+                    <Pressable
+                      key={i}
+                      onPress={() => {
+                        setStarId(i);
+                      }}
+                    >
+                      <StarIcon
+                        color={i <= starId ? Colors.accent : Colors.text}
+                        width={40}
+                        height={40}
+                        style={{ marginRight: 5 }}
+                      />
+                    </Pressable>
+                  ))}
+                </View>
+              </View>
+            )}
+            <View style={{ alignSelf: "center" }}>
+              <Pressable
+                onPress={() => router.back()}
+                style={styles.validationButton}
+              >
+                <Text style={styles.buttonText}>Envoyer ma recommandation</Text>
+              </Pressable>
+            </View>
           </ScrollView>
         </View>
       </TouchableWithoutFeedback>
@@ -297,5 +346,27 @@ const styles = StyleSheet.create({
   select: {
     backgroundColor: Colors.background,
     color: Colors.text,
+  },
+  priority: {
+    color: Colors.text,
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingHorizontal: 10,
+    marginLeft: 25,
+  },
+  validationButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: Colors.accent,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 80,
+  },
+  buttonText: {
+    color: Colors.background,
+    fontWeight: "bold",
+    fontSize: 18,
   },
 });

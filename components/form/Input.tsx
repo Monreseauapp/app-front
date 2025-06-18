@@ -21,6 +21,7 @@ type InputProps = {
     | "name-family" // Android
     | "name-given" // Android
     | "off" // Global
+    | "one-time-code" // Global
     | "organization" // IOS
     | "password" // Android && Global
     | "postal-code" // Global
@@ -32,6 +33,10 @@ type InputProps = {
   multiline?: boolean;
   titleStyle?: object;
   inputStyle?: object;
+  autoFocus?: boolean;
+  inputRef?: React.RefObject<TextInput | null>;
+  value?: string;
+  onChangeText?: (text: string) => void;
 };
 
 export default function Input({
@@ -43,6 +48,10 @@ export default function Input({
   multiline = false,
   titleStyle = {},
   inputStyle = {},
+  autoFocus = false,
+  inputRef,
+  value,
+  onChangeText,
 }: InputProps) {
   let keyboardType: "default" | "email-address" | "numeric" | "phone-pad" =
     "default";
@@ -50,7 +59,11 @@ export default function Input({
     keyboardType = "email-address";
   } else if (type === "tel" || type === "tel-national") {
     keyboardType = "phone-pad";
-  } else if (type === "postal-code" || offType === "date") {
+  } else if (
+    type === "postal-code" ||
+    type === "one-time-code" ||
+    offType === "date"
+  ) {
     keyboardType = "numeric";
   }
   const { placeholderTextColor }: any = inputStyle || {};
@@ -73,9 +86,18 @@ export default function Input({
       </Text>
       <TextInput
         autoComplete={type}
+        autoFocus={autoFocus}
         keyboardType={keyboardType}
         multiline={multiline}
+        onChange={(e) => {
+          if (onChangeText) {
+            onChangeText(e.nativeEvent.text);
+          }
+        }}
         placeholderTextColor={placeholderTextColor || Colors.accent}
+        placeholder={placeholder}
+        ref={inputRef}
+        secureTextEntry={type === "password"}
         style={{
           width: sameLine > 1 ? "95%" : "100%",
           height: multiline ? 100 : 50,
@@ -88,8 +110,7 @@ export default function Input({
           fontWeight: "bold",
           ...inputStyle,
         }}
-        placeholder={placeholder}
-        secureTextEntry={type === "password"}
+        value={value}
       />
     </View>
   );

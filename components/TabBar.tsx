@@ -5,10 +5,24 @@ import { useContext } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function TabBar({ state, descriptors, navigation }: any) {
-  const { setIsMenuOpen } = useContext(AppContext);
-  const invisibleRoutes = [/*"index",*/ "recommendation/form"];
+  const { setIsMenuOpen, accountType } = useContext(AppContext);
+  const invisibleRoutes = [
+    "index",
+    "recommendation/form",
+    "notification",
+    "legal",
+  ];
+  const invisibleRoutesGuest = ["profil"];
+
   const isRouteVisible = (route: string) => {
     return invisibleRoutes.some(
+      (invisibleRoute) =>
+        route === invisibleRoute || route.startsWith(invisibleRoute + "/")
+    );
+  };
+
+  const isRouteVisibleGuest = (route: string) => {
+    return invisibleRoutesGuest.some(
       (invisibleRoute) =>
         route === invisibleRoute || route.startsWith(invisibleRoute + "/")
     );
@@ -17,7 +31,11 @@ export default function TabBar({ state, descriptors, navigation }: any) {
   return (
     <View style={styles.tabBar}>
       {state.routes.map((route: any, index: any) => {
-        if (isRouteVisible(route.name)) return;
+        // if (
+        //   isRouteVisible(route.name) ||
+        //   (accountType === "guest" && isRouteVisibleGuest(route.name))
+        // )
+        //   return;
         const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
