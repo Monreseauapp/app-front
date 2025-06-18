@@ -30,6 +30,8 @@ type InputProps = {
   offType?: "date";
   sameLine?: number;
   multiline?: boolean;
+  titleStyle?: object;
+  inputStyle?: object;
 };
 
 export default function Input({
@@ -39,6 +41,8 @@ export default function Input({
   offType,
   sameLine = 1,
   multiline = false,
+  titleStyle = {},
+  inputStyle = {},
 }: InputProps) {
   let keyboardType: "default" | "email-address" | "numeric" | "phone-pad" =
     "default";
@@ -49,6 +53,10 @@ export default function Input({
   } else if (type === "postal-code" || offType === "date") {
     keyboardType = "numeric";
   }
+  const { placeholderTextColor }: any = inputStyle || {};
+  if (placeholderTextColor) {
+    inputStyle = { ...inputStyle, placeholderTextColor };
+  }
   return (
     <View style={{ width: `${100 / sameLine}%`, marginBottom: 20 }}>
       <Text
@@ -58,6 +66,7 @@ export default function Input({
           paddingBottom: 10,
           paddingLeft: 16,
           color: Colors.background,
+          ...titleStyle,
         }}
       >
         {name}
@@ -66,9 +75,9 @@ export default function Input({
         autoComplete={type}
         keyboardType={keyboardType}
         multiline={multiline}
-        placeholderTextColor={Colors.accent}
+        placeholderTextColor={placeholderTextColor || Colors.accent}
         style={{
-          width: sameLine > 1 ? "90%" : "100%",
+          width: sameLine > 1 ? "95%" : "100%",
           height: multiline ? 100 : 50,
           backgroundColor: Colors.background,
           color: Colors.accent,
@@ -77,6 +86,7 @@ export default function Input({
           paddingVertical: 10,
           fontSize: 16,
           fontWeight: "bold",
+          ...inputStyle,
         }}
         placeholder={placeholder}
         secureTextEntry={type === "password"}
