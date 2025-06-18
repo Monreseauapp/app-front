@@ -54,7 +54,7 @@ export default function Index() {
       >
         <Text style={styles.buttonText}>Je découvre mon réseau</Text>
       </Pressable>
-      <Link href="/signin" style={{ marginTop: 40 }}>
+      <Link href="/signin/index" style={{ marginTop: 40 }}>
         <Text
           style={{
             fontSize: 16,

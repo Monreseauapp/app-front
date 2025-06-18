@@ -85,7 +85,7 @@ export default function FormSignUp() {
               <Text style={styles.button}>Suivant</Text>
             </Pressable>
           )}
-          <Link href="/signin">
+          <Link href="/signin/index">
             <Text
               style={{
                 color: Colors.background,
@@ -176,12 +176,12 @@ export default function FormSignUp() {
             ]}
           />
           <Link
-            href="/home"
             style={styles.validationButton}
             asChild
             onPress={() => {
               router.dismissAll();
             }}
+            href="/legal/legalNotice"
           >
             <Text>Valider</Text>
           </Link>
