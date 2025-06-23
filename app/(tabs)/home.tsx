@@ -3,13 +3,98 @@ import PlusIcon from "@/assets/icons/plus.svg";
 import DashboardStats from "@/components/DashboardStats";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
+import { Recommandation, User } from "@/types";
+import axios from "axios";
 import { Link } from "expo-router";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
-  const { accountType, setAccountType } = useContext(AppContext);
-  // For testing purposes, you can set accountType to "guest" or "company"
+  const { userId, accountType } = useContext(AppContext);
+  const [user, setUser] = useState<User | null>(null);
+  const [recommandationsSent, setRecommandationsSent] = useState<
+    Recommandation[]
+  >([]);
+  const [recommandationsReceived, setRecommandationsReceived] = useState<
+    Recommandation[]
+  >([]);
+
+  const MONTHS: Record<number, string> = {
+    1: "janvier",
+    2: "février",
+    3: "mars",
+    4: "avril",
+    5: "mai",
+    6: "juin",
+    7: "juillet",
+    8: "août",
+    9: "septembre",
+    10: "octobre",
+    11: "novembre",
+    12: "décembre",
+  };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      axios
+        .get(`${process.env.EXPO_PUBLIC_API_URL}/users/${userId}`)
+        .then((response) => {
+          const userData = response.data;
+          if (userData.createdAt) {
+            userData.createdAt = new Date(userData.createdAt);
+          }
+          setUser(userData);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error.request);
+        });
+    };
+    const fetchRecommandationsSent = async () => {
+      axios
+        .get(
+          `${process.env.EXPO_PUBLIC_API_URL}/recommandation/initiator/${userId}`
+        )
+        .then((response) => {
+          setRecommandationsSent(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching recommandations:", error.request);
+        });
+    };
+    const fetchRecommandationsReceived = async () => {
+      axios
+        .get(
+          `${process.env.EXPO_PUBLIC_API_URL}/recommandation/recipient/${userId}`
+        )
+        .then((response) => {
+          setRecommandationsReceived(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching recommandations:", error.request);
+        });
+    };
+    const fetchRecommandationsReceivedCompany = async () => {
+      if (user?.companyId) {
+        axios
+          .get(
+            `${process.env.EXPO_PUBLIC_API_URL}/recommandation/company/${user.companyId}`
+          )
+          .then((response) => {
+            setRecommandationsReceived((prev) => [...prev, ...response.data]);
+          })
+          .catch((error) => {
+            console.error("Error fetching recommandations:", error.request);
+          });
+      }
+    };
+    if (userId) {
+      fetchUserData();
+      fetchRecommandationsSent();
+      fetchRecommandationsReceived();
+      fetchRecommandationsReceivedCompany();
+    }
+  }, [userId, user?.companyId]);
+
   return (
     <View
       style={{
@@ -42,7 +127,11 @@ export default function Index() {
           >
             <View style={{ width: "40%", alignItems: "center" }}>
               <Image
-                source={require("@/assets/images/profilepicture.jpg")}
+                source={
+                  user?.photoUrl
+                    ? { uri: user.photoUrl }
+                    : require("@/assets/images/profilepicture.jpg")
+                }
                 style={styles.image}
               />
             </View>
@@ -58,11 +147,18 @@ export default function Index() {
               <Text
                 style={{ ...styles.profileDescription, fontWeight: "bold" }}
               >
-                John Doe
+                {user?.firstName || "Prénom"} {user?.lastName || "Nom"}
               </Text>
-              <Text style={styles.profileDescription}>Lille</Text>
               <Text style={styles.profileDescription}>
-                Actif depuis juin 2025
+                {user?.city || "Ville"}
+              </Text>
+              <Text style={styles.profileDescription}>
+                Actif depuis{" "}
+                {typeof user?.createdAt === "object"
+                  ? MONTHS[user.createdAt.getMonth()] +
+                    " " +
+                    user.createdAt.getFullYear()
+                  : "Date inconnue"}
               </Text>
             </View>
           </View>
@@ -78,8 +174,18 @@ export default function Index() {
         <DashboardStats
           title="Mes recommandations"
           stats={[
-            { label: "En cours", value: "3" },
-            { label: "Terminées", value: "15" },
+            {
+              label: "En cours",
+              value: recommandationsSent
+                .filter((r) => r.RecoState === "PENDING")
+                .length.toString(),
+            },
+            {
+              label: "Terminées",
+              value: recommandationsSent
+                .filter((r) => r.RecoState === "ACCEPTED")
+                .length.toString(),
+            },
           ]}
         />
         {accountType === "company" && (
@@ -87,8 +193,18 @@ export default function Index() {
             <DashboardStats
               title="Mes recommandations reçues"
               stats={[
-                { label: "En cours", value: "6" },
-                { label: "Terminées", value: "23" },
+                {
+                  label: "En cours",
+                  value: recommandationsReceived
+                    .filter((r) => r.RecoState === "PENDING")
+                    .length.toString(),
+                },
+                {
+                  label: "Terminées",
+                  value: recommandationsReceived
+                    .filter((r) => r.RecoState === "ACCEPTED")
+                    .length.toString(),
+                },
               ]}
             />
             <DashboardStats

@@ -1,10 +1,20 @@
 import BackIcon from "@/assets/icons/back.svg";
-import StarIcon from "@/assets/icons/star.svg";
 import Input from "@/components/form/Input";
-import Select from "@/components/form/Select";
+import Search from "@/components/form/Search";
+import AdressInputs from "@/components/recommendation/AdressInputs";
+import DetailsInput from "@/components/recommendation/DetailsInput";
+import PersonalInformations from "@/components/recommendation/PersonalInformations";
+import PersonTypeSelector from "@/components/recommendation/PersonTypeSelector";
+import PriorityStars from "@/components/recommendation/PriorityStars";
 import { Colors } from "@/constants/Colors";
+import { initialProject } from "@/constants/initial-types-value/initialProject";
+import { initialRecommendation } from "@/constants/initial-types-value/initialRecommendation";
+import { AppContext } from "@/context/context";
+import useFormValidation from "@/hooks/useFormValidation";
+import { Project, Recommandation, User } from "@/types";
+import axios from "axios";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -23,27 +33,124 @@ type RecommendationFormParams = {
 
 type RecommendationFormTitles = {
   label: RecommendationFormParams["type"];
-  text: string;
+  title: string;
+  sendText: string;
 };
 
 export default function RecommendationForm() {
+  const { API_URL, userId } = useContext(AppContext);
   const router = useRouter();
   const { type } = useLocalSearchParams<RecommendationFormParams>();
   const titles: RecommendationFormTitles[] = [
     {
       label: "company",
-      text: "JE RECOMMANDE UNE ENTREPRISE",
+      title: "JE RECOMMANDE UNE ENTREPRISE",
+      sendText: "Envoyer ma recommandation",
     },
     {
       label: "lead",
-      text: "J'APPORTE UN PROSPECT",
+      title: "J'APPORTE UN PROSPECT",
+      sendText: "Envoyer mon prospect",
     },
     {
       label: "project",
-      text: "JE DEPOSE UN PROJET",
+      title: "JE DEPOSE UN PROJET",
+      sendText: "Envoyer mon projet",
     },
   ];
   const [starId, setStarId] = useState<number>(0);
+  const [recommandation, setRecommandation] = useState<Recommandation>({
+    ...initialRecommendation,
+    initiatorId: userId?.toString() || "",
+    ...(type === "lead" ? { priority: starId + 1 } : {}),
+  });
+  const [project, setProject] = useState<Project>({
+    ...initialProject,
+    userId: userId?.toString() || "",
+    priority: starId + 1,
+  });
+  const [companies, setCompanies] = useState<{ id: string; name: string }[]>(
+    []
+  );
+  const [users, setUsers] = useState<User[]>([]);
+  const [companyName, setCompanyName] = useState<string>("");
+  const [userName, setUserName] = useState<string>("");
+  const [intern, setIntern] = useState<boolean>(false);
+  const [isDataValid, setIsDataValid] = useState<boolean | undefined>(
+    undefined
+  );
+
+  const resetForm = () => {
+    setRecommandation(initialRecommendation);
+    setProject({
+      ...initialProject,
+      userId: userId?.toString() || "",
+    });
+    setCompanyName("");
+    setUserName("");
+    setIntern(false);
+    setIsDataValid(undefined);
+    setStarId(0);
+  };
+
+  const handleChange = (
+    key: keyof Recommandation | keyof Project,
+    value: any
+  ) => {
+    if (type === "project" && key in project) {
+      setProject((prev) => ({ ...prev, [key]: value }));
+      return;
+    }
+    setRecommandation((prev) => ({ ...prev, [key]: value }));
+  };
+
+  useEffect(() => {
+    if (type !== "lead") {
+      const fetchCompanies = async () => {
+        axios.get(`${API_URL}/company`).then((response) => {
+          const resp = response.data;
+          setCompanies(
+            resp.map((company: { id: string; name: string }) => ({
+              id: company.id,
+              name: company.name,
+            }))
+          );
+        });
+      };
+      fetchCompanies();
+    }
+    const fetchUsers = async () => {
+      axios.get(`${API_URL}/users`).then((response) => {
+        const resp = response.data;
+        setUsers(resp);
+      });
+    };
+    fetchUsers();
+  }, []);
+
+  const sendRecommendationData = async () => {
+    axios
+      .post(`${API_URL}/recommandation`, {
+        ...recommandation,
+        recipientId: users.find(
+          (u) => u.firstName + " " + u.lastName === userName
+        )?.id,
+      })
+      .catch((error) => {
+        console.error("Error sending recommendation:", error);
+      });
+  };
+
+  const sendProjectData = async () => {
+    axios
+      .post(`${API_URL}/project`, {
+        ...project,
+        isPublic: project.companyId ? false : true,
+      })
+      .catch((error) => {
+        console.error("Error sending project:", error);
+      });
+  };
 
   return (
     <KeyboardAvoidingView
@@ -73,9 +180,10 @@ export default function RecommendationForm() {
               justifyContent: "center",
               marginTop: 160,
             }}
+            keyboardShouldPersistTaps="always"
           >
             <Text style={styles.title}>
-              {titles.find((title) => title.label === type)?.text}
+              {titles.find((title) => title.label === type)?.title}
             </Text>
             <View
               style={{
@@ -83,225 +191,126 @@ export default function RecommendationForm() {
                 alignSelf: "center",
               }}
             >
-              {type === "company" && (
-                <View>
-                  <Input
-                    name="Nom de l'entreprise"
-                    placeholder="Mon Entreprise"
-                    type="organization"
-                    titleStyle={styles.inputTitle}
-                    inputStyle={{
-                      ...styles.input,
-                      placeholderTextColor: Colors.grey,
-                    }}
-                  />
-
-                  <Select
-                    title="Secteur d'activité"
-                    choices={[
-                      "Informatique",
-                      "Marketing",
-                      "Finance",
-                      "Santé",
-                      "Éducation",
-                      "Autre",
-                    ]}
-                    titleStyle={styles.inputTitle}
-                    selectStyle={{
-                      ...styles.select,
-                      pickerTextColor: Colors.text,
-                    }}
-                  />
-                </View>
+              {type !== "lead" && (
+                <Search
+                  name="Nom de l'entreprise"
+                  list={companies.map((c) => c.name)}
+                  placeholder="Chercher une entreprise..."
+                  titleStyle={styles.inputTitle}
+                  inputStyle={{
+                    ...styles.input,
+                    color: Colors.background,
+                    placeholderTextColor: Colors.background,
+                  }}
+                  value={companyName}
+                  onChangeText={(text) => {
+                    setCompanyName(text);
+                    handleChange(
+                      "companyId",
+                      companies.find((c) => c.name === text)?.id || ""
+                    );
+                  }}
+                  valid={isDataValid}
+                />
               )}
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: "100%",
-                  justifyContent: "space-between",
-                }}
-              >
+              {type !== "project" ? (
+                <>
+                  <PersonTypeSelector intern={intern} setIntern={setIntern} />
+                  {intern ? (
+                    <>
+                      <Search
+                        name="Nom de l'utilisateur"
+                        list={users.map((u) => u.firstName + " " + u.lastName)}
+                        placeholder="Chercher un utilisateur..."
+                        titleStyle={styles.inputTitle}
+                        inputStyle={{
+                          ...styles.input,
+                          color: Colors.background,
+                          placeholderTextColor: Colors.background,
+                        }}
+                        value={userName}
+                        onChangeText={(text) => {
+                          setUserName(text);
+                          const user =
+                            users.find(
+                              (u) => u.firstName + " " + u.lastName === text
+                            ) || "";
+                          if (user) {
+                            (
+                              Object.keys(
+                                recommandation
+                              ) as (keyof Recommandation)[]
+                            ).forEach((key) => {
+                              if (key in user) {
+                                handleChange(key, user[key as keyof User]);
+                              }
+                            });
+                          }
+                        }}
+                        valid={intern && isDataValid}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <PersonalInformations
+                        recommandation={recommandation}
+                        handleChange={handleChange}
+                        isDataValid={isDataValid}
+                      />
+                      <AdressInputs
+                        recommandation={recommandation}
+                        handleChange={handleChange}
+                        isDataValid={isDataValid}
+                      />
+                    </>
+                  )}
+                </>
+              ) : (
                 <Input
-                  name="Prénom"
-                  placeholder="John"
-                  type={
-                    Platform.OS === "android" ? "name-family" : "family-name"
-                  }
-                  sameLine={2}
+                  name="Nom du projet"
+                  placeholder="Développement d'une application mobile"
+                  type="off"
                   titleStyle={styles.inputTitle}
                   inputStyle={{
                     ...styles.input,
                     placeholderTextColor: Colors.grey,
                   }}
+                  value={project.name}
+                  onChangeText={(text) => handleChange("name", text || "")}
+                  valid={isDataValid}
                 />
-                <Input
-                  name="Nom"
-                  placeholder="Doe"
-                  type={Platform.OS === "android" ? "name-given" : "given-name"}
-                  sameLine={2}
-                  titleStyle={styles.inputTitle}
-                  inputStyle={{
-                    ...styles.input,
-                    placeholderTextColor: Colors.grey,
-                    alignSelf: "flex-end",
-                  }}
-                />
-              </View>
-              <Input
-                name="Numéro de téléphone"
-                placeholder="+33 6 12 34 56 78"
-                type={Platform.OS === "android" ? "tel-national" : "tel"}
-                titleStyle={styles.inputTitle}
-                inputStyle={{
-                  ...styles.input,
-                  placeholderTextColor: Colors.grey,
-                }}
+              )}
+              <DetailsInput
+                type={type}
+                recommandation={recommandation}
+                project={project}
+                handleChange={handleChange}
+                isDataValid={isDataValid}
               />
-              <Input
-                name="Adresse mail"
-                placeholder="exemple@gmail.com"
-                type="email"
-                titleStyle={styles.inputTitle}
-                inputStyle={{
-                  ...styles.input,
-                  placeholderTextColor: Colors.grey,
-                }}
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  width: "100%",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Input
-                  name="Adresse ligne 1"
-                  placeholder="18 avenue des Champs-Élysées"
-                  type="address-line1"
-                  sameLine={2}
-                  titleStyle={styles.inputTitle}
-                  inputStyle={{
-                    ...styles.input,
-                    placeholderTextColor: Colors.grey,
-                  }}
-                />
-                <Input
-                  name="Adresse ligne 2"
-                  placeholder="Apt 42"
-                  type="address-line2"
-                  sameLine={2}
-                  titleStyle={styles.inputTitle}
-                  inputStyle={{
-                    ...styles.input,
-                    placeholderTextColor: Colors.grey,
-                    alignSelf: "flex-end",
-                  }}
-                />
-                <Input
-                  name="Ville"
-                  placeholder="Paris"
-                  type="off"
-                  sameLine={2}
-                  titleStyle={styles.inputTitle}
-                  inputStyle={{
-                    ...styles.input,
-                    placeholderTextColor: Colors.grey,
-                  }}
-                />
-                <Input
-                  name="Code postal"
-                  placeholder="75000"
-                  type="postal-code"
-                  sameLine={2}
-                  titleStyle={styles.inputTitle}
-                  inputStyle={{
-                    ...styles.input,
-                    placeholderTextColor: Colors.grey,
-                    alignSelf: "flex-end",
-                  }}
-                />
-                <Input
-                  name="Pays"
-                  placeholder="France"
-                  type="country"
-                  titleStyle={styles.inputTitle}
-                  inputStyle={{
-                    ...styles.input,
-                    placeholderTextColor: Colors.grey,
-                  }}
-                />
-              </View>
-              {type === "company" && (
-                <Input
-                  name="Avez vous déjà utilisé une application similaire ?"
-                  placeholder="Expliquez-nous en quelques mots votre expérience."
-                  type="off"
-                  multiline={true}
-                  titleStyle={styles.inputTitle}
-                  inputStyle={{
-                    ...styles.input,
-                    placeholderTextColor: Colors.grey,
-                  }}
-                />
-              )}
-              {type !== "company" && (
-                <Input
-                  name="Détails du besoin"
-                  placeholder=""
-                  type="off"
-                  multiline={true}
-                  titleStyle={styles.inputTitle}
-                  inputStyle={{
-                    ...styles.input,
-                    placeholderTextColor: Colors.grey,
-                  }}
-                />
-              )}
             </View>
             {type !== "company" && (
-              <View
-                style={{
-                  alignItems: "flex-start",
-                  marginTop: 10,
-                  width: "100%",
-                  marginBottom: 10,
-                }}
-              >
-                <Text style={styles.priority}>Niveau de priorité</Text>
-                <View
-                  style={{
-                    width: "100%",
-                    flexDirection: "row",
-                    marginTop: 15,
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  {[...Array(5)].map((_, i) => (
-                    <Pressable
-                      key={i}
-                      onPress={() => {
-                        setStarId(i);
-                      }}
-                    >
-                      <StarIcon
-                        color={i <= starId ? Colors.accent : Colors.text}
-                        width={40}
-                        height={40}
-                        style={{ marginRight: 5 }}
-                      />
-                    </Pressable>
-                  ))}
-                </View>
-              </View>
+              <PriorityStars starId={starId} setStarId={setStarId} />
             )}
             <View style={{ alignSelf: "center" }}>
               <Pressable
-                onPress={() => router.back()}
+                onPress={() => {
+                  const valid = useFormValidation(
+                    type === "project" ? project : recommandation
+                  );
+                  setIsDataValid(valid);
+                  if (valid) {
+                    type === "project"
+                      ? sendProjectData()
+                      : sendRecommendationData();
+                    resetForm();
+                    router.back();
+                  }
+                }}
                 style={styles.validationButton}
               >
-                <Text style={styles.buttonText}>Envoyer ma recommandation</Text>
+                <Text style={styles.buttonText}>
+                  {titles.find((title) => title.label === type)?.sendText}
+                </Text>
               </Pressable>
             </View>
           </ScrollView>
@@ -346,13 +355,6 @@ const styles = StyleSheet.create({
   select: {
     backgroundColor: Colors.background,
     color: Colors.text,
-  },
-  priority: {
-    color: Colors.text,
-    fontSize: 20,
-    fontWeight: "bold",
-    paddingHorizontal: 10,
-    marginLeft: 25,
   },
   validationButton: {
     paddingHorizontal: 20,

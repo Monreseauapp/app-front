@@ -3,4 +3,5 @@ export const Colors = {
   background: "#FBFBFF",
   accent: "#5271FF",
   grey: "#808080",
+  red: "#D70040",
 };

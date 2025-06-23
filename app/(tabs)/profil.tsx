@@ -1,11 +1,14 @@
-import InstagramIcon from "@/assets/icons/instagram.svg";
 import LinkedinIcon from "@/assets/icons/linkedin.svg";
 import MailIcon from "@/assets/icons/mail.svg";
 import PhoneIcon from "@/assets/icons/phone.svg";
 import StarIcon from "@/assets/icons/star.svg";
 import WebsiteIcon from "@/assets/icons/website.svg";
-import YoutubeIcon from "@/assets/icons/youtube.svg";
 import { Colors } from "@/constants/Colors";
+import { AppContext } from "@/context/context";
+import { Company, User } from "@/types";
+import axios from "axios";
+import { useLocalSearchParams } from "expo-router";
+import { useContext, useEffect, useState } from "react";
 import {
   Image,
   Linking,
@@ -17,6 +20,31 @@ import {
 } from "react-native";
 
 export default function Profil() {
+  const { userId } = useContext(AppContext);
+  const { profile } = useLocalSearchParams();
+  const [user, setUser] = useState<(User & { company: Company }) | null>(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      axios
+        .get(
+          `${process.env.EXPO_PUBLIC_API_URL}/users/${
+            profile || userId
+          }/company`
+        )
+        .then((response) => {
+          const userData = response.data;
+          setUser(userData);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error.request);
+        });
+    };
+    if (userId) {
+      fetchUserData();
+    }
+  }, [userId]);
+
   return (
     <ScrollView
       style={{ backgroundColor: Colors.background }}
@@ -26,69 +54,70 @@ export default function Profil() {
         marginTop: 180,
       }}
     >
-      <View>
+      <View style={{ width: "100%", alignItems: "center" }}>
         <View style={{ alignItems: "center", marginBottom: 20 }}>
           <Image
-            source={require("@/assets/images/profilepicture.jpg")}
+            source={
+              user?.photoUrl
+                ? { uri: user.photoUrl }
+                : require("@/assets/images/profilepicture.jpg")
+            }
             style={styles.profilePicture}
           />
-          <Text style={styles.profileName}>John Doe</Text>
-          <Text style={styles.profileCompany}>Mon Réseau</Text>
+          <Text style={styles.profileName}>
+            {user?.firstName || "Prénom"} {user?.lastName || "Nom"}
+          </Text>
+          <Text style={styles.profileCompany}>{user?.company?.name}</Text>
         </View>
         <View style={styles.iconContainer}>
-          <Pressable
-            style={styles.icon}
-            onPress={() =>
-              Linking.openURL(
-                "https://www.linkedin.com/in/maxime-labbe-626012293/"
-              )
-            }
-          >
-            <LinkedinIcon color={Colors.accent} width={40} height={40} />
-          </Pressable>
-          <Pressable
-            style={styles.icon}
-            onPress={() => Linking.openURL("tel:+33770107148")}
-          >
-            <PhoneIcon color={Colors.background} width={40} height={40} />
-          </Pressable>
-          <Pressable
-            style={styles.icon}
-            onPress={() => Linking.openURL("mailto:maxime30labbe@gmail.com")}
-          >
-            <MailIcon color={Colors.background} width={40} height={40} />
-          </Pressable>
-          <Pressable
-            style={styles.icon}
-            onPress={() =>
-              Linking.openURL("https://www.maximelabbe.vercel.app/")
-            }
-          >
-            <WebsiteIcon color={Colors.background} width={38} height={38} />
-          </Pressable>
-          <Pressable
-            style={styles.icon}
-            onPress={() => Linking.openURL("https://youtube.com/")}
-          >
-            <YoutubeIcon color={Colors.background} width={38} height={38} />
-          </Pressable>
-          <Pressable
-            style={styles.icon}
-            onPress={() => Linking.openURL("https://instagram.com/")}
-          >
-            <InstagramIcon color={Colors.background} width={38} height={38} />
-          </Pressable>
+          {user?.company?.linkedin && (
+            <Pressable
+              style={styles.icon}
+              onPress={() =>
+                Linking.openURL(
+                  "https://www.linkedin.com/in/maxime-labbe-626012293/"
+                )
+              }
+            >
+              <LinkedinIcon color={Colors.accent} width={40} height={40} />
+            </Pressable>
+          )}
+          {user?.company?.phone && (
+            <Pressable
+              style={styles.icon}
+              onPress={() => Linking.openURL("tel:+33770107148")}
+            >
+              <PhoneIcon color={Colors.background} width={40} height={40} />
+            </Pressable>
+          )}
+          {user?.company?.email && (
+            <Pressable
+              style={styles.icon}
+              onPress={() => Linking.openURL("mailto:maxime30labbe@gmail.com")}
+            >
+              <MailIcon color={Colors.background} width={40} height={40} />
+            </Pressable>
+          )}
+          {user?.company?.website && (
+            <Pressable
+              style={styles.icon}
+              onPress={() =>
+                Linking.openURL("https://www.maximelabbe.vercel.app/")
+              }
+            >
+              <WebsiteIcon color={Colors.background} width={38} height={38} />
+            </Pressable>
+          )}
         </View>
         <View
           style={{ alignItems: "flex-start", marginBottom: 20, width: "90%" }}
         >
-          <Text style={styles.miniTitle}>Description</Text>
-          <Text style={styles.description}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
-            officia, vero blanditiis, eaque tempore perferendis eligendi placeat
-            cupiditate commodi atque accusamus asperiores similique recusandae
-            vel inventore pariatur neque vitae? Magni!
-          </Text>
+          {user?.company?.description && (
+            <>
+              <Text style={styles.miniTitle}>Description</Text>
+              <Text style={styles.description}>{user.company.description}</Text>
+            </>
+          )}
           <Text style={styles.miniTitle}>Mes certifications</Text>
           <Text style={styles.description}>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
@@ -199,6 +228,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   description: {
+    width: "100%",
     fontSize: 16,
     color: Colors.text,
     marginTop: 10,

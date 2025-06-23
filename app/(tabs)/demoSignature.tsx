@@ -2,12 +2,14 @@ import React, { useRef, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import SignatureCanvas from "react-native-signature-canvas";
 
+// PDF Lib for merging
+
 const SignatureScreen = () => {
   const [signature, setSignature] = useState(null);
   const ref = useRef<any>(null);
 
   const handleSignature = (signature: any) => {
-    console.log(signature);
+    ref.current.readSignature();
     setSignature(signature);
   };
 
@@ -20,24 +22,10 @@ const SignatureScreen = () => {
     console.log("Clear success!");
   };
 
-  const handleEnd = () => {
-    ref.current.readSignature();
-  };
-
   return (
     <View style={styles.container}>
-      <View style={styles.preview}>
-        {signature && (
-          <Image
-            resizeMode="contain"
-            style={{ width: 335, height: 114 }}
-            source={{ uri: signature }}
-          />
-        )}
-      </View>
       <SignatureCanvas
         ref={ref}
-        onEnd={handleEnd}
         onOK={handleSignature}
         onEmpty={handleEmpty}
         onClear={handleClear}
@@ -46,6 +34,18 @@ const SignatureScreen = () => {
         clearText="Clear"
         confirmText="Save"
       />
+      <View style={styles.preview}>
+        {signature && (
+          <Image
+            resizeMode="contain"
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+            source={{ uri: signature }}
+          />
+        )}
+      </View>
     </View>
   );
 };
@@ -53,10 +53,18 @@ const SignatureScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    height: "100%",
   },
   preview: {
-    width: 335,
-    height: 114,
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: "-50%" }, { translateY: "-50%" }],
+    width: 415,
+    height: 150,
     backgroundColor: "#F8F8F8",
     justifyContent: "center",
     alignItems: "center",

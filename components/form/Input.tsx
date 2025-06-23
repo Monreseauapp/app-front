@@ -37,6 +37,7 @@ type InputProps = {
   inputRef?: React.RefObject<TextInput | null>;
   value?: string;
   onChangeText?: (text: string) => void;
+  valid?: boolean;
 };
 
 export default function Input({
@@ -52,6 +53,7 @@ export default function Input({
   inputRef,
   value,
   onChangeText,
+  valid = undefined,
 }: InputProps) {
   let keyboardType: "default" | "email-address" | "numeric" | "phone-pad" =
     "default";
@@ -74,6 +76,7 @@ export default function Input({
     <View style={{ width: `${100 / sameLine}%`, marginBottom: 20 }}>
       <Text
         style={{
+          width: "95%",
           fontSize: 20,
           fontWeight: "bold",
           paddingBottom: 10,
@@ -82,8 +85,22 @@ export default function Input({
           ...titleStyle,
         }}
       >
-        {name}
+        {name}{" "}
+        {valid === false && !value && (
+          <Text
+            style={{
+              color: Colors.red,
+              paddingLeft: 16,
+              fontSize: 14,
+              fontWeight: "bold",
+              marginTop: -5,
+            }}
+          >
+            (ce champ est requis)
+          </Text>
+        )}
       </Text>
+
       <TextInput
         autoComplete={type}
         autoFocus={autoFocus}

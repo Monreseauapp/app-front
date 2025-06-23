@@ -1,4 +1,4 @@
-export enum SubcriptionType {
+export enum SubscriptionType {
   Indep = "Indep",
   VSB = "VSB",
   SMB = "SMB",
@@ -47,7 +47,7 @@ export enum CompanyChoiceState {
   REJECTED = "REJECTED",
 }
 
-export enum InvoicesStatus {
+export enum InvoicesSatus {
   DARFT = "DARFT",
   SENT = "SENT",
   PAID = "PAID",
@@ -71,10 +71,13 @@ export interface User {
   lastName: string;
   firstName: string;
   email: string;
+  photoUrl?: string | null;
   jobTitle?: string | null;
   address: string;
-  postalCode: number;
+  addressComplement?: string;
+  postalCode: number | undefined;
   city: string;
+  country: string;
   createdAt?: Date | string;
   updatedAt: Date | string;
   lastLogin?: (Date | string) | null;
@@ -83,7 +86,7 @@ export interface User {
   domainId: string;
   companyId?: string | null;
   isAdmin?: boolean;
-  retentionDate: Date | string;
+  rententionDate: Date | string;
   consentTerms?: boolean;
   consentMarketing?: boolean;
 }
@@ -99,18 +102,21 @@ export interface Company {
   id?: string;
   name: string;
   address: string;
-  postalCode: number;
+  addressComplement?: string;
+  postalCode: number | undefined;
   city: string;
+  country: string;
   createdAt?: Date | string;
   updatedAt: Date | string;
   lastLogin: Date | string;
   recommendationRate?: string | null;
   email: string;
   phone: string;
-  password: string;
   website?: string | null;
+  photoUrl?: string | null;
+  description?: string | null;
   linkedin?: string | null;
-  subscriptionId: string;
+  subscriptionId?: string | null;
   ownerId: string;
   retentionDate: Date | string;
 }
@@ -119,7 +125,7 @@ export interface Subscription {
   id?: string;
   startDate: Date | string;
   duration: number;
-  type: SubcriptionType;
+  type: SubscriptionType;
   state: SubscriptionState;
   endDate: Date | string;
   cancelledDate?: (Date | string) | null;
@@ -129,7 +135,7 @@ export interface Subscription {
   companyId?: string | null;
 }
 
-export interface Recommandations {
+export interface Recommandation {
   id?: string;
   createdAt?: Date | string;
   updatedAt: Date | string;
@@ -139,7 +145,7 @@ export interface Recommandations {
   email: string;
   phone: string;
   address: string;
-  postalCode: number;
+  postalCode: number | undefined;
   city: string;
   description?: string | null;
   startDate?: (Date | string) | null;
@@ -229,7 +235,7 @@ export interface Invoice {
   id?: string;
   name: string;
   address: string;
-  postalCode: number;
+  postalCode: number | undefined;
   city: string;
   VATNumber?: string | null;
   billingPeriodStart: Date | string;
@@ -241,7 +247,7 @@ export interface Invoice {
   retentionDate?: (Date | string) | null;
   amount: number;
   currency: string;
-  tax_amount?: number | null;
+  tax_ammount?: number | null;
   subscriptionId?: string | null;
   type?: InvoiceType;
 }

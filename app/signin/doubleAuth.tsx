@@ -70,7 +70,7 @@ export default function DoubleAuth() {
             <Pressable>
               <Text style={styles.resend}>Renvoyer le code</Text>
             </Pressable>
-            <Link href="/home" style={styles.validationButton}>
+            <Link href="/home" style={styles.validationButton} dismissTo>
               <Text style={styles.buttonText}>Valider</Text>
             </Link>
           </View>
