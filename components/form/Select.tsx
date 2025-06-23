@@ -8,6 +8,8 @@ interface InputProps {
   choices: string[];
   titleStyle?: object;
   selectStyle?: object;
+  selected?: string;
+  setSelected?: (value: string) => void;
 }
 
 export default function Select({
@@ -15,6 +17,8 @@ export default function Select({
   choices,
   titleStyle,
   selectStyle,
+  selected,
+  setSelected,
 }: InputProps) {
   const [selectedValue, setSelectedValue] = useState(choices[0]);
   const { pickerTextColor }: any = selectStyle || {};
@@ -36,8 +40,8 @@ export default function Select({
         {title}
       </Text>
       <Picker
-        selectedValue={selectedValue}
-        onValueChange={(itemValue) => setSelectedValue(itemValue)}
+        selectedValue={selected}
+        onValueChange={setSelected}
         style={{
           height: 200,
           width: "100%",

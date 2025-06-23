@@ -1,32 +1,83 @@
-import LeftArrow from "@/assets/icons/left-arrow.svg";
-import RightArrow from "@/assets/icons/right-arrow.svg";
-import CheckBoxList from "@/components/form/CheckboxList";
-import Input from "@/components/form/Input";
-import Select from "@/components/form/Select";
+import Navigation from "@/components/signup/Navigation";
 import { Colors } from "@/constants/Colors";
-import { Link, useLocalSearchParams, useRouter } from "expo-router";
-import { useRef, useState } from "react";
+import { initialCompany } from "@/constants/initial-types-value/initialCompany";
+import { initialUser } from "@/constants/initial-types-value/initialUser";
+import { AppContext } from "@/context/context";
+import { Company, SubscriptionType, User } from "@/types";
+import axios from "axios";
+import { useLocalSearchParams } from "expo-router";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   StatusBar,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import Page1 from "./pages/Page1";
+import Page2 from "./pages/Page2";
+import Page3 from "./pages/Page3";
+import Page4 from "./pages/Page4";
+import Page5 from "./pages/Page5";
+import Page6 from "./pages/Page6";
+import Page7 from "./pages/Page7";
 
 const { width } = Dimensions.get("window");
 
 export default function FormSignUp() {
+  const { API_URL } = useContext(AppContext);
   const { type } = useLocalSearchParams<{ type: "company" | "guest" }>();
   const flatListRef = useRef<FlatList>(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const router = useRouter();
+  const [jobDomains, setJobDomains] = useState<
+    { id: string; domaine: string }[]
+  >([]);
+  const [user, setUser] = useState<User>(initialUser);
+
+  const [company, setCompany] = useState<Company>(initialCompany);
+
+  const [subscriptionType, setSubscriptionType] = useState<
+    SubscriptionType | undefined
+  >(undefined);
+  const [isDataValid, setIsDataValid] = useState<boolean>(false);
+
+  const subscriptionTypesTranslation: Record<string, SubscriptionType> = {
+    "Indépendant (0 salariés)": SubscriptionType.Indep,
+    "TPE (entre 1 et 19 salariés)": SubscriptionType.VSB,
+    "PME (entre 20 et 49 salariés)": SubscriptionType.SMB,
+  };
+
+  const resetForm = () => {
+    setUser(initialUser);
+    setCompany(initialCompany);
+    setSubscriptionType(undefined);
+    setIsDataValid(false);
+  };
+
+  useEffect(() => {
+    const fetchJobDomains = async () => {
+      axios
+        .get(`${API_URL}/job-domain`)
+        .then((response) => {
+          const domains = response.data;
+          setJobDomains(
+            domains.map((domain: { id: string; domaine: string }) => ({
+              id: domain.id,
+              domaine: domain.domaine,
+            }))
+          );
+        })
+        .catch((error) => {
+          console.error("Error fetching job domains:", error.response);
+        });
+    };
+    fetchJobDomains();
+  }, []);
 
   const scrollToPage = (index: number) => {
     if (flatListRef.current) {
@@ -35,160 +86,90 @@ export default function FormSignUp() {
     }
   };
 
-  const pages = [
+  const handleChangeUser = (key: keyof User, value: any) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      [key]: value,
+    }));
+  };
+
+  const handleChangeCompany = (key: keyof Company, value: any) => {
+    setCompany((prevCompany) => ({
+      ...prevCompany,
+      [key]: value,
+    }));
+  };
+
+  const allPages = [
     {
       key: "page1",
       content: (index: number) => (
-        <View style={styles.formPage}>
-          <View style={{ flexDirection: "row" }}>
-            <Text style={{ ...styles.title, width: "50%" }}>
-              Créez votre compte.
-            </Text>
-            <Text style={{ ...styles.title, width: "50%" }}>HIBOUUUUUU</Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              width: "100%",
-              justifyContent: "space-between",
-            }}
-          >
-            <Input
-              name="Prénom"
-              placeholder="John"
-              type={Platform.OS === "android" ? "name-family" : "family-name"}
-              sameLine={2}
-            />
-            <Input
-              name="Nom"
-              placeholder="Doe"
-              type={Platform.OS === "android" ? "name-given" : "given-name"}
-              sameLine={2}
-              inputStyle={{ alignSelf: "flex-end" }}
-            />
-          </View>
-          <Input name="Email" placeholder="exemple@gmail.com" type="email" />
-          <Input name="Mot de passe" placeholder="********" type="password" />
-          {type === "guest" && (
-            <Link
-              href="/home"
-              style={styles.button}
-              onPress={() => {
-                router.dismissAll();
-              }}
-            >
-              <Text>Suivant</Text>
-            </Link>
-          )}
-          {type === "company" && (
-            <Pressable onPress={() => scrollToPage(index + 1)}>
-              <Text style={styles.button}>Suivant</Text>
-            </Pressable>
-          )}
-          <Link href="/signin/index">
-            <Text
-              style={{
-                color: Colors.background,
-                fontSize: 16,
-                fontWeight: "bold",
-                textDecorationLine: "underline",
-              }}
-            >
-              Vous avez déjà un compte ?
-            </Text>
-          </Link>
-        </View>
+        <Page1
+          user={user}
+          handleChangeUser={handleChangeUser}
+          scrollToPage={scrollToPage}
+          index={index}
+        />
       ),
     },
     {
       key: "page2",
       content: (index: number) => (
-        <View style={styles.formPage}>
-          <Select
-            title="Vous êtes..."
-            choices={[
-              "Indépendant (0 salariés)",
-              "TPE (entre 1 et 19 salariés)",
-              "PME (entre 20 et 49 salariés)",
-            ]}
-          />
-          <CheckBoxList
-            title="La raison de votre inscription (choix multiple)"
-            choices={[
-              <Text style={styles.checkboxText}>
-                Pour obtenir des <Text style={styles.span}>prospects</Text>
-              </Text>,
-              <Text style={styles.checkboxText}>
-                Pour gagner en <Text style={styles.span}>visibilité</Text>
-              </Text>,
-              <Text style={styles.checkboxText}>
-                Recevoir des <Text style={styles.span}>recommandations</Text>
-              </Text>,
-              <Text style={styles.checkboxText}>
-                Développer votre <Text style={styles.span}>réseau</Text>
-              </Text>,
-            ]}
-          />
-        </View>
+        <Page2
+          type={type}
+          user={user}
+          jobDomains={jobDomains}
+          handleChangeUser={handleChangeUser}
+          handleChangeCompany={handleChangeCompany}
+        />
       ),
     },
     {
       key: "page3",
       content: (index: number) => (
-        <View style={styles.formPage}>
-          <View style={{ width: "100%", alignItems: "center" }}>
-            <Input
-              name="Avez vous déjà utilisé une application similaire ?"
-              placeholder="Expliquez-nous en quelques mots votre expérience."
-              type="off"
-              multiline={true}
-            />
-          </View>
-          <CheckBoxList
-            title="La raison de votre inscription (choix multiple)"
-            choices={[
-              <Text style={styles.checkboxText}>Les particuliers</Text>,
-              <Text style={styles.checkboxText}>Les indépendants/TPE</Text>,
-              <Text style={styles.checkboxText}>
-                Les PME et grands comptes
-              </Text>,
-            ]}
-          />
-        </View>
+        <Page3 type={type} user={user} handleChangeUser={handleChangeUser} />
       ),
     },
     {
       key: "page4",
       content: (index: number) => (
-        <View style={styles.formPage}>
-          <Input
-            name="Décrivez votre activité en quelques mots."
-            placeholder=""
-            type="off"
-            multiline={true}
-          />
-          <CheckBoxList
-            title="La raison de votre inscription (choix multiple)"
-            choices={[
-              <Text style={styles.checkboxText}>Responsabilité civile</Text>,
-              <Text style={styles.checkboxText}>Décenale</Text>,
-              <Text style={styles.checkboxText}>Autres</Text>,
-            ]}
-          />
-          <Link
-            style={styles.validationButton}
-            asChild
-            onPress={() => {
-              router.dismissAll();
-            }}
-            href="/legal/legalNotice"
-          >
-            <Text>Valider</Text>
-          </Link>
-        </View>
+        <Page4
+          company={company}
+          handleChangeCompany={handleChangeCompany}
+          handleChangeUser={handleChangeUser}
+        />
+      ),
+    },
+    {
+      key: "page5",
+      content: (index: number) => (
+        <Page5
+          subscriptionType={subscriptionType}
+          setSubscriptionType={setSubscriptionType}
+          subscriptionTypesTranslation={subscriptionTypesTranslation}
+        />
+      ),
+    },
+    {
+      key: "page6",
+      content: (index: number) => <Page6 />,
+    },
+    {
+      key: "page7",
+      content: (index: number) => (
+        <Page7
+          user={user}
+          isDataValid={isDataValid}
+          setIsDataValid={setIsDataValid}
+        />
       ),
     },
   ];
+
+  const pages =
+    type === "guest"
+      ? allPages.filter((page) => page.key !== "page2")
+      : allPages;
 
   return (
     <KeyboardAvoidingView
@@ -199,15 +180,14 @@ export default function FormSignUp() {
       <StatusBar barStyle="dark-content" />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          {type === "company" && (
+          {type === "company" ? (
             <Text style={styles.introText}>
               Inscrivez vous dès maintenant pour accéder au{" "}
               <Text style={styles.span}>questionnaire</Text> et valider la{" "}
               <Text style={styles.span}>première étape</Text> de votre
               inscription.
             </Text>
-          )}
-          {type === "guest" && (
+          ) : (
             <Text style={styles.introText}>
               Inscrivez vous dès maintenant et vivez l'expérience{" "}
               <Text style={{ ...styles.span, color: Colors.accent }}>
@@ -232,37 +212,12 @@ export default function FormSignUp() {
               scrollEnabled={false}
             />
 
-            {currentPage > 0 && (
-              <>
-                <Pressable
-                  onPress={() => scrollToPage(currentPage - 1)}
-                  style={{
-                    position: "absolute",
-                    left: 24,
-                    bottom: 24,
-                    width: 40,
-                    height: 40,
-                  }}
-                >
-                  <LeftArrow width={40} height={40} />
-                </Pressable>
-
-                {currentPage < pages.length - 1 && (
-                  <Pressable
-                    onPress={() => scrollToPage(currentPage + 1)}
-                    style={{
-                      position: "absolute",
-                      right: 24,
-                      bottom: 24,
-                      width: 40,
-                      height: 40,
-                    }}
-                  >
-                    <RightArrow width={40} height={40} />
-                  </Pressable>
-                )}
-              </>
-            )}
+            <Navigation
+              currentPage={currentPage}
+              pages={pages}
+              type={type}
+              scrollToPage={scrollToPage}
+            />
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -294,44 +249,5 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     alignItems: "center",
-  },
-  formPage: {
-    width: width,
-    paddingHorizontal: 32,
-    paddingVertical: 48,
-    alignItems: "center",
-  },
-  title: {
-    color: Colors.background,
-    fontSize: 25,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  button: {
-    color: Colors.background,
-    fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 20,
-    marginBottom: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderColor: Colors.background,
-    borderWidth: 5,
-    borderRadius: 50,
-    textAlign: "center",
-  },
-  checkboxText: {
-    color: Colors.background,
-    fontSize: 18,
-    marginLeft: 8,
-  },
-  validationButton: {
-    backgroundColor: Colors.background,
-    color: Colors.accent,
-    fontSize: 20,
-    fontWeight: "bold",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 50,
   },
 });

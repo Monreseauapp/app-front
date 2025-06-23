@@ -80,6 +80,7 @@ export default function LegalNotice() {
           href="/signin/doubleAuth"
           style={styles.validationButton}
           disabled={!agreedToTerms}
+          dismissTo
         >
           <Text style={styles.buttonText}>Suivant</Text>
         </Link>
@@ -96,7 +97,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
     backgroundColor: Colors.accent,
-    borderRadius: 30,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
   },
   title: {
     fontSize: 30,

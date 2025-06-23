@@ -63,11 +63,12 @@ export default function SignIn() {
                 </Text>
               </View>
               <Link
-                href="/home"
+                href="/signin/doubleAuth"
                 asChild
                 onPress={() => {
                   router.dismissAll();
                 }}
+                dismissTo
               >
                 <Text
                   style={{
@@ -80,7 +81,7 @@ export default function SignIn() {
                     paddingHorizontal: 24,
                     borderColor: Colors.background,
                     borderWidth: 5,
-                    borderRadius: 50,
+                    borderRadius: 30,
                   }}
                 >
                   Se connecter
