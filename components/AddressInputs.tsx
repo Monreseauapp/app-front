@@ -1,22 +1,27 @@
 import { Colors } from "@/constants/Colors";
-import { Recommandation } from "@/types";
 import { StyleSheet, View } from "react-native";
-import Input from "../form/Input";
+import Input from "./form/Input";
 
-interface PersonalInformationsProps {
-  recommandation: Recommandation;
-  handleChange: (
-    field: keyof Recommandation,
-    value: string | number | undefined
-  ) => void;
+interface AddressFields {
+  address: string;
+  addressComplement?: string | null;
+  city: string;
+  postalCode?: string | number;
+  country?: string;
+  [key: string]: any;
+}
+
+interface PersonalInformationsProps<T extends AddressFields> {
+  data: T;
+  handleChange: (field: keyof T, value: string | number | undefined) => void;
   isDataValid?: boolean;
 }
 
-export default function AddressInputs({
-  recommandation,
+export default function AddressInputs<T extends AddressFields>({
+  data,
   handleChange,
   isDataValid = undefined,
-}: PersonalInformationsProps) {
+}: PersonalInformationsProps<T>) {
   return (
     <View
       style={{
@@ -36,7 +41,7 @@ export default function AddressInputs({
           ...styles.input,
           placeholderTextColor: Colors.grey,
         }}
-        value={recommandation.address}
+        value={data.address}
         onChangeText={(text) => handleChange("address", text)}
         valid={isDataValid}
       />
@@ -51,6 +56,8 @@ export default function AddressInputs({
           placeholderTextColor: Colors.grey,
           alignSelf: "flex-end",
         }}
+        value={data.addressComplement ?? ""}
+        onChangeText={(text) => handleChange("addressComplement", text)}
         valid={isDataValid}
       />
       <Input
@@ -63,7 +70,7 @@ export default function AddressInputs({
           ...styles.input,
           placeholderTextColor: Colors.grey,
         }}
-        value={recommandation.city}
+        value={data.city}
         onChangeText={(text) => handleChange("city", text)}
         valid={isDataValid}
       />
@@ -78,7 +85,7 @@ export default function AddressInputs({
           placeholderTextColor: Colors.grey,
           alignSelf: "flex-end",
         }}
-        value={recommandation.postalCode?.toString()}
+        value={data.postalCode?.toString()}
         onChangeText={(text) =>
           handleChange(
             "postalCode",
@@ -96,6 +103,8 @@ export default function AddressInputs({
           ...styles.input,
           placeholderTextColor: Colors.grey,
         }}
+        value={data.country}
+        onChangeText={(text) => handleChange("country", text)}
         valid={isDataValid}
       />
     </View>

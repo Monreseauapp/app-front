@@ -11,6 +11,7 @@ export default function TabBar({ state, descriptors, navigation }: any) {
     "recommendation/form",
     "notification",
     "legal",
+    "profil/modify",
   ];
   const invisibleRoutesGuest = ["profil"];
 
@@ -82,6 +83,7 @@ export default function TabBar({ state, descriptors, navigation }: any) {
                 color: Colors.accent,
                 fontWeight: "bold",
                 fontSize: 16,
+                textAlign: "center",
               }}
             >
               {label}

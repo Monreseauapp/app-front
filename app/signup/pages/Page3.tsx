@@ -1,7 +1,8 @@
 import Input from "@/components/form/Input";
+import useFormValidation from "@/hooks/useFormValidation";
 import { User } from "@/types";
-import { Link, useRouter } from "expo-router";
-import { Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Pressable, Text, View } from "react-native";
 import styles from "./style";
 
 interface Page3Props {
@@ -11,9 +12,19 @@ interface Page3Props {
     field: keyof User,
     value: string | number | undefined
   ) => void;
+  isDataValid: boolean | undefined;
+  setIsDataValid: (isValid: boolean) => void;
+  resetForm: () => void;
 }
 
-export default function Page3({ type, user, handleChangeUser }: Page3Props) {
+export default function Page3({
+  type,
+  user,
+  handleChangeUser,
+  isDataValid = undefined,
+  setIsDataValid,
+  resetForm,
+}: Page3Props) {
   const router = useRouter();
   return (
     <View
@@ -32,6 +43,7 @@ export default function Page3({ type, user, handleChangeUser }: Page3Props) {
           type="tel"
           value={user.phone}
           onChangeText={(text) => handleChangeUser("phone", text)}
+          valid={isDataValid}
         />
       )}
       <Text style={{ ...styles.title, width: "100%", textAlign: "center" }}>
@@ -44,6 +56,7 @@ export default function Page3({ type, user, handleChangeUser }: Page3Props) {
         sameLine={2}
         value={user.address}
         onChangeText={(text) => handleChangeUser("address", text)}
+        valid={isDataValid}
       />
       <Input
         name="Adresse ligne 2"
@@ -53,6 +66,7 @@ export default function Page3({ type, user, handleChangeUser }: Page3Props) {
         inputStyle={{ alignSelf: "flex-end" }}
         value={user.addressComplement}
         onChangeText={(text) => handleChangeUser("addressComplement", text)}
+        valid={isDataValid}
       />
       <Input
         name="Ville"
@@ -61,6 +75,7 @@ export default function Page3({ type, user, handleChangeUser }: Page3Props) {
         sameLine={2}
         value={user.city}
         onChangeText={(text) => handleChangeUser("city", text)}
+        valid={isDataValid}
       />
       <Input
         name="Code postal"
@@ -75,6 +90,7 @@ export default function Page3({ type, user, handleChangeUser }: Page3Props) {
             Number(text.replace(/\D/g, "")) || undefined
           )
         }
+        valid={isDataValid}
       />
       <Input
         name="Pays"
@@ -82,18 +98,24 @@ export default function Page3({ type, user, handleChangeUser }: Page3Props) {
         type="country"
         value={user.country}
         onChangeText={(text) => handleChangeUser("country", text)}
+        valid={isDataValid}
       />
       {type === "guest" && (
         <View style={{ width: "100%", alignItems: "center" }}>
-          <Link
-            href="/legal/legalNotice"
+          <Pressable
             style={styles.button}
             onPress={() => {
-              router.dismissAll();
+              const isValid = useFormValidation(user);
+              setIsDataValid(isValid);
+              if (isValid) {
+                resetForm();
+                router.dismissAll();
+                router.push("/legal/legalNotice");
+              }
             }}
           >
             <Text>Valider</Text>
-          </Link>
+          </Pressable>
         </View>
       )}
     </View>

@@ -2,30 +2,46 @@ import CheckBoxList from "@/components/form/CheckboxList";
 import Input from "@/components/form/Input";
 import { AppContext } from "@/context/context";
 import useFormValidation from "@/hooks/useFormValidation";
-import { User } from "@/types";
+import { Company, User } from "@/types";
 import axios from "axios";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { useContext } from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import styles from "./style";
 
 interface Page7Props {
   user: User;
-  isDataValid: boolean;
+  company: Company;
+  isDataValid: boolean | undefined;
   setIsDataValid: (isValid: boolean) => void;
+  resetForm: () => void;
 }
 
 export default function Page7({
   user,
-  isDataValid,
+  company,
   setIsDataValid,
+  isDataValid = undefined,
+  resetForm,
 }: Page7Props) {
   const { API_URL } = useContext(AppContext);
   const router = useRouter();
-  const sendUserData = async (user: User) => {
-    axios.post(`${API_URL}/users`, user).catch((error) => {
+  const sendData = async (user: User, company: Company) => {
+    await axios.post(`${API_URL}/users`, user).catch((error) => {
       console.error("Error sending user data:", error.response);
     });
+    const userId = await axios
+      .get(`${API_URL}/users/${user.email}`)
+      .then((response) => response.data.id)
+      .catch((error) => {
+        console.error("Error fetching user ID:", error.response);
+        return null;
+      });
+    axios
+      .post(`${API_URL}/company`, { userId: userId, ...company })
+      .catch((error) => {
+        console.error("Error sending company data:", error.response);
+      });
   };
   return (
     <View style={styles.formPage}>
@@ -34,6 +50,7 @@ export default function Page7({
         placeholder=""
         type="off"
         multiline={true}
+        valid={isDataValid}
       />
       <CheckBoxList
         title="Quelles sont les assurances et certifications en votre possession ?"
@@ -43,20 +60,21 @@ export default function Page7({
           <Text style={styles.checkboxText}>Autres</Text>,
         ]}
       />
-      <Link
+      <Pressable
         style={styles.validationButton}
-        asChild
         onPress={() => {
-          setIsDataValid(useFormValidation(user));
-          if (isDataValid) {
-            sendUserData(user);
+          const isValid = useFormValidation(user) && useFormValidation(company);
+          setIsDataValid(isValid);
+          if (isValid) {
+            resetForm();
+            sendData(user, company);
             router.dismissAll();
+            router.push("/signin/doubleAuth");
           }
         }}
-        href="/legal/legalNotice"
       >
-        <Text>Valider</Text>
-      </Link>
+        <Text style={styles.validationText}>Valider</Text>
+      </Pressable>
     </View>
   );
 }

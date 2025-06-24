@@ -10,6 +10,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   FlatList,
+  Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -44,7 +45,9 @@ export default function FormSignUp() {
   const [subscriptionType, setSubscriptionType] = useState<
     SubscriptionType | undefined
   >(undefined);
-  const [isDataValid, setIsDataValid] = useState<boolean>(false);
+  const [isDataValid, setIsDataValid] = useState<boolean | undefined>(
+    undefined
+  );
 
   const subscriptionTypesTranslation: Record<string, SubscriptionType> = {
     "Indépendant (0 salariés)": SubscriptionType.Indep,
@@ -108,7 +111,7 @@ export default function FormSignUp() {
           user={user}
           handleChangeUser={handleChangeUser}
           scrollToPage={scrollToPage}
-          index={index}
+          isDataValid={isDataValid}
         />
       ),
     },
@@ -121,13 +124,21 @@ export default function FormSignUp() {
           jobDomains={jobDomains}
           handleChangeUser={handleChangeUser}
           handleChangeCompany={handleChangeCompany}
+          isDataValid={isDataValid}
         />
       ),
     },
     {
       key: "page3",
       content: (index: number) => (
-        <Page3 type={type} user={user} handleChangeUser={handleChangeUser} />
+        <Page3
+          type={type}
+          user={user}
+          handleChangeUser={handleChangeUser}
+          isDataValid={isDataValid}
+          resetForm={resetForm}
+          setIsDataValid={setIsDataValid}
+        />
       ),
     },
     {
@@ -137,6 +148,7 @@ export default function FormSignUp() {
           company={company}
           handleChangeCompany={handleChangeCompany}
           handleChangeUser={handleChangeUser}
+          isDataValid={isDataValid}
         />
       ),
     },
@@ -147,20 +159,23 @@ export default function FormSignUp() {
           subscriptionType={subscriptionType}
           setSubscriptionType={setSubscriptionType}
           subscriptionTypesTranslation={subscriptionTypesTranslation}
+          isDataValid={isDataValid}
         />
       ),
     },
     {
       key: "page6",
-      content: (index: number) => <Page6 />,
+      content: (index: number) => <Page6 isDataValid={isDataValid} />,
     },
     {
       key: "page7",
       content: (index: number) => (
         <Page7
           user={user}
-          isDataValid={isDataValid}
+          company={company}
+          resetForm={resetForm}
           setIsDataValid={setIsDataValid}
+          isDataValid={isDataValid}
         />
       ),
     },
@@ -180,6 +195,10 @@ export default function FormSignUp() {
       <StatusBar barStyle="dark-content" />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
+          <Image
+            source={require("@/assets/images/white-logo.png")}
+            style={styles.logo}
+          />
           {type === "company" ? (
             <Text style={styles.introText}>
               Inscrivez vous dès maintenant pour accéder au{" "}
@@ -232,19 +251,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.background,
   },
+  logo: {
+    width: 320,
+    height: 100,
+    marginBottom: 0,
+  },
   span: {
     fontWeight: "bold",
   },
   introText: {
     fontSize: 18,
     textAlign: "center",
-    marginBottom: 50,
+    marginBottom: 30,
     width: "70%",
   },
   formContainer: {
     width: "100%",
     paddingHorizontal: 0,
-    paddingVertical: 0,
+    paddingVertical: 10,
     backgroundColor: Colors.accent,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,

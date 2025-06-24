@@ -2,7 +2,7 @@ import CustomCheckbox from "@/components/form/customCheckbox";
 import { Colors } from "@/constants/Colors";
 import { Link } from "expo-router";
 import { useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function LegalNotice() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
@@ -15,6 +15,10 @@ export default function LegalNotice() {
         backgroundColor: Colors.background,
       }}
     >
+      <Image
+        source={require("@/assets/images/white-logo.png")}
+        style={styles.logo}
+      />
       <View style={styles.container}>
         <Text style={styles.title}>Validez les conditions d'accès.</Text>
         <Text style={styles.subtitle}>Les mentions légales</Text>
@@ -68,6 +72,7 @@ export default function LegalNotice() {
           <CustomCheckbox
             checked={agreedToTerms}
             onChange={() => setAgreedToTerms(!agreedToTerms)}
+            markerStyle={Colors.background}
             style={styles.checkbox}
             width={25}
             height={25}
@@ -90,6 +95,13 @@ export default function LegalNotice() {
 }
 
 const styles = StyleSheet.create({
+  logo: {
+    width: 320,
+    height: 100,
+    marginBottom: 0,
+    position: "absolute",
+    top: 60,
+  },
   container: {
     width: "100%",
     height: "70%",

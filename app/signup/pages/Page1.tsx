@@ -12,14 +12,14 @@ interface Page1Props {
     value: string | number | undefined
   ) => void;
   scrollToPage: (index: number) => void;
-  index?: number;
+  isDataValid?: boolean | undefined;
 }
 
 export default function Page1({
   user,
   handleChangeUser,
   scrollToPage,
-  index = 0,
+  isDataValid = undefined,
 }: Page1Props) {
   return (
     <View style={styles.formPage}>
@@ -43,6 +43,7 @@ export default function Page1({
           sameLine={2}
           value={user.firstName}
           onChangeText={(text) => handleChangeUser("firstName", text)}
+          valid={isDataValid}
         />
         <Input
           name="Nom"
@@ -52,6 +53,7 @@ export default function Page1({
           inputStyle={{ alignSelf: "flex-end" }}
           value={user.lastName}
           onChangeText={(text) => handleChangeUser("lastName", text)}
+          valid={isDataValid}
         />
       </View>
       <Input
@@ -60,13 +62,15 @@ export default function Page1({
         type="email"
         value={user.email}
         onChangeText={(text) => handleChangeUser("email", text)}
+        valid={isDataValid}
       />
       <Input
         name="Mot de passe"
         placeholder="********"
-        type="password"
+        type="new-password"
         value={user.password}
         onChangeText={(text) => handleChangeUser("password", text)}
+        valid={isDataValid}
       />
       <Pressable onPress={() => scrollToPage(1)}>
         <Text style={styles.button}>Suivant</Text>

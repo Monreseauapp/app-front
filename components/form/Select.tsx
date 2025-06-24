@@ -1,6 +1,5 @@
 import { Colors } from "@/constants/Colors";
 import { Picker } from "@react-native-picker/picker";
-import { useState } from "react";
 import { Text, View } from "react-native";
 
 interface InputProps {
@@ -10,6 +9,7 @@ interface InputProps {
   selectStyle?: object;
   selected?: string;
   setSelected?: (value: string) => void;
+  valid?: boolean | undefined;
 }
 
 export default function Select({
@@ -19,8 +19,8 @@ export default function Select({
   selectStyle,
   selected,
   setSelected,
+  valid = undefined,
 }: InputProps) {
-  const [selectedValue, setSelectedValue] = useState(choices[0]);
   const { pickerTextColor }: any = selectStyle || {};
   if (pickerTextColor) {
     selectStyle = { ...selectStyle, pickerTextColor };
@@ -37,7 +37,20 @@ export default function Select({
           ...titleStyle,
         }}
       >
-        {title}
+        {title}{" "}
+        {valid === false && !selected && (
+          <Text
+            style={{
+              color: Colors.red,
+              paddingLeft: 16,
+              fontSize: 14,
+              fontWeight: "bold",
+              marginTop: -5,
+            }}
+          >
+            (ce champ est requis)
+          </Text>
+        )}
       </Text>
       <Picker
         selectedValue={selected}

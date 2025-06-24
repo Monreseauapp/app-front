@@ -16,6 +16,7 @@ interface Page2Props {
     field: keyof Company,
     value: string | number | undefined
   ) => void;
+  isDataValid: boolean | undefined;
 }
 
 export default function Page2({
@@ -24,12 +25,16 @@ export default function Page2({
   jobDomains,
   handleChangeUser,
   handleChangeCompany,
+  isDataValid = undefined,
 }: Page2Props) {
   return (
     <View style={styles.formPage}>
       <Select
         title="Domaine d'activité"
-        choices={jobDomains?.map((domain) => domain.domaine)}
+        choices={[
+          "Sélectionner un domaine",
+          ...jobDomains?.map((domain) => domain.domaine),
+        ]}
         selected={
           jobDomains.find((domain) => domain.id === user.domainId)?.domaine ||
           ""
@@ -42,6 +47,7 @@ export default function Page2({
             handleChangeUser("domainId", selectedDomain.id);
           }
         }}
+        valid={isDataValid}
       />
       {type === "company" && (
         <Input
@@ -50,6 +56,7 @@ export default function Page2({
           type="email"
           value={user.email}
           onChangeText={(text) => handleChangeCompany("email", text)}
+          valid={isDataValid}
         />
       )}
     </View>

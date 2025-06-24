@@ -5,9 +5,9 @@ import StarIcon from "@/assets/icons/star.svg";
 import WebsiteIcon from "@/assets/icons/website.svg";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
-import { Company, User } from "@/types";
+import { Company, Review, User } from "@/types";
 import axios from "axios";
-import { useLocalSearchParams } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import {
   Image,
@@ -21,28 +21,53 @@ import {
 
 export default function Profil() {
   const { userId } = useContext(AppContext);
-  const { profile } = useLocalSearchParams();
+  const { profilId } = useLocalSearchParams();
   const [user, setUser] = useState<(User & { company: Company }) | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviewers, setReviewers] = useState<User[]>([]);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      axios
-        .get(
-          `${process.env.EXPO_PUBLIC_API_URL}/users/${
-            profile || userId
-          }/company`
-        )
-        .then((response) => {
-          const userData = response.data;
-          setUser(userData);
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error.request);
-        });
+    const fetchData = async () => {
+      const fetchProfileData = async (id: string) => {
+        axios
+          .get(`${process.env.EXPO_PUBLIC_API_URL}/users/${id}/company`)
+          .then((response) => {
+            const userData = response.data;
+            setUser(userData);
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error.request);
+          });
+      };
+      const fetchReviews = async () => {
+        axios
+          .get(
+            `${process.env.EXPO_PUBLIC_API_URL}/review/company/${user?.companyId}`
+          )
+          .then((response) => {
+            const reviewsData = response.data;
+            setReviews(reviewsData);
+          })
+          .catch((error) => {
+            console.error("Error fetching reviews:", error.request);
+          });
+      };
+      const fetchReviewersData = async () => {
+        const userPromises = reviews.map((review) =>
+          axios.get<User>(
+            `${process.env.EXPO_PUBLIC_API_URL}/users/${review.userId}`
+          )
+        );
+        const responses = await Promise.all(userPromises);
+        setReviewers(responses.map((res) => res.data));
+      };
+      await fetchProfileData((profilId as string) || (userId as string));
+      if (user?.companyId) {
+        await fetchReviews();
+        fetchReviewersData();
+      }
     };
-    if (userId) {
-      fetchUserData();
-    }
+    fetchData();
   }, [userId]);
 
   return (
@@ -109,6 +134,9 @@ export default function Profil() {
             </Pressable>
           )}
         </View>
+        <Link style={styles.button} href="/profil/modify?type=company">
+          <Text style={styles.buttonText}>Modifier mon profil</Text>
+        </Link>
         <View
           style={{ alignItems: "flex-start", marginBottom: 20, width: "90%" }}
         >
@@ -140,24 +168,46 @@ export default function Profil() {
           </View>
         </View>
         <View style={{ alignItems: "flex-start", width: "90%" }}>
-          <View>
+          <View style={{ width: "100%" }}>
             <Text style={{ ...styles.miniTitle, marginBottom: 10 }}>
-              Mes avis (18)
+              Mes avis ({reviews.length})
             </Text>
-            <View>
-              {/* Mappez sur les avis ici */}
-              <Text style={styles.review}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
-                officia, vero blanditiis, eaque tempore perferendis eligendi
-                placeat cupiditate commodi atque accusamus asperiores similique
-                recusandae vel inventore pariatur neque vitae? Magni!
-              </Text>
-              <Text style={styles.review}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
-                officia, vero blanditiis, eaque tempore perferendis eligendi
-                placeat cupiditate commodi atque accusamus asperiores similique
-                recusandae vel inventore pariatur neque vitae? Magni!
-              </Text>
+            <View style={{ width: "100%" }}>
+              {reviews.map((review) => (
+                <View key={review.id} style={styles.review}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <Text style={styles.reviewer}>
+                      {(() => {
+                        const reviewer = reviewers.find(
+                          (user) => user.id === review.userId
+                        );
+                        return reviewer
+                          ? `${reviewer.firstName} ${reviewer.lastName}`
+                          : "Utilisateur inconnu";
+                      })()}
+                    </Text>
+                    {[...Array(5)].map((_, i) => (
+                      <StarIcon
+                        key={i}
+                        color={
+                          i < (review.rating || 0)
+                            ? Colors.background
+                            : Colors.text
+                        }
+                        width={20}
+                        height={20}
+                        style={{ marginRight: 2 }}
+                      />
+                    ))}
+                  </View>
+                  <Text style={styles.reviewText}>{review.comment}</Text>
+                </View>
+              ))}
             </View>
           </View>
           <View
@@ -268,11 +318,35 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   review: {
+    width: "100%",
     padding: 15,
     backgroundColor: Colors.accent,
     borderRadius: 20,
+    marginBottom: 10,
+  },
+  reviewer: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: Colors.background,
+    marginBottom: 5,
+    marginRight: 10,
+  },
+  reviewText: {
     fontSize: 16,
     color: Colors.background,
-    marginBottom: 10,
+    marginBottom: 5,
+  },
+  button: {
+    backgroundColor: Colors.accent,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: Colors.background,
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });

@@ -8,12 +8,14 @@ interface Page5Props {
   subscriptionType: SubscriptionType | undefined;
   setSubscriptionType: (value: SubscriptionType) => void;
   subscriptionTypesTranslation: Record<string, string>;
+  isDataValid: boolean | undefined;
 }
 
 export default function Page5({
   subscriptionType,
   setSubscriptionType,
   subscriptionTypesTranslation,
+  isDataValid = undefined,
 }: Page5Props) {
   return (
     <View style={styles.formPage}>
@@ -28,6 +30,7 @@ export default function Page5({
             subscriptionTypesTranslation[value] as SubscriptionType
           );
         }}
+        valid={isDataValid}
       />
       <CheckBoxList
         title="La raison de votre inscription (choix multiple)"
