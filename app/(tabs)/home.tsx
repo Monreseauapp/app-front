@@ -7,7 +7,7 @@ import { Recommandation, User } from "@/types";
 import axios from "axios";
 import { Link } from "expo-router";
 import { useContext, useEffect, useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
   const { userId, accountType } = useContext(AppContext);
@@ -162,9 +162,9 @@ export default function Index() {
               </Text>
             </View>
           </View>
-          <Pressable style={styles.button}>
+          <Link style={styles.button} href="/profil/modify?type=guest">
             <Text style={styles.buttonText}>Modifier mon profil</Text>
-          </Pressable>
+          </Link>
         </View>
       )}
       <View style={{ alignItems: "center" }}>

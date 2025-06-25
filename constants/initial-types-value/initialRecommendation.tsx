@@ -5,10 +5,10 @@ export const initialRecommendation = {
   phone: "",
   email: "",
   address: "",
-  // addressComplement: "",
+  addressComplement: "",
   city: "",
   postalCode: undefined,
-  // country: "",
+  country: "",
   updatedAt: new Date(),
   initiatorId: "",
   retentionDate: new Date(

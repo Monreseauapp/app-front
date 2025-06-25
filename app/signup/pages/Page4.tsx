@@ -13,12 +13,14 @@ interface Page4Props {
     field: keyof User,
     value: string | number | undefined
   ) => void;
+  isDataValid: boolean | undefined;
 }
 
 export default function Page4({
   company,
   handleChangeCompany,
   handleChangeUser,
+  isDataValid = undefined,
 }: Page4Props) {
   return (
     <View
@@ -40,6 +42,7 @@ export default function Page4({
         sameLine={2}
         value={company.address}
         onChangeText={(text) => handleChangeCompany("address", text)}
+        valid={isDataValid}
       />
       <Input
         name="Adresse ligne 2"
@@ -49,6 +52,7 @@ export default function Page4({
         inputStyle={{ alignSelf: "flex-end" }}
         value={company.addressComplement}
         onChangeText={(text) => handleChangeCompany("addressComplement", text)}
+        valid={isDataValid}
       />
       <Input
         name="Ville"
@@ -57,6 +61,7 @@ export default function Page4({
         sameLine={2}
         value={company.city}
         onChangeText={(text) => handleChangeCompany("city", text)}
+        valid={isDataValid}
       />
       <Input
         name="Code postal"
@@ -71,6 +76,7 @@ export default function Page4({
             Number(text.replace(/\D/g, "")) || undefined
           )
         }
+        valid={isDataValid}
       />
       <Input
         name="Pays"
@@ -78,6 +84,7 @@ export default function Page4({
         type="country"
         value={company.country}
         onChangeText={(text) => handleChangeCompany("country", text)}
+        valid={isDataValid}
       />
       <Input
         name="Téléphone professionnel"
@@ -88,6 +95,7 @@ export default function Page4({
           handleChangeUser("phone", text);
           handleChangeCompany("phone", text);
         }}
+        valid={isDataValid}
       />
     </View>
   );

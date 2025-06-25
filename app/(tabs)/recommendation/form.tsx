@@ -1,7 +1,7 @@
 import BackIcon from "@/assets/icons/back.svg";
+import AddressInputs from "@/components/AddressInputs";
 import Input from "@/components/form/Input";
 import Search from "@/components/form/Search";
-import AdressInputs from "@/components/recommendation/AdressInputs";
 import DetailsInput from "@/components/recommendation/DetailsInput";
 import PersonalInformations from "@/components/recommendation/PersonalInformations";
 import PersonTypeSelector from "@/components/recommendation/PersonTypeSelector";
@@ -257,8 +257,8 @@ export default function RecommendationForm() {
                         handleChange={handleChange}
                         isDataValid={isDataValid}
                       />
-                      <AdressInputs
-                        recommandation={recommandation}
+                      <AddressInputs
+                        data={recommandation}
                         handleChange={handleChange}
                         isDataValid={isDataValid}
                       />

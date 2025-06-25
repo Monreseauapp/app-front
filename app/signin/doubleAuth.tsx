@@ -3,6 +3,7 @@ import { Colors } from "@/constants/Colors";
 import { Link } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
+  Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -34,6 +35,10 @@ export default function DoubleAuth() {
             backgroundColor: Colors.background,
           }}
         >
+          <Image
+            source={require("@/assets/images/white-logo.png")}
+            style={styles.logo}
+          />
           <View style={styles.container}>
             <Text style={styles.title}>Vérification de votre compte</Text>
             <Text style={styles.subtitle}>
@@ -89,6 +94,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.accent,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+  },
+  logo: {
+    width: 320,
+    height: 100,
+    marginBottom: 20,
+    position: "absolute",
+    top: 60,
   },
   title: {
     width: "80%",

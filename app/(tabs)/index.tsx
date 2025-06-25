@@ -1,6 +1,13 @@
 import { Colors } from "@/constants/Colors";
 import { Link, useRouter } from "expo-router";
-import { Pressable, StatusBar, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 export default function Index() {
   const router = useRouter();
@@ -14,9 +21,14 @@ export default function Index() {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: Colors.background,
+        position: "relative",
       }}
     >
       <StatusBar barStyle="dark-content" />
+      <Image
+        source={require("@/assets/images/white-logo.png")}
+        style={styles.logo}
+      />
       <Text
         style={{
           fontWeight: "bold",
@@ -70,6 +82,13 @@ export default function Index() {
   );
 }
 const styles = StyleSheet.create({
+  logo: {
+    position: "absolute",
+    top: 100,
+    width: 320,
+    height: 100,
+    marginBottom: 20,
+  },
   button: {
     backgroundColor: Colors.accent,
     padding: 10,

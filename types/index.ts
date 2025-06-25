@@ -145,6 +145,7 @@ export interface Recommandation {
   email: string;
   phone: string;
   address: string;
+  addressComplement?: string | null;
   postalCode: number | undefined;
   city: string;
   description?: string | null;

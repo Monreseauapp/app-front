@@ -37,12 +37,15 @@ const styles = StyleSheet.create({
   },
   validationButton: {
     backgroundColor: Colors.background,
-    color: Colors.accent,
-    fontSize: 20,
-    fontWeight: "bold",
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 50,
+  },
+  validationText: {
+    color: Colors.accent,
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 

@@ -3,7 +3,11 @@ import Input from "@/components/form/Input";
 import { Text, View } from "react-native";
 import styles from "./style";
 
-export default function Page6() {
+export default function Page6({
+  isDataValid = undefined,
+}: {
+  isDataValid: boolean | undefined;
+}) {
   return (
     <View style={styles.formPage}>
       <View style={{ width: "100%", alignItems: "center" }}>
@@ -12,6 +16,7 @@ export default function Page6() {
           placeholder="Expliquez-nous en quelques mots votre expérience."
           type="off"
           multiline={true}
+          valid={isDataValid}
         />
       </View>
       <CheckBoxList

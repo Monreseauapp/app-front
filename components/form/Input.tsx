@@ -15,15 +15,17 @@ type InputProps = {
     | "cc-number" // Global
     | "cc-type" // Global (IOS 17+)
     | "country" // Global
+    | "current-password" // Global
     | "email" // Global
     | "family-name" // Global
     | "given-name" // Global
     | "name-family" // Android
     | "name-given" // Android
+    | "new-password" // Global
     | "off" // Global
     | "one-time-code" // Global
     | "organization" // IOS
-    | "password" // Android && Global
+    | "password" // Android
     | "postal-code" // Global
     | "tel" // Global
     | "tel-national" // Android
@@ -114,7 +116,7 @@ export default function Input({
         placeholderTextColor={placeholderTextColor || Colors.accent}
         placeholder={placeholder}
         ref={inputRef}
-        secureTextEntry={type === "password"}
+        secureTextEntry={type.includes("password")}
         style={{
           width: sameLine > 1 ? "95%" : "100%",
           height: multiline ? 100 : 50,

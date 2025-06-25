@@ -2,6 +2,7 @@ import Input from "@/components/form/Input";
 import { Colors } from "@/constants/Colors";
 import { Link, useRouter } from "expo-router";
 import {
+  Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -22,6 +23,10 @@ export default function SignIn() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <Text style={styles.introText}>Connectez-vous pour continuer.</Text>
+          <Image
+            source={require("@/assets/images/white-logo.png")}
+            style={styles.logo}
+          />
           <View style={styles.form}>
             <View style={styles.formContainer}>
               <Text style={styles.title}>Je me connecte.</Text>
@@ -41,7 +46,7 @@ export default function SignIn() {
                 <Input
                   name="Mot de passe"
                   placeholder="********"
-                  type="password"
+                  type="current-password"
                 />
                 <Text
                   onPress={() => {
@@ -119,6 +124,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 50,
     width: "100%",
+  },
+  logo: {
+    width: 320,
+    height: 100,
+    marginTop: -40,
   },
   connectionContainer: {
     flex: 1,
