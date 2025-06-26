@@ -1,0 +1,5 @@
+<manifest>
+    <application
+        android:supportsRtl="true">
+    </application>
+</manifest>

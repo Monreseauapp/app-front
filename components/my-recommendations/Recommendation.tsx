@@ -1,0 +1,204 @@
+import { CompleteRecommendation } from "@/app/(tabs)/my-recommendations";
+import { Colors } from "@/constants/Colors";
+import { AppContext } from "@/context/context";
+import { RecoState } from "@/types";
+import axios from "axios";
+import { useContext, useState } from "react";
+import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
+import RelatedPeople from "./RelatedPeople";
+import ValidationForm from "./ValidationForm";
+
+interface RecommendationProps extends CompleteRecommendation {
+  page: string;
+  setUpdated: (value: boolean) => void;
+}
+
+export default function Recommendation({
+  recommandation,
+  recipient,
+  initiator,
+  company,
+  page,
+  setUpdated,
+}: RecommendationProps) {
+  const { userId, companyId, API_URL } = useContext(AppContext);
+  const isCompanyReception = companyId === company?.id;
+  const [isRejected, setIsRejected] = useState<boolean | undefined>(undefined);
+  const [rejectionReason, setRejectionReason] = useState<string>("");
+  const stateTranslation = {
+    [RecoState.ACCEPTED]: "Acceptée",
+    [RecoState.PENDING]: "En attente...",
+    [RecoState.REJECTED]: "Refusée",
+  };
+  const colorState = {
+    [RecoState.ACCEPTED]: styles.accepted,
+    [RecoState.PENDING]: {},
+    [RecoState.REJECTED]: styles.rejected,
+  };
+
+  const updateRecommendation = async () => {
+    axios.patch(
+      `${API_URL}/recommandation/${recommandation.id}`,
+      isCompanyReception
+        ? {
+            ...recommandation,
+            RecoStateCompany: isRejected
+              ? RecoState.REJECTED
+              : RecoState.ACCEPTED,
+            rejectionReasonCompany: rejectionReason,
+          }
+        : {
+            ...recommandation,
+            RecoStateInitiator: isRejected
+              ? RecoState.REJECTED
+              : RecoState.ACCEPTED,
+            rejectionReasonInitiator: rejectionReason,
+          }
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={{ alignItems: "center", width: "100%" }}>
+        <RelatedPeople
+          recommendation={recommandation}
+          recipient={recipient}
+          initiator={initiator}
+          company={company}
+          isCompanyReception={isCompanyReception}
+        />
+        <Text style={[styles.text, styles.description]}>
+          {recommandation.description}
+        </Text>
+        {page === "received" && (
+          <View style={styles.contactContainer}>
+            <Text style={[styles.text, styles.span]}>Contact :</Text>
+            <View style={styles.contactTextContainer}>
+              {(isCompanyReception ? recipient : company)?.email && (
+                <Pressable
+                  onPress={() =>
+                    Linking.openURL(
+                      `mailto:${
+                        (isCompanyReception ? recipient : company)?.email
+                      }`
+                    )
+                  }
+                  style={{ width: "45%" }}
+                >
+                  <Text style={[styles.text, styles.contactText]}>
+                    {(isCompanyReception ? recipient : company)?.email}
+                  </Text>
+                </Pressable>
+              )}
+              {(isCompanyReception ? recipient : company)?.phone && (
+                <Pressable
+                  onPress={() =>
+                    Linking.openURL(
+                      `tel:${(isCompanyReception ? recipient : company)?.phone}`
+                    )
+                  }
+                  style={{ width: "45%" }}
+                >
+                  <Text style={[styles.text, styles.contactText]}>
+                    {(isCompanyReception ? recipient : company)?.phone}
+                  </Text>
+                </Pressable>
+              )}
+            </View>
+          </View>
+        )}
+        <View style={styles.stateContainer}>
+          <Text
+            style={[
+              styles.text,
+              styles.span,
+              colorState[recommandation.RecoStateInitiator as RecoState],
+            ]}
+          >
+            {stateTranslation[recommandation.RecoStateInitiator as RecoState]}
+          </Text>
+          <Text
+            style={[
+              styles.text,
+              styles.span,
+              colorState[recommandation.RecoStateCompany as RecoState],
+            ]}
+          >
+            {stateTranslation[recommandation.RecoStateCompany as RecoState]}
+          </Text>
+        </View>
+      </View>
+      {page === "received" &&
+        (isCompanyReception
+          ? recommandation.RecoStateCompany
+          : recommandation.RecoStateInitiator) === RecoState.PENDING && (
+          <ValidationForm
+            isRejected={isRejected}
+            setIsRejected={setIsRejected}
+            rejectionReason={rejectionReason}
+            setRejectionReason={setRejectionReason}
+            update={updateRecommendation}
+            setUpdated={setUpdated}
+          />
+        )}
+    </View>
+  );
+}
+const styles = StyleSheet.create({
+  container: {
+    width: "90%",
+    padding: 16,
+    backgroundColor: Colors.accent,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 16,
+    color: Colors.background,
+  },
+  span: {
+    fontWeight: "bold",
+  },
+  accepted: {
+    color: Colors.green,
+  },
+  rejected: {
+    color: Colors.red,
+  },
+  nameContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  name: {
+    fontStyle: "italic",
+  },
+  description: {
+    width: "90%",
+    marginVertical: 12,
+    textAlign: "center",
+  },
+  contactContainer: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  contactTextContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    marginTop: 10,
+  },
+  contactText: {
+    textAlign: "center",
+  },
+  stateContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 10,
+  },
+});

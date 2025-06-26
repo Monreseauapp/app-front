@@ -1,33 +1,33 @@
 # Global owners
-* @lead-frontend-dev
+* @lead-dev @devops
 
 # Screens and navigation
-/src/screens/ @frontend-team @ux-team
-/src/navigation/ @frontend-team @lead-frontend-dev
+/src/screens/ @frontend-dev
+/src/navigation/ @frontend-dev @lead-dev
 
 # Components critiques
-/src/components/auth/ @frontend-team @security-team
-/src/components/payment/ @frontend-team @security-team @lead-frontend-dev
+/src/components/auth/ @frontend-dev
+/src/components/payment/ @frontend-dev @lead-dev
 
 # Configuration native
-/android/ @frontend-team @mobile-native-team
-/ios/ @frontend-team @mobile-native-team
+/android/ @frontend-dev @frontend-dev
+/ios/ @frontend-dev @frontend-dev
 
 # Configuration de build
-/android/app/build.gradle @lead-frontend-dev @devops-team
-/ios/*/Info.plist @lead-frontend-dev @devops-team
+/android/app/build.gradle @lead-dev @devops
+/ios/*/Info.plist @lead-dev @devops
 
 # Secrets et configuration
-.env.* @lead-frontend-dev @devops-team
-/android/app/google-services.json @lead-frontend-dev @devops-team
-/ios/*/GoogleService-Info.plist @lead-frontend-dev @devops-team
+.env.* @lead-dev @devops
+/android/app/google-services.json @lead-dev @devops
+/ios/*/GoogleService-Info.plist @lead-dev @devops
 
 # Package et dépendances
-package.json @lead-frontend-dev
-package-lock.json @lead-frontend-dev
-yarn.lock @lead-frontend-dev
+package.json @lead-dev
+package-lock.json @lead-dev
+yarn.lock @lead-dev
 
 # Tests
-__tests__/ @frontend-team
-**/*.test.* @frontend-team
-**/*.spec.* @frontend-team
+__tests__/ @frontend-dev
+**/*.test.* @frontend-dev
+**/*.spec.* @frontend-dev
