@@ -24,7 +24,7 @@ export default function TabLayout() {
     "/profil/modify",
   ].some((path) => route === path || route.startsWith(path + "/"));
 
-  const isLogoInvisible = ["/", "/legal"].some(
+  const isLogoInvisible = ["/", "/legal", "/profil/modify"].some(
     (path) => route === path || route.startsWith(path + "/")
   );
 
@@ -84,6 +84,18 @@ export default function TabLayout() {
           name="profil/index"
           options={{
             title: "Mon Profil",
+          }}
+        />
+        <Tabs.Screen
+          name="my-recommendations/index"
+          options={{
+            title: "Mes Recommandations",
+          }}
+        />
+        <Tabs.Screen
+          name="my-projects/index"
+          options={{
+            title: "Mes Projets",
           }}
         />
         <Tabs.Screen

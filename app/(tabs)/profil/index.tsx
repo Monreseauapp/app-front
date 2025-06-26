@@ -20,7 +20,7 @@ import {
 } from "react-native";
 
 export default function Profil() {
-  const { userId } = useContext(AppContext);
+  const { userId, companyId } = useContext(AppContext);
   const { profilId } = useLocalSearchParams();
   const [user, setUser] = useState<(User & { company: Company }) | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -29,7 +29,7 @@ export default function Profil() {
   useEffect(() => {
     const fetchData = async () => {
       const fetchProfileData = async (id: string) => {
-        axios
+        const response = await axios
           .get(`${process.env.EXPO_PUBLIC_API_URL}/users/${id}/company`)
           .then((response) => {
             const userData = response.data;
@@ -38,11 +38,14 @@ export default function Profil() {
           .catch((error) => {
             console.error("Error fetching user data:", error.request);
           });
+        return response;
       };
       const fetchReviews = async () => {
-        axios
+        const response = await axios
           .get(
-            `${process.env.EXPO_PUBLIC_API_URL}/review/company/${user?.companyId}`
+            `${process.env.EXPO_PUBLIC_API_URL}/review/company/${
+              user?.companyId || companyId
+            }`
           )
           .then((response) => {
             const reviewsData = response.data;
@@ -51,6 +54,7 @@ export default function Profil() {
           .catch((error) => {
             console.error("Error fetching reviews:", error.request);
           });
+        return response;
       };
       const fetchReviewersData = async () => {
         const userPromises = reviews.map((review) =>
@@ -61,14 +65,14 @@ export default function Profil() {
         const responses = await Promise.all(userPromises);
         setReviewers(responses.map((res) => res.data));
       };
-      await fetchProfileData((profilId as string) || (userId as string));
-      if (user?.companyId) {
-        await fetchReviews();
+      fetchProfileData((profilId as string) || (userId as string));
+      if (companyId) {
+        fetchReviews();
         fetchReviewersData();
       }
     };
     fetchData();
-  }, [userId]);
+  }, [profilId, userId, companyId]);
 
   return (
     <ScrollView
@@ -98,11 +102,7 @@ export default function Profil() {
           {user?.company?.linkedin && (
             <Pressable
               style={styles.icon}
-              onPress={() =>
-                Linking.openURL(
-                  "https://www.linkedin.com/in/maxime-labbe-626012293/"
-                )
-              }
+              onPress={() => Linking.openURL(user?.company?.linkedin || "")}
             >
               <LinkedinIcon color={Colors.accent} width={40} height={40} />
             </Pressable>
@@ -110,7 +110,7 @@ export default function Profil() {
           {user?.company?.phone && (
             <Pressable
               style={styles.icon}
-              onPress={() => Linking.openURL("tel:+33770107148")}
+              onPress={() => Linking.openURL(`tel:${user?.company?.phone}`)}
             >
               <PhoneIcon color={Colors.background} width={40} height={40} />
             </Pressable>
@@ -118,7 +118,7 @@ export default function Profil() {
           {user?.company?.email && (
             <Pressable
               style={styles.icon}
-              onPress={() => Linking.openURL("mailto:maxime30labbe@gmail.com")}
+              onPress={() => Linking.openURL(`mailto:${user?.company?.email}`)}
             >
               <MailIcon color={Colors.background} width={40} height={40} />
             </Pressable>
@@ -126,9 +126,7 @@ export default function Profil() {
           {user?.company?.website && (
             <Pressable
               style={styles.icon}
-              onPress={() =>
-                Linking.openURL("https://www.maximelabbe.vercel.app/")
-              }
+              onPress={() => Linking.openURL(user?.company?.website || "")}
             >
               <WebsiteIcon color={Colors.background} width={38} height={38} />
             </Pressable>
@@ -231,7 +229,16 @@ export default function Profil() {
               {[...Array(5)].map((_, i) => (
                 <StarIcon
                   key={i}
-                  color={i < 4 ? Colors.accent : Colors.text}
+                  color={
+                    i <
+                    reviews.reduce(
+                      (acc, review) => acc + (review.rating || 0),
+                      0
+                    ) /
+                      reviews.length
+                      ? Colors.accent
+                      : Colors.text
+                  }
                   width={40}
                   height={40}
                   style={{ marginRight: 5 }}

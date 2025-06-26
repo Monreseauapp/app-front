@@ -31,17 +31,27 @@ export default function Page7({
       console.error("Error sending user data:", error.response);
     });
     const userId = await axios
-      .get(`${API_URL}/users/${user.email}`)
+      .get(`${API_URL}/users/email/${user.email}`)
       .then((response) => response.data.id)
       .catch((error) => {
         console.error("Error fetching user ID:", error.response);
         return null;
       });
     axios
-      .post(`${API_URL}/company`, { userId: userId, ...company })
+      .post(`${API_URL}/company`, { ...company, ownerId: userId })
       .catch((error) => {
         console.error("Error sending company data:", error.response);
       });
+    const companyId = await axios
+      .get(`${API_URL}/company/${company.name}`)
+      .then((response) => response.data.id)
+      .catch((error) => {
+        console.error("Error fetching company ID:", error.response);
+        return null;
+      });
+    axios.patch(`${API_URL}/users/${userId}`, {
+      companyId: companyId,
+    });
   };
   return (
     <View style={styles.formPage}>
