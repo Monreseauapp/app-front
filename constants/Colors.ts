@@ -3,5 +3,7 @@ export const Colors = {
   background: "#FBFBFF",
   accent: "#5271FF",
   grey: "#808080",
-  red: "#D70040",
+  lightGrey: "#EDEDED",
+  red: "#FF5271",
+  green: "#28D800",
 };

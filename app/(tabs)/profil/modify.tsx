@@ -1,8 +1,9 @@
 import BackIcon from "@/assets/icons/back.svg";
+import DocumentInput from "@/components/form/DocumentInput";
 import Input from "@/components/form/Input";
+import InnerNavBar from "@/components/InnerNavBar";
 import JobInformations from "@/components/profile/modify/JobInformations";
 import LinksInputs from "@/components/profile/modify/LinksInputs";
-import NavBar from "@/components/profile/modify/NavBar";
 import PersonalInformations from "@/components/profile/modify/PersonalInformations";
 import { Colors } from "@/constants/Colors";
 import { initialCompany } from "@/constants/initial-types-value/initialCompany";
@@ -34,6 +35,7 @@ export default function ModifyProfile() {
   const [jobDomains, setJobDomains] = useState<
     { id: string; domaine: string }[]
   >([]);
+  const [image, setImage] = useState<object | null>(null);
 
   const handleChangeUser = (
     key: keyof User,
@@ -133,9 +135,11 @@ export default function ModifyProfile() {
             <BackIcon color={Colors.accent} width={30} height={30} />
           </Pressable>
           {type === "company" && (
-            <NavBar
-              isCompanyPage={isCompanyPage}
-              setIsCompanyPage={setIsCompanyPage}
+            <InnerNavBar
+              tabs={["Personnel", "Entreprise"]}
+              activeIndex={isCompanyPage ? 1 : 0}
+              setActiveIndex={() => setIsCompanyPage(!isCompanyPage)}
+              style={{ position: "absolute", top: 70, right: 60 }}
             />
           )}
 
@@ -159,6 +163,11 @@ export default function ModifyProfile() {
                 isCompanyPage={isCompanyPage}
                 handleChangeUser={handleChangeUser}
                 handleChangeCompany={handleChangeCompany}
+              />
+              <DocumentInput
+                title="Photo de profil"
+                type={["image/jpeg", "image/png", "image/webp"]}
+                setValue={setImage}
               />
               {!isCompanyPage && (
                 <JobInformations

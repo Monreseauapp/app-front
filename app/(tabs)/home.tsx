@@ -10,7 +10,7 @@ import { useContext, useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
-  const { userId, accountType } = useContext(AppContext);
+  const { userId, accountType, companyId } = useContext(AppContext);
   const [user, setUser] = useState<User | null>(null);
   const [recommandationsSent, setRecommandationsSent] = useState<
     Recommandation[]
@@ -74,10 +74,10 @@ export default function Index() {
         });
     };
     const fetchRecommandationsReceivedCompany = async () => {
-      if (user?.companyId) {
+      if (companyId) {
         axios
           .get(
-            `${process.env.EXPO_PUBLIC_API_URL}/recommandation/company/${user.companyId}`
+            `${process.env.EXPO_PUBLIC_API_URL}/recommandation/company/${companyId}`
           )
           .then((response) => {
             setRecommandationsReceived((prev) => [...prev, ...response.data]);
@@ -93,7 +93,7 @@ export default function Index() {
       fetchRecommandationsReceived();
       fetchRecommandationsReceivedCompany();
     }
-  }, [userId, user?.companyId]);
+  }, [userId, companyId]);
 
   return (
     <View
@@ -177,13 +177,21 @@ export default function Index() {
             {
               label: "En cours",
               value: recommandationsSent
-                .filter((r) => r.RecoState === "PENDING")
+                .filter(
+                  (r) =>
+                    r.RecoStateCompany === "PENDING" &&
+                    r.RecoStateInitiator === "PENDING"
+                )
                 .length.toString(),
             },
             {
               label: "Terminées",
               value: recommandationsSent
-                .filter((r) => r.RecoState === "ACCEPTED")
+                .filter(
+                  (r) =>
+                    r.RecoStateCompany !== "PENDING" &&
+                    r.RecoStateInitiator === "PENDING"
+                )
                 .length.toString(),
             },
           ]}
@@ -196,13 +204,21 @@ export default function Index() {
                 {
                   label: "En cours",
                   value: recommandationsReceived
-                    .filter((r) => r.RecoState === "PENDING")
+                    .filter(
+                      (r) =>
+                        r.RecoStateCompany === "PENDING" &&
+                        r.RecoStateInitiator === "PENDING"
+                    )
                     .length.toString(),
                 },
                 {
                   label: "Terminées",
                   value: recommandationsReceived
-                    .filter((r) => r.RecoState === "ACCEPTED")
+                    .filter(
+                      (r) =>
+                        r.RecoStateCompany !== "PENDING" &&
+                        r.RecoStateInitiator !== "PENDING"
+                    )
                     .length.toString(),
                 },
               ]}
@@ -210,8 +226,8 @@ export default function Index() {
             <DashboardStats
               title="Mes chiffres"
               stats={[
-                { label: "Encaissés", value: "7885€" },
-                { label: "Données", value: "1568€" },
+                { label: "Encaissés", value: "/" },
+                { label: "Données", value: "/" },
               ]}
             />
           </>

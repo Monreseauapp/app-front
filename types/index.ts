@@ -41,7 +41,7 @@ export enum ProjectState {
   ARCHIVED = "ARCHIVED",
 }
 
-export enum CompanyChoiceState {
+export enum ProjectChoiceState {
   PENDING = "PENDING",
   ACCEPTED = "ACCEPTED",
   REJECTED = "REJECTED",
@@ -153,7 +153,10 @@ export interface Recommandation {
   inProgressAt?: (Date | string) | null;
   endDate?: (Date | string) | null;
   isAccepted?: boolean;
-  RecoState?: RecoState;
+  RecoStateInitiator?: RecoState;
+  rejectionReasonInitiator?: string | null;
+  RecoStateCompany?: RecoState;
+  rejectionReasonCompany?: string | null;
   companyId: string;
   initiatorId: string;
   recipientId?: string | null;
@@ -172,6 +175,8 @@ export interface Project {
   isPublic?: boolean;
   companyId: string;
   projectState?: ProjectState;
+  ProjectChoiceCompany: ProjectChoiceState;
+  RejectionReasonCompany?: string | null;
   userId: string;
   retentionDate?: (Date | string) | null;
 }
@@ -182,7 +187,7 @@ export interface CompanyProject {
   projectId: string;
   companyId: string;
   retentionDate?: (Date | string) | null;
-  CompanyChoiceState?: CompanyChoiceState;
+  UserChoiceState?: ProjectChoiceState;
 }
 
 export interface Review {

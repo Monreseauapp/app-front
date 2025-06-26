@@ -9,6 +9,8 @@ export type AppContextType = {
   API_URL?: string;
   userId?: string;
   setUserId?: (userId: string) => void;
+  companyId?: string;
+  setCompanyId?: (companyId: string) => void;
 };
 
 const AppContext = createContext<AppContextType>({
@@ -19,6 +21,8 @@ const AppContext = createContext<AppContextType>({
   API_URL: process.env.EXPO_PUBLIC_API_URL,
   userId: "user1",
   setUserId: () => {},
+  companyId: undefined,
+  setCompanyId: () => {},
 });
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
@@ -29,6 +33,7 @@ function Context({ children }: { children: React.ReactNode }) {
     null
   );
   const [userId, setUserId] = useState<string | undefined>("user1");
+  const [companyId, setCompanyId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     axios
@@ -37,6 +42,7 @@ function Context({ children }: { children: React.ReactNode }) {
         const user = response.data;
         if (user.companyId) {
           setAccountType("company");
+          setCompanyId(user.companyId);
         } else {
           setAccountType("guest");
         }
@@ -57,6 +63,8 @@ function Context({ children }: { children: React.ReactNode }) {
         API_URL,
         userId,
         setUserId,
+        companyId,
+        setCompanyId,
       }}
     >
       {children}

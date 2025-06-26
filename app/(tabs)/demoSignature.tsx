@@ -1,3 +1,4 @@
+import DocumentInput from "@/components/form/DocumentInput";
 import React, { useRef, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import SignatureCanvas from "react-native-signature-canvas";
@@ -46,6 +47,10 @@ const SignatureScreen = () => {
           />
         )}
       </View>
+      <DocumentInput
+        title={"Document"}
+        type={["image/jpeg", "image/png", "image/webp", "application/pdf"]}
+      />
     </View>
   );
 };
