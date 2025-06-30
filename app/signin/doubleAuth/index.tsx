@@ -1,0 +1,86 @@
+import Input from "@/components/form/Input";
+import { Colors } from "@/constants/Colors";
+import { Link } from "expo-router";
+import React, { useRef, useState } from "react";
+import {
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import styles from "./doubleAuth.styles";
+
+export default function DoubleAuth() {
+  const [code, setCode] = useState("");
+  const inputRef = useRef<TextInput>(null);
+  const CODE_LENGTH = 4;
+
+  return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={0}
+    >
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "flex-end",
+            backgroundColor: Colors.background,
+          }}
+        >
+          <Image
+            source={require("@/assets/images/white-logo.png")}
+            style={styles.logo}
+          />
+          <View style={styles.container}>
+            <Text style={styles.title}>Vérification de votre compte</Text>
+            <Text style={styles.subtitle}>
+              Merci de bien vouloir rentrer le code à 4 chiffres.
+            </Text>
+            <Pressable onPress={() => inputRef.current?.focus()}>
+              <View style={{ flexDirection: "row", gap: 16, marginTop: 24 }}>
+                {Array.from({ length: CODE_LENGTH }).map((_, i) => (
+                  <View key={i} style={styles.numberSquare}>
+                    <Text style={{ fontSize: 24, fontWeight: "bold" }}>
+                      {code[i] || ""}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </Pressable>
+            <Input
+              name=""
+              type="one-time-code"
+              placeholder=""
+              inputStyle={{
+                position: "absolute",
+                opacity: 0,
+                width: 1,
+                height: 1,
+              }}
+              autoFocus={true}
+              inputRef={inputRef}
+              value={code}
+              onChangeText={(text) =>
+                setCode(text.replace(/[^0-9]/g, "").slice(0, CODE_LENGTH))
+              }
+            />
+            <Pressable>
+              <Text style={styles.resend}>Renvoyer le code</Text>
+            </Pressable>
+            <Link href="/home" style={styles.validationButton} dismissTo>
+              <Text style={styles.buttonText}>Valider</Text>
+            </Link>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+  );
+}
