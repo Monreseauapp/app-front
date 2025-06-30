@@ -193,7 +193,9 @@ export default function FormSignUp() {
       keyboardVerticalOffset={0}
     >
       <StatusBar barStyle="dark-content" />
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback
+        onPress={() => Platform.OS !== "web" && Keyboard.dismiss()}
+      >
         <View style={styles.container}>
           <Image
             source={require("@/assets/images/white-logo.png")}

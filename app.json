@@ -7,6 +7,9 @@
     "icon": "./assets/images/icon.png",
     "scheme": "appfront",
     "userInterfaceStyle": "automatic",
+    "router": {
+      "origin": "expo-router"
+    },
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,

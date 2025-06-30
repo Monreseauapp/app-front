@@ -1,10 +1,8 @@
 import Input from "@/components/form/Input";
-import { Colors } from "@/constants/Colors";
 import { Link } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
   Image,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -13,7 +11,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import styles from "./doubleAuth.styles";
+import { styles, webStyles } from "./doubleAuth.styles";
 
 export default function DoubleAuth() {
   const [code, setCode] = useState("");
@@ -26,22 +24,42 @@ export default function DoubleAuth() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={0}
     >
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <TouchableWithoutFeedback
+      // onPress={() => Platform.OS !== "web" && Keyboard.dismiss()}
+      >
         <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "flex-end",
-            backgroundColor: Colors.background,
-          }}
+          style={
+            Platform.OS === "web"
+              ? webStyles.pageContainer
+              : styles.pageContainer
+          }
         >
           <Image
             source={require("@/assets/images/white-logo.png")}
-            style={styles.logo}
+            style={Platform.select({
+              web: webStyles.logo,
+              default: styles.logo,
+            })}
           />
-          <View style={styles.container}>
-            <Text style={styles.title}>Vérification de votre compte</Text>
-            <Text style={styles.subtitle}>
+          <View
+            style={
+              Platform.OS === "web" ? webStyles.container : styles.container
+            }
+          >
+            <Text
+              style={Platform.select({
+                web: webStyles.title,
+                default: styles.title,
+              })}
+            >
+              Vérification de votre compte
+            </Text>
+            <Text
+              style={Platform.select({
+                web: webStyles.subtitle,
+                default: styles.subtitle,
+              })}
+            >
               Merci de bien vouloir rentrer le code à 4 chiffres.
             </Text>
             <Pressable onPress={() => inputRef.current?.focus()}>

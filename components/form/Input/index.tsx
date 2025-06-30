@@ -1,5 +1,6 @@
 import { Colors } from "@/constants/Colors";
-import { Text, TextInput, View } from "react-native";
+import { Platform, Text, TextInput, View } from "react-native";
+import { styles, webStyles } from "./Input.styles";
 
 type InputProps = {
   name?: string;
@@ -56,7 +57,8 @@ export default function Input({
   value,
   onChangeText,
   valid = undefined,
-}: InputProps) {
+  ...rest
+}: InputProps & React.ComponentProps<typeof TextInput>) {
   let keyboardType: "default" | "email-address" | "numeric" | "phone-pad" =
     "default";
   if (type === "email") {
@@ -77,26 +79,18 @@ export default function Input({
   return (
     <View style={{ width: `${100 / sameLine}%`, marginBottom: 20 }}>
       <Text
-        style={{
-          width: "95%",
-          fontSize: 20,
-          fontWeight: "bold",
-          paddingBottom: 10,
-          paddingLeft: 16,
-          color: Colors.background,
-          ...titleStyle,
-        }}
+        style={[
+          Platform.OS === "web" ? webStyles.title : styles.title,
+          titleStyle,
+        ]}
       >
         {name}{" "}
         {valid === false && !value && (
           <Text
-            style={{
-              color: Colors.red,
-              paddingLeft: 16,
-              fontSize: 14,
-              fontWeight: "bold",
-              marginTop: -5,
-            }}
+            style={Platform.select({
+              web: webStyles.required,
+              default: styles.required,
+            })}
           >
             (ce champ est requis)
           </Text>
@@ -117,19 +111,18 @@ export default function Input({
         placeholder={placeholder}
         ref={inputRef}
         secureTextEntry={type.includes("password")}
-        style={{
-          width: sameLine > 1 ? "95%" : "100%",
-          height: multiline ? 100 : 50,
-          backgroundColor: Colors.background,
-          color: Colors.accent,
-          borderRadius: multiline ? 25 : 50,
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-          fontSize: 16,
-          fontWeight: "bold",
-          ...inputStyle,
-        }}
+        style={Platform.select({
+          web: { ...webStyles.input, ...inputStyle },
+          default: {
+            ...styles.input,
+            width: sameLine > 1 ? "95%" : "100%",
+            height: multiline ? 100 : 50,
+            borderRadius: multiline ? 25 : 50,
+            ...inputStyle,
+          },
+        })}
         value={value}
+        {...rest}
       />
     </View>
   );
