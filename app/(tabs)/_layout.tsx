@@ -5,6 +5,7 @@ import { BlurView } from "expo-blur";
 import { Tabs, usePathname } from "expo-router";
 import { useContext } from "react";
 import {
+  Dimensions,
   Image,
   Pressable,
   StyleSheet,
@@ -13,18 +14,20 @@ import {
   View,
 } from "react-native";
 
+const { width } = Dimensions.get("window");
+
 export default function TabLayout() {
   const { isMenuOpen, setIsMenuOpen } = useContext(AppContext);
   const route = usePathname();
 
   const isTabBarInvisible = [
-    // "/",
+    // "/index",
     "/recommendation",
     "/legal",
     "/profil/modify",
   ].some((path) => route === path || route.startsWith(path + "/"));
 
-  const isLogoInvisible = ["/", "/legal", "/profil/modify"].some(
+  const isLogoInvisible = ["/index", "/legal", "/profil/modify"].some(
     (path) => route === path || route.startsWith(path + "/")
   );
 
@@ -69,55 +72,55 @@ export default function TabLayout() {
         }}
       >
         <Tabs.Screen
-          name="index"
+          name="index/index"
           options={{
             title: "Index",
           }}
         />
         <Tabs.Screen
-          name="home"
+          name="home/index"
           options={{
             title: "Menu principal",
           }}
         />
         <Tabs.Screen
-          name="profil/index"
+          name="profil/index/index"
           options={{
             title: "Mon Profil",
           }}
         />
         <Tabs.Screen
-          name="my-recommendations/index"
+          name="my-recommendations/index/index"
           options={{
             title: "Mes Recommandations",
           }}
         />
         <Tabs.Screen
-          name="my-projects/index"
+          name="my-projects/index/index"
           options={{
             title: "Mes Projets",
           }}
         />
         <Tabs.Screen
-          name="recommendation/index"
+          name="recommendation/index/index"
           options={{
             title: "Recommandations",
           }}
         />
         <Tabs.Screen
-          name="legal/legalNotice"
+          name="legal/legalNotice/index"
           options={{
             title: "Mentions légales",
           }}
         />
         <Tabs.Screen
-          name="profil/modify"
+          name="profil/modify/index"
           options={{
             title: "Modifier mon profil",
           }}
         />
         <Tabs.Screen
-          name="notification"
+          name="notification/index"
           options={{
             title: "Mes notifications",
           }}
@@ -129,7 +132,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="recommendation/form"
+          name="recommendation/form/index"
           options={{
             title: "Faire une recommandation",
           }}
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
   menuButton: {
     position: "absolute",
     top: 70,
-    left: 310,
+    left: width - 110,
     paddingHorizontal: 20,
     paddingVertical: 10,
     fontSize: 20,
