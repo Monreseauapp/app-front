@@ -148,7 +148,9 @@ export default function MyRecommendations() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={0}
       >
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <TouchableWithoutFeedback
+          onPress={() => Platform.OS !== "web" && Keyboard.dismiss()}
+        >
           <ScrollView
             style={{
               flex: 1,

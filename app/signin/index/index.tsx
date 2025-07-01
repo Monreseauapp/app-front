@@ -10,7 +10,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import styles from "./index.styles";
+import { styles, webStyles } from "./index.styles";
 
 export default function SignIn() {
   const router = useRouter();
@@ -20,16 +20,38 @@ export default function SignIn() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={0}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
-          <Text style={styles.introText}>Connectez-vous pour continuer.</Text>
+      <TouchableWithoutFeedback
+        onPress={() => Platform.OS !== "web" && Keyboard.dismiss()}
+      >
+        <View
+          style={Platform.OS === "web" ? webStyles.container : styles.container}
+        >
+          {Platform.OS !== "web" && (
+            <Text style={styles.introText}>Connectez-vous pour continuer.</Text>
+          )}
           <Image
             source={require("@/assets/images/white-logo.png")}
-            style={styles.logo}
+            style={Platform.select({
+              web: webStyles.logo,
+              default: styles.logo,
+            })}
           />
-          <View style={styles.form}>
-            <View style={styles.formContainer}>
-              <Text style={styles.title}>Je me connecte.</Text>
+          <View style={Platform.OS === "web" ? webStyles.form : styles.form}>
+            <View
+              style={
+                Platform.OS === "web"
+                  ? webStyles.formContainer
+                  : styles.formContainer
+              }
+            >
+              <Text
+                style={Platform.select({
+                  web: webStyles.title,
+                  default: styles.title,
+                })}
+              >
+                Je me connecte.
+              </Text>
               <Input
                 name="Email"
                 placeholder="exemple@gmail.com"
@@ -54,15 +76,10 @@ export default function SignIn() {
                       "Mot de passe oublié ? Veuillez suivre les instructions pour réinitialiser votre mot de passe."
                     );
                   }}
-                  style={{
-                    color: Colors.background,
-                    fontSize: 15,
-                    fontWeight: "bold",
-                    marginTop: -10,
-                    marginBottom: 8,
-                    marginLeft: 16,
-                    textDecorationLine: "underline",
-                  }}
+                  style={Platform.select({
+                    web: webStyles.passwordText,
+                    default: styles.passwordText,
+                  })}
                 >
                   Mot de passe oublié ????
                 </Text>
@@ -74,20 +91,13 @@ export default function SignIn() {
                   router.dismissAll();
                 }}
                 dismissTo
+                style={styles.connectionButton}
               >
                 <Text
-                  style={{
-                    color: Colors.background,
-                    fontSize: 18,
-                    fontWeight: "bold",
-                    marginTop: 20,
-                    marginBottom: 8,
-                    paddingVertical: 12,
-                    paddingHorizontal: 24,
-                    borderColor: Colors.background,
-                    borderWidth: 5,
-                    borderRadius: 30,
-                  }}
+                  style={Platform.select({
+                    web: webStyles.connectionText,
+                    default: styles.connectionText,
+                  })}
                 >
                   Se connecter
                 </Text>

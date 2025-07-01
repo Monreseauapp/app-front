@@ -119,7 +119,9 @@ export default function ModifyProfile() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={0}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback
+        onPress={() => Platform.OS !== "web" && Keyboard.dismiss()}
+      >
         <View
           style={{
             flex: 1,

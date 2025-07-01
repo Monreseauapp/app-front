@@ -1,5 +1,7 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -46,6 +48,29 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 32,
   },
+  passwordText: {
+    color: Colors.background,
+    fontSize: 15,
+    fontWeight: "bold",
+    marginTop: -10,
+    marginBottom: 8,
+    marginLeft: 16,
+    textDecorationLine: "underline",
+  },
+  connectionButton: {
+    marginTop: 20,
+    marginBottom: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderColor: Colors.background,
+    borderWidth: 5,
+    borderRadius: 30,
+  },
+  connectionText: {
+    color: Colors.background,
+    fontSize: 18,
+    fontWeight: "bold",
+  },
   googleContainer: {
     width: "100%",
     flexDirection: "row",
@@ -58,4 +83,51 @@ const styles = StyleSheet.create({
   },
 });
 
+const webStyles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.background,
+    height: "100%",
+  },
+  logo: {
+    width: width >= 1024 ? 480 : 320,
+    height: width >= 1024 ? 150 : 100,
+  },
+  form: {
+    width: width >= 600 ? "50%" : "90%",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  formContainer: {
+    width: "100%",
+    paddingHorizontal: width >= 1024 ? 32 : 16,
+    paddingVertical: width >= 1024 ? 48 : 24,
+    backgroundColor: Colors.accent,
+    borderRadius: 30,
+    alignItems: "center",
+  },
+  title: {
+    color: Colors.background,
+    fontSize: width >= 1024 ? 38 : 30,
+    fontWeight: "bold",
+    marginBottom: width >= 1024 ? 32 : 16,
+  },
+  passwordText: {
+    color: Colors.background,
+    fontSize: width >= 1024 ? 17 : 15,
+    fontWeight: "bold",
+    marginTop: 0,
+    marginBottom: 8,
+    marginLeft: 16,
+    textDecorationLine: "underline",
+  },
+  connectionText: {
+    color: Colors.background,
+    fontSize: width >= 768 ? 20 : 18,
+    fontWeight: "bold",
+  },
+});
+
+export { styles, webStyles };
 export default styles;
