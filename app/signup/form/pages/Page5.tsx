@@ -1,8 +1,8 @@
 import CheckBoxList from "@/components/form/CheckboxList";
 import Select from "@/components/form/Select";
 import { SubscriptionType } from "@/types";
-import { Text, View } from "react-native";
-import styles from "./pages.styles";
+import { Platform, Text, View } from "react-native";
+import styles, { webStyles } from "./pages.styles";
 
 interface Page5Props {
   subscriptionType: SubscriptionType | undefined;
@@ -18,7 +18,12 @@ export default function Page5({
   isDataValid = undefined,
 }: Page5Props) {
   return (
-    <View style={styles.formPage}>
+    <View
+      style={Platform.select({
+        web: webStyles.formPage,
+        default: styles.formPage,
+      })}
+    >
       <Select
         title="Vous êtes..."
         choices={Object.keys(subscriptionTypesTranslation)}
@@ -35,16 +40,36 @@ export default function Page5({
       <CheckBoxList
         title="La raison de votre inscription (choix multiple)"
         choices={[
-          <Text style={styles.checkboxText}>
+          <Text
+            style={Platform.select({
+              web: webStyles.checkboxText,
+              default: styles.checkboxText,
+            })}
+          >
             Pour obtenir des <Text style={styles.span}>prospects</Text>
           </Text>,
-          <Text style={styles.checkboxText}>
+          <Text
+            style={Platform.select({
+              web: webStyles.checkboxText,
+              default: styles.checkboxText,
+            })}
+          >
             Pour gagner en <Text style={styles.span}>visibilité</Text>
           </Text>,
-          <Text style={styles.checkboxText}>
+          <Text
+            style={Platform.select({
+              web: webStyles.checkboxText,
+              default: styles.checkboxText,
+            })}
+          >
             Recevoir des <Text style={styles.span}>recommandations</Text>
           </Text>,
-          <Text style={styles.checkboxText}>
+          <Text
+            style={Platform.select({
+              web: webStyles.checkboxText,
+              default: styles.checkboxText,
+            })}
+          >
             Développer votre <Text style={styles.span}>réseau</Text>
           </Text>,
         ]}

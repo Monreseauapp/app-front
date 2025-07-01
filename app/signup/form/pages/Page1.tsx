@@ -3,7 +3,7 @@ import { Colors } from "@/constants/Colors";
 import { User } from "@/types";
 import { Link } from "expo-router";
 import { Platform, Pressable, Text, View } from "react-native";
-import styles from "./pages.styles";
+import { styles, webStyles } from "./pages.styles";
 
 interface Page1Props {
   user: User;
@@ -22,12 +22,21 @@ export default function Page1({
   isDataValid = undefined,
 }: Page1Props) {
   return (
-    <View style={styles.formPage}>
+    <View
+      style={Platform.select({
+        web: webStyles.formPage,
+        default: styles.formPage,
+      })}
+    >
       <View style={{ flexDirection: "row" }}>
-        <Text style={{ ...styles.title, width: "50%" }}>
+        <Text
+          style={Platform.select({
+            web: webStyles.title,
+            default: styles.title,
+          })}
+        >
           Créez votre compte.
         </Text>
-        <Text style={{ ...styles.title, width: "50%" }}>HIBOUUUUUU</Text>
       </View>
       <View
         style={{
@@ -50,6 +59,7 @@ export default function Page1({
           placeholder="Doe"
           type={Platform.OS === "android" ? "name-given" : "given-name"}
           sameLine={2}
+          titleStyle={{ alignSelf: "flex-end" }}
           inputStyle={{ alignSelf: "flex-end" }}
           value={user.lastName}
           onChangeText={(text) => handleChangeUser("lastName", text)}
@@ -75,7 +85,7 @@ export default function Page1({
       <Pressable onPress={() => scrollToPage(1)}>
         <Text style={styles.button}>Suivant</Text>
       </Pressable>
-      <Link href="/signin">
+      <Link href={{ pathname: "/signin" }} asChild>
         <Text
           style={{
             color: Colors.background,

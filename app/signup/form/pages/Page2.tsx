@@ -1,8 +1,8 @@
 import Input from "@/components/form/Input";
 import Select from "@/components/form/Select";
 import { Company, User } from "@/types";
-import { View } from "react-native";
-import styles from "./pages.styles";
+import { Platform, View } from "react-native";
+import styles, { webStyles } from "./pages.styles";
 
 interface Page2Props {
   type: "company" | "guest";
@@ -28,7 +28,12 @@ export default function Page2({
   isDataValid = undefined,
 }: Page2Props) {
   return (
-    <View style={styles.formPage}>
+    <View
+      style={Platform.select({
+        web: webStyles.formPage,
+        default: styles.formPage,
+      })}
+    >
       <Select
         title="Domaine d'activité"
         choices={[

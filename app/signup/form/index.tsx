@@ -19,7 +19,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import styles from "./form.styles";
+import styles, { webStyles } from "./form.styles";
 import Page1 from "./pages/Page1";
 import Page2 from "./pages/Page2";
 import Page3 from "./pages/Page3";
@@ -84,7 +84,10 @@ export default function FormSignUp() {
 
   const scrollToPage = (index: number) => {
     if (flatListRef.current) {
-      flatListRef.current.scrollToIndex({ index, animated: true });
+      flatListRef.current.scrollToIndex({
+        index,
+        animated: true,
+      });
       setCurrentPage(index);
     }
   };
@@ -196,13 +199,23 @@ export default function FormSignUp() {
       <TouchableWithoutFeedback
         onPress={() => Platform.OS !== "web" && Keyboard.dismiss()}
       >
-        <View style={styles.container}>
+        <View
+          style={Platform.OS === "web" ? webStyles.container : styles.container}
+        >
           <Image
             source={require("@/assets/images/white-logo.png")}
-            style={styles.logo}
+            style={Platform.select({
+              web: webStyles.logo,
+              default: styles.logo,
+            })}
           />
           {type === "company" ? (
-            <Text style={styles.introText}>
+            <Text
+              style={Platform.select({
+                web: webStyles.introText,
+                default: styles.introText,
+              })}
+            >
               Inscrivez vous dès maintenant pour accéder au{" "}
               <Text style={styles.span}>questionnaire</Text> et valider la{" "}
               <Text style={styles.span}>première étape</Text> de votre
@@ -217,7 +230,13 @@ export default function FormSignUp() {
               dès maintenant.
             </Text>
           )}
-          <View style={styles.formContainer}>
+          <View
+            style={
+              Platform.OS === "web"
+                ? webStyles.formContainer
+                : styles.formContainer
+            }
+          >
             <FlatList
               ref={flatListRef}
               horizontal
@@ -227,10 +246,25 @@ export default function FormSignUp() {
               data={pages}
               keyExtractor={(item) => item.key}
               renderItem={({ item, index }) => (
-                <View style={{ width }}>{item.content(index)}</View>
+                <View
+                  style={{
+                    flex: Platform.OS === "web" ? 1 : undefined,
+                    width: width * (width >= 600 ? 0.55 : 0.9),
+                  }}
+                >
+                  {item.content(index)}
+                </View>
               )}
-              contentContainerStyle={{ alignItems: "center" }}
+              contentContainerStyle={{
+                alignItems: "center",
+                width:
+                  Platform.OS === "web"
+                    ? width * (width >= 600 ? 0.55 : 0.9)
+                    : undefined,
+              }}
               scrollEnabled={false}
+              initialScrollIndex={0}
+              extraData={currentPage}
             />
 
             <Navigation

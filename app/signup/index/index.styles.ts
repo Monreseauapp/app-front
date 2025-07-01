@@ -1,0 +1,74 @@
+import { Colors } from "@/constants/Colors";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 24,
+    backgroundColor: Colors.accent,
+  },
+  logo: {
+    width: 320,
+    height: 100,
+    position: "absolute",
+    top: 70,
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    backgroundColor: Colors.background,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    color: Colors.accent,
+  },
+  subtitle: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: Colors.background,
+    textAlign: "center",
+    marginVertical: 30,
+  },
+  span: {
+    fontWeight: "bold",
+  },
+  text: {
+    fontSize: 18,
+    color: Colors.background,
+  },
+  listElem: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginTop: 8,
+    maxWidth: "95%",
+  },
+  bullet: {
+    fontSize: 24,
+    marginRight: 8,
+    color: Colors.background,
+  },
+});
+
+const webStyles = StyleSheet.create({
+  logo: {
+    width: width >= 1024 ? 480 : width >= 600 ? 320 : 240,
+    height: width >= 1024 ? 150 : width >= 600 ? 100 : 75,
+    position: width >= 600 ? "absolute" : "relative",
+    top: width >= 600 ? 70 : 25,
+    marginBottom: width >= 600 ? 60 : 0,
+  },
+  subtitle: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: Colors.background,
+    marginVertical: width >= 600 ? 30 : 15,
+    textAlign: "center",
+  },
+});
+
+export { styles, webStyles };
+export default styles;

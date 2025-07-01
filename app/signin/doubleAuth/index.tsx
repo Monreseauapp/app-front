@@ -3,6 +3,7 @@ import { Link } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
   Image,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -25,7 +26,7 @@ export default function DoubleAuth() {
       keyboardVerticalOffset={0}
     >
       <TouchableWithoutFeedback
-      // onPress={() => Platform.OS !== "web" && Keyboard.dismiss()}
+        onPress={() => Platform.OS !== "web" && Keyboard.dismiss()}
       >
         <View
           style={

@@ -1,5 +1,5 @@
 import { Colors } from "@/constants/Colors";
-import { Platform, Text, TextInput, View } from "react-native";
+import { Dimensions, Platform, Text, TextInput, View } from "react-native";
 import { styles, webStyles } from "./Input.styles";
 
 type InputProps = {
@@ -59,6 +59,7 @@ export default function Input({
   valid = undefined,
   ...rest
 }: InputProps & React.ComponentProps<typeof TextInput>) {
+  const { width } = Dimensions.get("window");
   let keyboardType: "default" | "email-address" | "numeric" | "phone-pad" =
     "default";
   if (type === "email") {
@@ -112,7 +113,13 @@ export default function Input({
         ref={inputRef}
         secureTextEntry={type.includes("password")}
         style={Platform.select({
-          web: { ...webStyles.input, ...inputStyle },
+          web: {
+            ...webStyles.input,
+            width: sameLine > 1 ? "95%" : "100%",
+            height: multiline ? 100 : width >= 600 ? 50 : 40,
+            borderRadius: multiline ? 25 : 50,
+            ...inputStyle,
+          },
           default: {
             ...styles.input,
             width: sameLine > 1 ? "95%" : "100%",

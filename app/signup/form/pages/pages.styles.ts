@@ -1,5 +1,7 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   formPage: {
@@ -49,4 +51,25 @@ const styles = StyleSheet.create({
   },
 });
 
+const webStyles = StyleSheet.create({
+  formPage: {
+    width: "100%",
+    paddingHorizontal: width >= 768 ? 32 : 16,
+    paddingVertical: width >= 768 ? 48 : 24,
+    alignItems: "center",
+  },
+  title: {
+    color: Colors.background,
+    fontSize: width >= 600 ? 25 : 20,
+    fontWeight: "bold",
+    marginBottom: 16,
+  },
+  checkboxText: {
+    color: Colors.background,
+    fontSize: width >= 600 ? 18 : 16,
+    marginLeft: 8,
+  },
+});
+
+export { styles, webStyles };
 export default styles;

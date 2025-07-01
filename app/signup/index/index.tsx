@@ -4,12 +4,13 @@ import { useLocalSearchParams } from "expo-router/build/hooks";
 import React from "react";
 import {
   Image,
+  Platform,
   Pressable,
   StatusBar,
-  StyleSheet,
   Text,
   View,
 } from "react-native";
+import { styles, webStyles } from "./index.styles";
 
 type paramsType = {
   type: "company" | "guest";
@@ -23,11 +24,11 @@ export default function ConditionScreen() {
       <StatusBar barStyle="light-content" />
       <Image
         source={require("@/assets/images/blue-logo.png")}
-        style={styles.logo}
+        style={Platform.OS === "web" ? webStyles.logo : styles.logo}
       />
       <View
         style={{
-          marginTop: 50,
+          marginTop: Platform.OS === "web" ? 25 : 50,
           width: "100%",
           alignItems: "center",
           justifyContent: "center",
@@ -36,7 +37,12 @@ export default function ConditionScreen() {
         <Text style={styles.title}>
           PORTAIL {params.type === "company" ? "ENTREPRISES" : "VISITEURS"}
         </Text>
-        <Text style={[styles.subtitle, { marginVertical: 30 }]}>
+        <Text
+          style={Platform.select({
+            web: webStyles.subtitle,
+            default: styles.subtitle,
+          })}
+        >
           Avant de continuer,
         </Text>
         {params.type === "company" && (
@@ -85,12 +91,13 @@ export default function ConditionScreen() {
           </>
         )}
         <Text
-          style={{
-            ...styles.subtitle,
-            fontSize: 22,
-            marginVertical: 30,
-            textAlign: "center",
-          }}
+          style={Platform.select({
+            web: webStyles.subtitle,
+            default: {
+              ...styles.subtitle,
+              fontSize: 22,
+            },
+          })}
         >
           Et accédez à l'application pour exploiter tout son potentiel.
         </Text>
@@ -123,53 +130,3 @@ export default function ConditionScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 24,
-    backgroundColor: Colors.accent,
-  },
-  logo: {
-    width: 320,
-    height: 100,
-    marginBottom: 20,
-    position: "absolute",
-    top: 70,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    backgroundColor: Colors.background,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    color: Colors.accent,
-  },
-  subtitle: {
-    fontSize: 25,
-    fontWeight: "bold",
-    color: Colors.background,
-    marginBottom: 16,
-  },
-  span: {
-    fontWeight: "bold",
-  },
-  text: {
-    fontSize: 18,
-    color: Colors.background,
-  },
-  listElem: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    marginTop: 8,
-    maxWidth: "95%",
-  },
-  bullet: {
-    fontSize: 24,
-    marginRight: 8,
-    color: Colors.background,
-  },
-});
