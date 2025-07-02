@@ -16,6 +16,7 @@ import axios from "axios";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import {
+  Dimensions,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -38,6 +39,7 @@ type RecommendationFormTitles = {
 };
 
 export default function RecommendationForm() {
+  const { width } = Dimensions.get("window");
   const { API_URL, userId } = useContext(AppContext);
   const router = useRouter();
   const { type } = useLocalSearchParams<RecommendationFormParams>();
@@ -190,7 +192,7 @@ export default function RecommendationForm() {
             </Text>
             <View
               style={{
-                width: "90%",
+                width: width > 768 ? "50%" : "90%",
                 alignSelf: "center",
               }}
             >

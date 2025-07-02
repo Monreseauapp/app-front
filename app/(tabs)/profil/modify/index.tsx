@@ -202,7 +202,7 @@ export default function ModifyProfile() {
                   inputStyle={{
                     ...styles.input,
                     placeholderTextColor: Colors.grey,
-                    // height: 100,
+                    height: 100,
                   }}
                   titleStyle={styles.inputTitle}
                 />

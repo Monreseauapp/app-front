@@ -1,7 +1,13 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    alignItems: "center",
+  },
   profilePicture: {
     width: 200,
     height: 200,
@@ -106,4 +112,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+const webStyles = StyleSheet.create({
+  container: {
+    width: "100%",
+    alignItems: "center",
+    flexDirection: width >= 768 ? "row" : "column",
+  },
+});
+
+export { styles, webStyles };
 export default styles;

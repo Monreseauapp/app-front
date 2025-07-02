@@ -17,11 +17,9 @@ const styles = StyleSheet.create({
     marginHorizontal: "auto",
   },
   backIcon: {
-    width: 50,
-    height: 50,
     position: "absolute",
     top: 55,
-    left: 20,
+    left: 30,
     zIndex: 10,
     padding: 20,
   },

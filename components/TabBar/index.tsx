@@ -2,8 +2,8 @@ import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { Text } from "@react-navigation/elements";
 import { useContext } from "react";
-import { TouchableOpacity, View } from "react-native";
-import styles from "./TabBar.styles";
+import { Platform, TouchableOpacity, View } from "react-native";
+import { styles, webStyles } from "./TabBar.styles";
 
 export default function TabBar({ state, descriptors, navigation }: any) {
   const { setIsMenuOpen, accountType } = useContext(AppContext);
@@ -34,7 +34,12 @@ export default function TabBar({ state, descriptors, navigation }: any) {
   };
 
   return (
-    <View style={styles.tabBar}>
+    <View
+      style={Platform.select({
+        web: webStyles.tabBar,
+        default: styles.tabBar,
+      })}
+    >
       {state.routes.map((route: any, index: any) => {
         if (
           isRouteVisible(route.name) ||
@@ -74,7 +79,10 @@ export default function TabBar({ state, descriptors, navigation }: any) {
         return (
           <TouchableOpacity
             key={route.key}
-            style={styles.tabBarItem}
+            style={Platform.select({
+              web: webStyles.tabBarItem,
+              default: styles.tabBarItem,
+            })}
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}

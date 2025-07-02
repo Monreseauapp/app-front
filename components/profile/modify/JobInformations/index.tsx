@@ -48,10 +48,7 @@ export default function JobInformations({
           }
         }}
         titleStyle={styles.inputTitle}
-        selectStyle={{
-          backgroundColor: Colors.background,
-          pickerTextColor: Colors.text,
-        }}
+        selectStyle={{ ...styles.select, pickerTextColor: Colors.text }}
       />
     </>
   );

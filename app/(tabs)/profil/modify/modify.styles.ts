@@ -9,8 +9,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   backIcon: {
-    width: 50,
-    height: 50,
     position: "absolute",
     top: 55,
     left: 20,
@@ -28,12 +26,12 @@ const styles = StyleSheet.create({
     width: "90%",
     flexDirection: "column",
     alignSelf: "center",
-    // marginBottom: 70,
   },
   inputTitle: {
     color: Colors.text,
   },
   input: {
+    height: 50,
     borderColor: Colors.accent,
     color: Colors.text,
     borderWidth: 4,

@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: Colors.accent,
     top: 80,
-    zIndex: 1000,
+    zIndex: 100,
   },
 });
 

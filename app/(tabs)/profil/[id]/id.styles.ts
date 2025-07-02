@@ -1,10 +1,14 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    alignItems: "center",
+  },
   backIcon: {
-    width: 50,
-    height: 50,
     position: "absolute",
     top: 55,
     left: 30,
@@ -115,4 +119,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+const webStyles = StyleSheet.create({
+  container: {
+    width: "100%",
+    alignItems: "center",
+    flexDirection: width >= 768 ? "row" : "column",
+  },
+  backIcon: {
+    position: "absolute",
+    top: 55,
+    left: 30,
+    zIndex: 10000,
+    padding: 20,
+  },
+});
+
+export { styles, webStyles };
 export default styles;

@@ -135,6 +135,7 @@ export default function MyRecommendations() {
         backgroundColor: Colors.background,
         justifyContent: "center",
         alignItems: "center",
+        marginTop: Platform.OS === "web" ? -30 : 0,
       }}
     >
       <Text style={styles.title}>Mes Recommandations</Text>
@@ -161,6 +162,8 @@ export default function MyRecommendations() {
             contentContainerStyle={{
               justifyContent: "center",
               alignItems: "center",
+              flexDirection: Platform.OS === "web" ? "row" : "column",
+              flexWrap: Platform.OS === "web" ? "wrap" : "nowrap",
               gap: 20,
             }}
           >

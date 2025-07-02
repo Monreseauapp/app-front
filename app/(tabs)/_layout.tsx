@@ -7,6 +7,7 @@ import { useContext } from "react";
 import {
   Dimensions,
   Image,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -36,7 +37,10 @@ export default function TabLayout() {
       {!isLogoInvisible && (
         <Image
           source={require("@/assets/images/white-logo.png")}
-          style={styles.logo}
+          style={Platform.select({
+            web: webStyles.logo,
+            default: styles.logo,
+          })}
         />
       )}
       <Tabs
@@ -59,7 +63,14 @@ export default function TabLayout() {
                   }}
                 >
                   <Pressable onPress={() => setIsMenuOpen(!isMenuOpen)}>
-                    <Text style={styles.menuButton}>Menu</Text>
+                    <Text
+                      style={Platform.select({
+                        web: webStyles.menuButton,
+                        default: styles.menuButton,
+                      })}
+                    >
+                      Menu
+                    </Text>
                   </Pressable>
                   {isMenuOpen && <TabBar {...props} />}
                 </BlurView>
@@ -174,6 +185,33 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     position: "absolute",
     top: 70,
+    left: "50%",
+    transform: [{ translateX: "-50%" }],
+    zIndex: 2,
+  },
+});
+
+const webStyles = StyleSheet.create({
+  menuButton: {
+    position: "absolute",
+    top: 30,
+    left: width >= 768 ? width - 100 - width / 16 : width - 110,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    fontSize: 20,
+    fontWeight: "bold",
+    backgroundColor: Colors.accent,
+    color: Colors.background,
+    borderRadius: 25,
+    alignItems: "center",
+    zIndex: 100,
+  },
+  logo: {
+    width: width >= 768 ? 320 : 160,
+    height: width >= 768 ? 100 : 50,
+    marginBottom: 20,
+    position: "absolute",
+    top: width >= 768 ? 15 : 30,
     left: "50%",
     transform: [{ translateX: "-50%" }],
     zIndex: 2,

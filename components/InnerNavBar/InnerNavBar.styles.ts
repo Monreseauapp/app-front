@@ -1,5 +1,7 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   navbar: {
@@ -35,4 +37,16 @@ const styles = StyleSheet.create({
   },
 });
 
+const webStyles = StyleSheet.create({
+  navbar: {
+    width: width >= 600 ? "40%" : "50%",
+    height: 50,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    zIndex: 10,
+  },
+});
+
+export { styles, webStyles };
 export default styles;

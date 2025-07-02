@@ -1,5 +1,5 @@
-import { Pressable, Text, View } from "react-native";
-import styles from "./InnerNavBar.styles";
+import { Platform, Pressable, Text, View } from "react-native";
+import { styles, webStyles } from "./InnerNavBar.styles";
 
 interface NavbarProps {
   tabs: string[];
@@ -15,7 +15,12 @@ export default function NavBar({
   style,
 }: NavbarProps) {
   return (
-    <View style={{ ...styles.navbar, ...style }}>
+    <View
+      style={{
+        ...Platform.select({ web: webStyles.navbar, default: styles.navbar }),
+        ...style,
+      }}
+    >
       {tabs.map((tab, idx) => (
         <Pressable
           key={tab}

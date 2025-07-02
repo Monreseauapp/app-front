@@ -58,6 +58,7 @@ export default function Search({
         marginBottom: 20,
         position: "relative",
         overflow: "visible",
+        zIndex: 10,
       }}
     >
       <Text
@@ -95,7 +96,7 @@ export default function Search({
           }
         }}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onBlur={() => setTimeout(() => setIsFocused(false), 75)}
         placeholderTextColor={placeholderTextColor || Colors.accent}
         placeholder={placeholder}
         ref={inputRef}
@@ -124,11 +125,7 @@ export default function Search({
           {filteredList.map((item, index) => (
             <Pressable
               key={index}
-              onPress={() => {
-                if (onChangeText) {
-                  onChangeText(item);
-                }
-              }}
+              onPress={() => onChangeText && onChangeText(item)}
             >
               <Text
                 style={{
