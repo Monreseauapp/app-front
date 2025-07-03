@@ -3,10 +3,10 @@ import { AppContext } from "@/context/context";
 import { RecoState } from "@/types";
 import axios from "axios";
 import { useContext, useState } from "react";
-import { Linking, Pressable, Text, View } from "react-native";
+import { Linking, Platform, Pressable, Text, View } from "react-native";
 import ValidationForm from "../../ValidationForm";
 import RelatedPeople from "../RelatedPeople";
-import styles from "./Recommendation.styles";
+import { styles, webStyles } from "./Recommendation.styles";
 
 interface RecommendationProps extends CompleteRecommendation {
   page: string;
@@ -58,7 +58,9 @@ export default function Recommendation({
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={Platform.OS === "web" ? webStyles.container : styles.container}
+    >
       <View style={{ alignItems: "center", width: "100%" }}>
         <RelatedPeople
           recommendation={recommandation}

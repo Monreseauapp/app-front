@@ -1,5 +1,7 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   title: {
@@ -7,6 +9,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: Colors.accent,
     marginTop: 50,
+  },
+  notification: {
+    position: "absolute",
+    top: 70,
+    left: 30,
   },
   image: {
     width: 125,
@@ -34,4 +41,27 @@ const styles = StyleSheet.create({
   },
 });
 
+const webStyles = StyleSheet.create({
+  title: {
+    fontSize: width >= 768 ? 32 : 26,
+    fontWeight: "bold",
+    color: Colors.accent,
+    marginTop: 20,
+  },
+  notification: {
+    position: "absolute",
+    top: 30,
+    left: width >= 768 ? 110 : 30,
+    zIndex: 10,
+  },
+  dashboardContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: width >= 1024 ? 40 : 0,
+  },
+});
+
+export { styles, webStyles };
 export default styles;

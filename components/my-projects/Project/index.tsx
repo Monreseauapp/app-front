@@ -4,11 +4,11 @@ import { AppContext } from "@/context/context";
 import { ProjectChoiceState, RecoState } from "@/types";
 import axios from "axios";
 import { useContext, useState } from "react";
-import { Linking, Pressable, Text, View } from "react-native";
+import { Linking, Platform, Pressable, Text, View } from "react-native";
 import PriorityStars from "../../PriorityStars";
 import ValidationForm from "../../ValidationForm";
 import RelatedPeople from "../RelatedPeople";
-import styles from "./project.styles";
+import { styles, webStyles } from "./project.styles";
 
 interface ProjectProps extends CompleteProject {
   page: string;
@@ -49,7 +49,9 @@ export default function Project({
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={Platform.OS === "web" ? webStyles.container : styles.container}
+    >
       <RelatedPeople
         initiator={initiator}
         company={company}

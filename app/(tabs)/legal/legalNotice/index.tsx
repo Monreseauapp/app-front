@@ -2,8 +2,8 @@ import CustomCheckbox from "@/components/form/CustomCheckbox";
 import { Colors } from "@/constants/Colors";
 import { Link } from "expo-router";
 import { useState } from "react";
-import { Image, ScrollView, Text, View } from "react-native";
-import styles from "./legalNotice.styles";
+import { Image, Platform, ScrollView, Text, View } from "react-native";
+import { styles, webStyles } from "./legalNotice.styles";
 
 export default function LegalNotice() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
@@ -12,15 +12,17 @@ export default function LegalNotice() {
       style={{
         flex: 1,
         alignItems: "center",
-        justifyContent: "flex-end",
+        justifyContent: Platform.OS === "web" ? "center" : "flex-end",
         backgroundColor: Colors.background,
       }}
     >
       <Image
         source={require("@/assets/images/white-logo.png")}
-        style={styles.logo}
+        style={Platform.select({ web: webStyles.logo, default: styles.logo })}
       />
-      <View style={styles.container}>
+      <View
+        style={Platform.OS === "web" ? webStyles.container : styles.container}
+      >
         <Text style={styles.title}>Validez les conditions d'accès.</Text>
         <Text style={styles.subtitle}>Les mentions légales</Text>
         <ScrollView style={styles.noticeContainer}>

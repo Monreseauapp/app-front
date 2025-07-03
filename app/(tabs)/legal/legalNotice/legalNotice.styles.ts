@@ -1,5 +1,7 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   logo: {
@@ -72,4 +74,22 @@ const styles = StyleSheet.create({
   },
 });
 
+const webStyles = StyleSheet.create({
+  container: {
+    width: width >= 600 ? "50%" : "90%",
+    height: width >= 600 ? "70%" : "80%",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    backgroundColor: Colors.accent,
+    borderRadius: 30,
+  },
+  logo: {
+    width: width >= 600 ? 320 : 240,
+    height: width >= 600 ? 100 : 75,
+    marginBottom: 20,
+  },
+});
+
+export { styles, webStyles };
 export default styles;

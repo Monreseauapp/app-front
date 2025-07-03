@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 const webStyles = StyleSheet.create({
   title: {
     width: "95%",
-    fontSize: width >= 768 ? 22 : 20,
+    fontSize: width >= 768 ? 22 : 18,
     fontWeight: "bold",
     paddingBottom: 10,
     paddingLeft: 16,
@@ -48,7 +48,6 @@ const webStyles = StyleSheet.create({
   input: {
     width: "100%",
     borderRadius: 25,
-    height: 50,
     paddingHorizontal: 20,
     paddingVertical: 10,
     fontSize: 16,

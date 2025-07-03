@@ -1,8 +1,9 @@
 import AddressInputs from "@/components/AddressInputs";
 import Input from "@/components/form/Input";
+import { Colors } from "@/constants/Colors";
 import { Company, User } from "@/types";
-import { Text, View } from "react-native";
-import styles from "./pages.styles";
+import { Platform, Text, View } from "react-native";
+import styles, { webStyles } from "./pages.styles";
 
 interface Page4Props {
   company: Company;
@@ -33,13 +34,22 @@ export default function Page4({
         alignSelf: "center",
       }}
     >
-      <Text style={{ ...styles.title, width: "100%", textAlign: "center" }}>
+      <Text
+        style={{
+          ...Platform.select({ web: webStyles.title, default: styles.title }),
+          width: "100%",
+          textAlign: "center",
+        }}
+      >
         Informations professionnelles (adresse de l'entreprise)
       </Text>
       <AddressInputs
         data={company}
         handleChange={handleChangeCompany}
         isDataValid={isDataValid}
+        inputColor={Colors.accent}
+        titleColor={Colors.background}
+        placeholderColor={Colors.accent}
       />
       <Input
         name="Téléphone professionnel"

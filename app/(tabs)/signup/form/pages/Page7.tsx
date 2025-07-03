@@ -6,8 +6,8 @@ import { Company, User } from "@/types";
 import axios from "axios";
 import { useRouter } from "expo-router";
 import { useContext } from "react";
-import { Pressable, Text, View } from "react-native";
-import styles from "./pages.styles";
+import { Platform, Pressable, Text, View } from "react-native";
+import styles, { webStyles } from "./pages.styles";
 
 interface Page7Props {
   user: User;
@@ -54,7 +54,12 @@ export default function Page7({
     });
   };
   return (
-    <View style={styles.formPage}>
+    <View
+      style={Platform.select({
+        web: webStyles.formPage,
+        default: styles.formPage,
+      })}
+    >
       <Input
         name="Décrivez votre activité en quelques mots."
         placeholder=""

@@ -7,11 +7,12 @@ import { Recommandation, User } from "@/types";
 import axios from "axios";
 import { Link } from "expo-router";
 import { useContext, useEffect, useState } from "react";
-import { Image, Text, View } from "react-native";
-import styles from "./home.styles";
+import { Dimensions, Image, Platform, Text, View } from "react-native";
+import styles, { webStyles } from "./home.styles";
 
-export default function Index() {
-  const { userId, accountType, companyId } = useContext(AppContext);
+export default function Home() {
+  const { width } = Dimensions.get("window");
+  const { userId, companyId } = useContext(AppContext);
   const [user, setUser] = useState<User | null>(null);
   const [recommandationsSent, setRecommandationsSent] = useState<
     Recommandation[]
@@ -103,22 +104,35 @@ export default function Index() {
         backgroundColor: Colors.background,
         justifyContent: "center",
         alignItems: "center",
+        flexDirection: width >= 600 ? "row" : "column",
         paddingVertical: 20,
+        gap: width >= 1024 ? 100 : 50,
       }}
     >
       <Link
         href="/notification"
-        style={{
-          position: "absolute",
-          top: 70,
-          left: 40,
-        }}
+        style={Platform.select({
+          web: webStyles.notification,
+          default: styles.notification,
+        })}
       >
         <NotificationIcon width={40} height={40} color={Colors.accent} />
       </Link>
-      {accountType === "guest" && (
-        <View style={{ alignItems: "center", width: "90%" }}>
-          <Text style={styles.title}>MON PROFIL</Text>
+      {!companyId && (
+        <View
+          style={{
+            alignItems: "center",
+            width: width >= 600 ? "30%" : "90%",
+          }}
+        >
+          <Text
+            style={Platform.select({
+              web: webStyles.title,
+              default: styles.title,
+            })}
+          >
+            MON PROFIL
+          </Text>
           <View
             style={{
               flexDirection: "row",
@@ -140,7 +154,7 @@ export default function Index() {
               style={{
                 width: "60%",
                 flexDirection: "column",
-                alignItems: "flex-start",
+                alignItems: "center",
                 justifyContent: "center",
                 marginTop: -20,
               }}
@@ -168,37 +182,50 @@ export default function Index() {
           </Link>
         </View>
       )}
-      <View style={{ alignItems: "center" }}>
-        <Text style={{ ...styles.title, marginBottom: 10 }}>
+      <View
+        style={{
+          alignItems: "center",
+          width: width >= 600 && !companyId ? "30%" : "90%",
+        }}
+      >
+        <Text
+          style={{
+            ...Platform.select({
+              web: webStyles.title,
+              default: styles.title,
+            }),
+            marginBottom: 10,
+          }}
+        >
           MON TABLEAU DE BORD
         </Text>
-        <DashboardStats
-          title="Mes recommandations"
-          stats={[
-            {
-              label: "En cours",
-              value: recommandationsSent
-                .filter(
-                  (r) =>
-                    r.RecoStateCompany === "PENDING" &&
-                    r.RecoStateInitiator === "PENDING"
-                )
-                .length.toString(),
-            },
-            {
-              label: "Terminées",
-              value: recommandationsSent
-                .filter(
-                  (r) =>
-                    r.RecoStateCompany !== "PENDING" &&
-                    r.RecoStateInitiator === "PENDING"
-                )
-                .length.toString(),
-            },
-          ]}
-        />
-        {accountType === "company" && (
-          <>
+        <View style={Platform.OS === "web" && webStyles.dashboardContainer}>
+          <DashboardStats
+            title="Mes recommandations"
+            stats={[
+              {
+                label: "En cours",
+                value: recommandationsSent
+                  .filter(
+                    (r) =>
+                      r.RecoStateCompany === "PENDING" &&
+                      r.RecoStateInitiator === "PENDING"
+                  )
+                  .length.toString(),
+              },
+              {
+                label: "Terminées",
+                value: recommandationsSent
+                  .filter(
+                    (r) =>
+                      r.RecoStateCompany !== "PENDING" &&
+                      r.RecoStateInitiator === "PENDING"
+                  )
+                  .length.toString(),
+              },
+            ]}
+          />
+          {companyId && (
             <DashboardStats
               title="Mes recommandations reçues"
               stats={[
@@ -224,6 +251,8 @@ export default function Index() {
                 },
               ]}
             />
+          )}
+          {companyId && (
             <DashboardStats
               title="Mes chiffres"
               stats={[
@@ -231,22 +260,22 @@ export default function Index() {
                 { label: "Données", value: "/" },
               ]}
             />
-          </>
+          )}
+        </View>
+        {!companyId && (
+          <Link
+            style={{
+              marginTop: width >= 600 ? 50 : 0,
+              backgroundColor: Colors.accent,
+              padding: 15,
+              borderRadius: 50,
+            }}
+            href="/recommendation/index"
+          >
+            <PlusIcon width={50} height={50} color={Colors.background} />
+          </Link>
         )}
       </View>
-      {accountType === "guest" && (
-        <Link
-          style={{
-            marginTop: 50,
-            backgroundColor: Colors.accent,
-            padding: 15,
-            borderRadius: 50,
-          }}
-          href="/recommendation/index"
-        >
-          <PlusIcon width={50} height={50} color={Colors.background} />
-        </Link>
-      )}
     </View>
   );
 }

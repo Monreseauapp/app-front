@@ -7,128 +7,72 @@ import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { Company, Review, User } from "@/types";
 import axios from "axios";
-import { Link, useFocusEffect } from "expo-router";
-import { useCallback, useContext, useState } from "react";
+import { Link } from "expo-router";
+import { useContext, useEffect, useState } from "react";
 import {
+  Dimensions,
   Image,
   Linking,
+  Platform,
   Pressable,
   ScrollView,
   Text,
   View,
 } from "react-native";
-import styles from "./index.styles";
+import { styles, webStyles } from "./index.styles";
 
 export default function Profil() {
+  const { width } = Dimensions.get("window");
   const { userId, companyId } = useContext(AppContext);
   const [user, setUser] = useState<(User & { company: Company }) | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewers, setReviewers] = useState<User[]>([]);
-  const [count, setCount] = useState(0);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const fetchProfileData = async (id: string) => {
-  //       const response = await axios
-  //         .get(`${process.env.EXPO_PUBLIC_API_URL}/users/${id}/company`)
-  //         .then((response) => {
-  //           const userData = response.data;
-  //           setUser(userData);
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error fetching user data:", error.request);
-  //         });
-  //       return response;
-  //     };
-  //     const fetchReviews = async () => {
-  //       const response = await axios
-  //         .get(
-  //           `${process.env.EXPO_PUBLIC_API_URL}/review/company/${
-  //             user?.companyId || companyId
-  //           }`
-  //         )
-  //         .then((response) => {
-  //           const reviewsData = response.data;
-  //           setReviews(reviewsData);
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error fetching reviews:", error.request);
-  //         });
-  //       return response;
-  //     };
-  //     const fetchReviewersData = async () => {
-  //       const userPromises = reviews.map((review) =>
-  //         axios.get<User>(
-  //           `${process.env.EXPO_PUBLIC_API_URL}/users/${review.userId}`
-  //         )
-  //       );
-  //       const responses = await Promise.all(userPromises);
-  //       setReviewers(responses.map((res) => res.data));
-  //     };
-  //     fetchProfileData((profilId as string) || (userId as string));
-  //     if (companyId) {
-  //       fetchReviews();
-  //       fetchReviewersData();
-  //     }
-  //   };
-  //   fetchData();
-  // }, [profilId, userId, companyId, count]);
-
-  // useFocusEffect(() => {
-  //   setCount((prev) => prev + 1);
-  // });
-
-  useFocusEffect(
-    useCallback(() => {
-      let isActive = true;
-
-      const fetchAll = async () => {
-        try {
-          // 1. Fetch user/company
-          const userRes = await axios.get(
-            `${process.env.EXPO_PUBLIC_API_URL}/users/${userId}/company`
-          );
-          if (!isActive) return;
-          setUser(userRes.data);
-
-          // 2. Fetch reviews using the companyId from the fetched user
-          const companyIdToUse = userRes.data.companyId;
-          if (!companyIdToUse) {
-            setReviews([]);
-            setReviewers([]);
-            return;
-          }
-          const reviewsRes = await axios.get(
-            `${process.env.EXPO_PUBLIC_API_URL}/review/company/${companyIdToUse}`
-          );
-          if (!isActive) return;
-          setReviews(reviewsRes.data);
-
-          // 3. Fetch reviewers using the reviews data
-          if (reviewsRes.data.length > 0) {
-            const userPromises = reviewsRes.data.map((review: Review) =>
-              axios.get<User>(
-                `${process.env.EXPO_PUBLIC_API_URL}/users/${review.userId}`
-              )
-            );
-            const responses = await Promise.all(userPromises);
-            if (!isActive) return;
-            setReviewers(responses.map((res) => res.data));
-          } else {
-            setReviewers([]);
-          }
-        } catch (error) {
-          console.error("Error fetching profile data:", error);
-        }
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchProfileData = async (id: string) => {
+        const response = await axios
+          .get(`${process.env.EXPO_PUBLIC_API_URL}/users/${id}/company`)
+          .then((response) => {
+            const userData = response.data;
+            setUser(userData);
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error.request);
+          });
+        return response;
       };
-
-      fetchAll();
-
-      return () => {
-        isActive = false;
+      const fetchReviews = async () => {
+        const response = await axios
+          .get(`${process.env.EXPO_PUBLIC_API_URL}/review/company/${companyId}`)
+          .then((response) => response.data)
+          .catch((error) => {
+            console.error("Error fetching reviews:", error.request);
+          });
+        setReviews(response);
       };
-    }, [userId])
-  );
+      fetchProfileData(userId as string);
+      if (companyId) {
+        fetchReviews();
+      }
+    };
+    fetchData();
+  }, [userId, companyId]);
+
+  useEffect(() => {
+    const fetchReviewers = async () => {
+      const userPromises = reviews.map((review) =>
+        axios.get<User>(
+          `${process.env.EXPO_PUBLIC_API_URL}/users/${review.userId}`
+        )
+      );
+      const responses = await Promise.all(userPromises);
+      setReviewers(responses.map((res) => res.data));
+    };
+    if (reviews.length > 0) {
+      fetchReviewers();
+    }
+  }, [reviews]);
 
   return (
     <ScrollView
@@ -139,76 +83,101 @@ export default function Profil() {
         marginTop: 180,
       }}
     >
-      <View style={{ width: "100%", alignItems: "center" }}>
-        <View style={{ alignItems: "center", marginBottom: 20 }}>
-          <Image
-            source={
-              user?.photoUrl
-                ? { uri: user.photoUrl }
-                : require("@/assets/images/profilepicture.jpg")
-            }
-            style={styles.profilePicture}
-          />
-          <Text style={styles.profileName}>
-            {user?.firstName || "Prénom"} {user?.lastName || "Nom"}
-          </Text>
-          <Text style={styles.profileCompany}>{user?.company?.name}</Text>
-        </View>
-        <View style={styles.iconContainer}>
-          {user?.company?.linkedin && (
-            <Pressable
-              style={styles.icon}
-              onPress={() => Linking.openURL(user?.company?.linkedin || "")}
-            >
-              <LinkedinIcon color={Colors.accent} width={40} height={40} />
-            </Pressable>
-          )}
-          {user?.company?.phone && (
-            <Pressable
-              style={styles.icon}
-              onPress={() => Linking.openURL(`tel:${user?.company?.phone}`)}
-            >
-              <PhoneIcon color={Colors.background} width={40} height={40} />
-            </Pressable>
-          )}
-          {user?.company?.email && (
-            <Pressable
-              style={styles.icon}
-              onPress={() => Linking.openURL(`mailto:${user?.company?.email}`)}
-            >
-              <MailIcon color={Colors.background} width={40} height={40} />
-            </Pressable>
-          )}
-          {user?.company?.website && (
-            <Pressable
-              style={styles.icon}
-              onPress={() => Linking.openURL(user?.company?.website || "")}
-            >
-              <WebsiteIcon color={Colors.background} width={38} height={38} />
-            </Pressable>
-          )}
-        </View>
-        <Link style={styles.button} href="/profil/modify?type=company">
-          <Text style={styles.buttonText}>Modifier mon profil</Text>
-        </Link>
+      <View
+        style={Platform.OS === "web" ? webStyles.container : styles.container}
+      >
         <View
-          style={{ alignItems: "flex-start", marginBottom: 20, width: "90%" }}
+          style={
+            Platform.OS === "web" && {
+              width: width >= 768 ? "30%" : "100%",
+              alignItems: "center",
+            }
+          }
         >
-          {user?.company?.description && (
-            <>
-              <Text style={styles.miniTitle}>Description</Text>
-              <Text style={styles.description}>{user.company.description}</Text>
-            </>
-          )}
-          {/* <Text style={styles.miniTitle}>Mes certifications</Text>
+          <View style={{ alignItems: "center", marginBottom: 20 }}>
+            <Image
+              source={
+                user?.photoUrl
+                  ? { uri: user.photoUrl }
+                  : require("@/assets/images/profilepicture.jpg")
+              }
+              style={styles.profilePicture}
+            />
+            <Text style={styles.profileName}>
+              {user?.firstName || "Prénom"} {user?.lastName || "Nom"}
+            </Text>
+            <Text style={styles.profileCompany}>{user?.company?.name}</Text>
+          </View>
+          <View style={styles.iconContainer}>
+            {user?.company?.linkedin && (
+              <Pressable
+                style={styles.icon}
+                onPress={() => Linking.openURL(user?.company?.linkedin || "")}
+              >
+                <LinkedinIcon color={Colors.accent} width={40} height={40} />
+              </Pressable>
+            )}
+            {user?.company?.phone && (
+              <Pressable
+                style={styles.icon}
+                onPress={() => Linking.openURL(`tel:${user?.company?.phone}`)}
+              >
+                <PhoneIcon color={Colors.background} width={40} height={40} />
+              </Pressable>
+            )}
+            {user?.company?.email && (
+              <Pressable
+                style={styles.icon}
+                onPress={() =>
+                  Linking.openURL(`mailto:${user?.company?.email}`)
+                }
+              >
+                <MailIcon color={Colors.background} width={40} height={40} />
+              </Pressable>
+            )}
+            {user?.company?.website && (
+              <Pressable
+                style={styles.icon}
+                onPress={() => Linking.openURL(user?.company?.website || "")}
+              >
+                <WebsiteIcon color={Colors.background} width={38} height={38} />
+              </Pressable>
+            )}
+          </View>
+          <Link style={styles.button} href="/profil/modify">
+            <Text style={styles.buttonText}>Modifier mon profil</Text>
+          </Link>
+        </View>
+        <View
+          style={
+            Platform.OS === "web"
+              ? {
+                  width: width >= 768 ? "70%" : "100%",
+                  alignItems: "center",
+                }
+              : { width: "100%", alignItems: "center" }
+          }
+        >
+          <View
+            style={{ alignItems: "flex-start", marginBottom: 20, width: "90%" }}
+          >
+            {user?.company?.description && (
+              <>
+                <Text style={styles.miniTitle}>Description</Text>
+                <Text style={styles.description}>
+                  {user.company.description}
+                </Text>
+              </>
+            )}
+            {/* <Text style={styles.miniTitle}>Mes certifications</Text>
           <Text style={styles.description}>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
             officia, vero blanditiis, eaque tempore perferendis eligendi placeat
             cupiditate commodi atque accusamus asperiores similique recusandae
             vel inventore pariatur neque vitae? Magni!
           </Text> */}
-        </View>
-        {/* <View style={styles.projectsContainer}>
+          </View>
+          {/* <View style={styles.projectsContainer}>
           <Text style={styles.miniTitle}>Supports et réalisations</Text>
           <View style={styles.projects}>
             <Image
@@ -221,90 +190,91 @@ export default function Profil() {
             />
           </View>
         </View> */}
-        {reviews.length > 0 && (
-          <View style={{ alignItems: "flex-start", width: "90%" }}>
-            <View style={{ width: "100%" }}>
-              <Text style={{ ...styles.miniTitle, marginBottom: 10 }}>
-                Mes avis ({reviews.length})
-              </Text>
+          {reviews.length > 0 && (
+            <View style={{ alignItems: "flex-start", width: "90%" }}>
               <View style={{ width: "100%" }}>
-                {reviews.map((review) => (
-                  <View key={review.id} style={styles.review}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "flex-start",
-                      }}
-                    >
-                      <Text style={styles.reviewer}>
-                        {(() => {
-                          const reviewer = reviewers.find(
-                            (user) => user.id === review.userId
-                          );
-                          return reviewer
-                            ? `${reviewer.firstName} ${reviewer.lastName}`
-                            : "Utilisateur inconnu";
-                        })()}
-                      </Text>
-                      {[...Array(5)].map((_, i) => (
-                        <StarIcon
-                          key={i}
-                          color={
-                            i < (review.rating || 0)
-                              ? Colors.background
-                              : Colors.text
-                          }
-                          width={20}
-                          height={20}
-                          style={{ marginRight: 2 }}
-                        />
-                      ))}
+                <Text style={{ ...styles.miniTitle, marginBottom: 10 }}>
+                  Mes avis ({reviews.length})
+                </Text>
+                <View style={{ width: "100%" }}>
+                  {reviews.map((review) => (
+                    <View key={review.id} style={styles.review}>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        <Text style={styles.reviewer}>
+                          {(() => {
+                            const reviewer = reviewers.find(
+                              (user) => user.id === review.userId
+                            );
+                            return reviewer
+                              ? `${reviewer.firstName} ${reviewer.lastName}`
+                              : "Utilisateur inconnu";
+                          })()}
+                        </Text>
+                        {[...Array(5)].map((_, i) => (
+                          <StarIcon
+                            key={i}
+                            color={
+                              i < (review.rating || 0)
+                                ? Colors.background
+                                : Colors.text
+                            }
+                            width={20}
+                            height={20}
+                            style={{ marginRight: 2 }}
+                          />
+                        ))}
+                      </View>
+                      <Text style={styles.reviewText}>{review.comment}</Text>
                     </View>
-                    <Text style={styles.reviewText}>{review.comment}</Text>
-                  </View>
-                ))}
+                  ))}
+                </View>
               </View>
-            </View>
-            <View
-              style={{
-                alignItems: "flex-start",
-                marginTop: 20,
-                width: "100%",
-                marginBottom: 80,
-              }}
-            >
-              <Text style={styles.miniTitle}>Ma note</Text>
               <View
                 style={{
+                  alignItems: "flex-start",
+                  marginTop: 20,
                   width: "100%",
-                  flexDirection: "row",
-                  marginTop: 15,
-                  alignItems: "center",
-                  justifyContent: "center",
+                  marginBottom: 80,
                 }}
               >
-                {[...Array(5)].map((_, i) => (
-                  <StarIcon
-                    key={i}
-                    color={
-                      i <
-                      reviews.reduce(
-                        (acc, review) => acc + (review.rating || 0),
-                        0
-                      ) /
-                        reviews.length
-                        ? Colors.accent
-                        : Colors.text
-                    }
-                    width={40}
-                    height={40}
-                    style={{ marginRight: 5 }}
-                  />
-                ))}
+                <Text style={styles.miniTitle}>Ma note</Text>
+                <View
+                  style={{
+                    width: "100%",
+                    flexDirection: "row",
+                    marginTop: 15,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {[...Array(5)].map((_, i) => (
+                    <StarIcon
+                      key={i}
+                      color={
+                        i <
+                        reviews.reduce(
+                          (acc, review) => acc + (review.rating || 0),
+                          0
+                        ) /
+                          reviews.length
+                          ? Colors.accent
+                          : Colors.text
+                      }
+                      width={40}
+                      height={40}
+                      style={{ marginRight: 5 }}
+                    />
+                  ))}
+                </View>
               </View>
             </View>
-          </View>
-        )}
+          )}
+        </View>
       </View>
     </ScrollView>
   );

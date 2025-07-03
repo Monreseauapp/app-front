@@ -4,8 +4,8 @@ import { Colors } from "@/constants/Colors";
 import useFormValidation from "@/hooks/useFormValidation";
 import { User } from "@/types";
 import { useRouter } from "expo-router";
-import { Pressable, Text, View } from "react-native";
-import styles from "./pages.styles";
+import { Platform, Pressable, Text, View } from "react-native";
+import styles, { webStyles } from "./pages.styles";
 
 interface Page3Props {
   type: "company" | "guest";
@@ -48,13 +48,22 @@ export default function Page3({
           valid={isDataValid}
         />
       )}
-      <Text style={{ ...styles.title, width: "100%", textAlign: "center" }}>
+      <Text
+        style={{
+          ...Platform.select({ web: webStyles.title, default: styles.title }),
+          width: "100%",
+          textAlign: "center",
+        }}
+      >
         Adresse personelle
       </Text>
       <AddressInputs
         data={user}
         handleChange={handleChangeUser}
         isDataValid={isDataValid}
+        inputColor={Colors.accent}
+        titleColor={Colors.background}
+        placeholderColor={Colors.accent}
       />
       {type === "guest" && (
         <View style={{ width: "100%", alignItems: "center" }}>

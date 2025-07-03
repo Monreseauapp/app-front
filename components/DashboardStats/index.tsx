@@ -1,5 +1,5 @@
 import { Colors } from "@/constants/Colors";
-import { Text, View } from "react-native";
+import { Dimensions, Text, View } from "react-native";
 import styles from "./DashboardStats.styles";
 
 interface Stat {
@@ -13,13 +13,14 @@ interface DashboardStatsProps {
 }
 
 export default function DashboardStats({ title, stats }: DashboardStatsProps) {
+  const { width } = Dimensions.get("window");
   return (
     <View
       style={{
         flexDirection: "column",
         alignItems: "center",
-        width: "90%",
-        marginVertical: 20,
+        width: "auto",
+        marginVertical: width >= 768 ? 20 : 10,
       }}
     >
       <View style={{ marginBottom: 10 }}>

@@ -2,11 +2,11 @@ import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { Text } from "@react-navigation/elements";
 import { useContext } from "react";
-import { TouchableOpacity, View } from "react-native";
-import styles from "./TabBar.styles";
+import { Platform, TouchableOpacity, View } from "react-native";
+import { styles, webStyles } from "./TabBar.styles";
 
 export default function TabBar({ state, descriptors, navigation }: any) {
-  const { setIsMenuOpen, accountType } = useContext(AppContext);
+  const { setIsMenuOpen, companyId } = useContext(AppContext);
   const invisibleRoutes: string[] = [
     // "index",
     // "recommendation/form",
@@ -14,8 +14,10 @@ export default function TabBar({ state, descriptors, navigation }: any) {
     // "legal",
     // "profil/modify",
     // "profil/[id]",
+    // "signin",
+    // "signup",
   ];
-  const invisibleRoutesGuest = ["profil"];
+  const invisibleRoutesGuest = ["profil", "signin", "signup"];
 
   const isRouteVisible = (route: string) => {
     return (
@@ -34,11 +36,16 @@ export default function TabBar({ state, descriptors, navigation }: any) {
   };
 
   return (
-    <View style={styles.tabBar}>
+    <View
+      style={Platform.select({
+        web: webStyles.tabBar,
+        default: styles.tabBar,
+      })}
+    >
       {state.routes.map((route: any, index: any) => {
         if (
           isRouteVisible(route.name) ||
-          (accountType === "guest" && isRouteVisibleGuest(route.name))
+          (!companyId && isRouteVisibleGuest(route.name))
         )
           return;
         const { options } = descriptors[route.key];
@@ -74,7 +81,10 @@ export default function TabBar({ state, descriptors, navigation }: any) {
         return (
           <TouchableOpacity
             key={route.key}
-            style={styles.tabBarItem}
+            style={Platform.select({
+              web: webStyles.tabBarItem,
+              default: styles.tabBarItem,
+            })}
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}

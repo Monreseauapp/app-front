@@ -1,7 +1,7 @@
 import CheckBoxList from "@/components/form/CheckboxList";
 import Input from "@/components/form/Input";
-import { Text, View } from "react-native";
-import styles from "./pages.styles";
+import { Platform, Text, View } from "react-native";
+import styles, { webStyles } from "./pages.styles";
 
 export default function Page6({
   isDataValid = undefined,
@@ -9,7 +9,12 @@ export default function Page6({
   isDataValid: boolean | undefined;
 }) {
   return (
-    <View style={styles.formPage}>
+    <View
+      style={Platform.select({
+        web: webStyles.formPage,
+        default: styles.formPage,
+      })}
+    >
       <View style={{ width: "100%", alignItems: "center" }}>
         <Input
           name="Avez vous déjà utilisé une application similaire ?"

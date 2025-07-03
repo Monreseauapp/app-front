@@ -1,10 +1,11 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "100%",
+    flex: 1,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -17,14 +18,15 @@ const styles = StyleSheet.create({
     color: Colors.text,
     marginVertical: 20,
     textAlign: "center",
+    alignSelf: "center",
   },
   button: {
-    width: "80%",
     backgroundColor: Colors.accent,
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 100,
     marginVertical: 5,
+    textAlign: "center",
   },
   buttonText: {
     fontSize: 18,
@@ -32,13 +34,33 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  backIcon: {
-    position: "absolute",
-    top: 55,
-    left: 20,
-    zIndex: 10,
-    padding: 20,
+});
+
+const webStyles = StyleSheet.create({
+  title: {
+    width: "90%",
+    fontSize: width >= 768 ? 26 : 22,
+    fontWeight: "bold",
+    color: Colors.text,
+    marginVertical: 20,
+    textAlign: "center",
+    alignSelf: "center",
+  },
+  button: {
+    backgroundColor: Colors.accent,
+    paddingVertical: width >= 768 ? 16 : 12,
+    paddingHorizontal: width >= 768 ? 32 : 24,
+    borderRadius: 100,
+    marginVertical: 5,
+    textAlign: "center",
+  },
+  buttonText: {
+    fontSize: width >= 768 ? 20 : 18,
+    color: Colors.background,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 
+export { styles, webStyles };
 export default styles;

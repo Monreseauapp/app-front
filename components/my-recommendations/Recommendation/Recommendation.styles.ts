@@ -1,5 +1,7 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -60,4 +62,15 @@ const styles = StyleSheet.create({
   },
 });
 
+const webStyles = StyleSheet.create({
+  container: {
+    width: width >= 1024 ? "30%" : width >= 600 ? "45%" : "90%",
+    padding: 16,
+    backgroundColor: Colors.accent,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+});
+
+export { styles, webStyles };
 export default styles;

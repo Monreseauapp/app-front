@@ -1,4 +1,3 @@
-import BackIcon from "@/assets/icons/back.svg";
 import DocumentInput from "@/components/form/DocumentInput";
 import Input from "@/components/form/Input";
 import InnerNavBar from "@/components/InnerNavBar";
@@ -11,7 +10,7 @@ import { initialUser } from "@/constants/initial-types-value/initialUser";
 import { AppContext } from "@/context/context";
 import { Company, User } from "@/types";
 import axios from "axios";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import React, { useContext, useEffect, useState } from "react";
 import {
   Keyboard,
@@ -23,11 +22,10 @@ import {
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import styles from "./modify.styles";
+import { styles, webStyles } from "./modify.styles";
 
 export default function ModifyProfile() {
-  const { API_URL, userId } = useContext(AppContext);
-  const { type } = useLocalSearchParams();
+  const { API_URL, userId, companyId } = useContext(AppContext);
   const router = useRouter();
   const [isCompanyPage, setIsCompanyPage] = useState(false);
   const [user, setUser] = useState<User>(initialUser);
@@ -58,7 +56,7 @@ export default function ModifyProfile() {
   };
 
   useEffect(() => {
-    if (type === "guest") {
+    if (!companyId) {
       const fetchUserData = async () => {
         axios
           .get(`${API_URL}/users/${userId}`)
@@ -104,7 +102,7 @@ export default function ModifyProfile() {
     axios.patch(`${API_URL}/users/${userId}`, { ...user }).catch((error) => {
       console.error("Error updating user:", error.request);
     });
-    if (type === "company") {
+    if (company) {
       axios
         .patch(`${API_URL}/company/${company.id}`, { ...company })
         .catch((error) => {
@@ -129,19 +127,17 @@ export default function ModifyProfile() {
             position: "relative",
           }}
         >
-          <Pressable
-            onPress={() => router.back()}
-            style={styles.backIcon}
-            hitSlop={20}
-          >
-            <BackIcon color={Colors.accent} width={30} height={30} />
-          </Pressable>
-          {type === "company" && (
+          {company && (
             <InnerNavBar
               tabs={["Personnel", "Entreprise"]}
               activeIndex={isCompanyPage ? 1 : 0}
               setActiveIndex={() => setIsCompanyPage(!isCompanyPage)}
-              style={{ position: "absolute", top: 70, right: 60 }}
+              style={{
+                position: "absolute",
+                top: Platform.OS === "web" ? 30 : 65,
+                left: "50%",
+                transform: [{ translateX: "-55%" }],
+              }}
             />
           )}
 
@@ -158,7 +154,13 @@ export default function ModifyProfile() {
             enableOnAndroid={true}
           >
             <Text style={styles.title}>Modifier mon profil</Text>
-            <View style={styles.inputsContainer}>
+            <View
+              style={
+                Platform.OS === "web"
+                  ? webStyles.inputsContainer
+                  : styles.inputsContainer
+              }
+            >
               <PersonalInformations
                 user={user}
                 company={company}
@@ -202,7 +204,7 @@ export default function ModifyProfile() {
                   inputStyle={{
                     ...styles.input,
                     placeholderTextColor: Colors.grey,
-                    // height: 100,
+                    height: 100,
                   }}
                   titleStyle={styles.inputTitle}
                 />
