@@ -1,8 +1,9 @@
+import BackIcon from "@/assets/icons/back.svg";
 import TabBar from "@/components/TabBar";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { BlurView } from "expo-blur";
-import { Tabs, usePathname } from "expo-router";
+import { router, Tabs, useNavigation, usePathname } from "expo-router";
 import { useContext } from "react";
 import {
   Dimensions,
@@ -20,20 +21,42 @@ const { width } = Dimensions.get("window");
 export default function TabLayout() {
   const { isMenuOpen, setIsMenuOpen } = useContext(AppContext);
   const route = usePathname();
+  const navigation = useNavigation();
+  const history = navigation.getState()?.routes[0].state?.history;
 
   const isTabBarInvisible = [
     // "/index",
     "/recommendation",
     "/legal",
     "/profil/modify",
+    "/signin",
+    "/signup",
   ].some((path) => route === path || route.startsWith(path + "/"));
 
-  const isLogoInvisible = ["/index", "/legal", "/profil/modify"].some(
-    (path) => route === path || route.startsWith(path + "/")
-  );
+  const isLogoInvisible = [
+    "/index",
+    "/legal",
+    "/profil/modify",
+    "/signin",
+    "/signup",
+  ].some((path) => route === path || route.startsWith(path + "/"));
+
+  const isBackButtonVisible = [
+    "/notification",
+    "/profil",
+    "/recommendation",
+  ].some((path) => route === path || route.startsWith(path + "/"));
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.background }}>
+      {isBackButtonVisible && (
+        <Pressable
+          style={Platform.OS === "web" ? webStyles.backIcon : styles.backIcon}
+          onPress={() => history && router.back()}
+        >
+          <BackIcon width={35} height={35} color={Colors.accent} />
+        </Pressable>
+      )}
       {!isLogoInvisible && (
         <Image
           source={require("@/assets/images/white-logo.png")}
@@ -51,8 +74,8 @@ export default function TabLayout() {
               <View
                 style={{
                   ...styles.tabBarContainer,
-                  width: isMenuOpen ? "100%" : 200,
-                  height: isMenuOpen ? "100%" : 90,
+                  width: isMenuOpen ? "100%" : 0,
+                  height: isMenuOpen ? "100%" : 0,
                 }}
               >
                 <BlurView
@@ -189,6 +212,12 @@ const styles = StyleSheet.create({
     transform: [{ translateX: "-50%" }],
     zIndex: 2,
   },
+  backIcon: {
+    position: "absolute",
+    top: 70,
+    left: 30,
+    zIndex: 10,
+  },
 });
 
 const webStyles = StyleSheet.create({
@@ -215,5 +244,11 @@ const webStyles = StyleSheet.create({
     left: "50%",
     transform: [{ translateX: "-50%" }],
     zIndex: 2,
+  },
+  backIcon: {
+    position: "absolute",
+    top: 30,
+    left: width >= 768 ? 110 : 30,
+    zIndex: 10,
   },
 });

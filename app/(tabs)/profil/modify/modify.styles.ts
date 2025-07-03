@@ -1,5 +1,7 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -7,13 +9,6 @@ const styles = StyleSheet.create({
     height: "100%",
     flexDirection: "column",
     backgroundColor: Colors.background,
-  },
-  backIcon: {
-    position: "absolute",
-    top: 55,
-    left: 20,
-    zIndex: 10,
-    padding: 20,
   },
   title: {
     fontSize: 24,
@@ -52,4 +47,20 @@ const styles = StyleSheet.create({
   },
 });
 
+const webStyles = StyleSheet.create({
+  inputsContainer: {
+    width: width >= 768 ? "50%" : "90%",
+    flexDirection: "column",
+    alignSelf: "center",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: Colors.accent,
+    marginBottom: 20,
+    alignSelf: "center",
+  },
+});
+
+export { styles, webStyles };
 export default styles;

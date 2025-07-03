@@ -1,4 +1,3 @@
-import BackIcon from "@/assets/icons/back.svg";
 import LinkedinIcon from "@/assets/icons/linkedin.svg";
 import MailIcon from "@/assets/icons/mail.svg";
 import PhoneIcon from "@/assets/icons/phone.svg";
@@ -62,23 +61,28 @@ export default function Profil() {
           });
         return response;
       };
-      const fetchReviewersData = async () => {
-        const userPromises = reviews.map((review) =>
-          axios.get<User>(
-            `${process.env.EXPO_PUBLIC_API_URL}/users/${review.userId}`
-          )
-        );
-        const responses = await Promise.all(userPromises);
-        setReviewers(responses.map((res) => res.data));
-      };
       fetchProfileData(id as string);
       if (user?.companyId) {
         fetchReviews();
-        fetchReviewersData();
       }
     };
     fetchData();
   }, [id, user?.companyId]);
+
+  useEffect(() => {
+    const fetchReviewersData = async () => {
+      const userPromises = reviews.map((review) =>
+        axios.get<User>(
+          `${process.env.EXPO_PUBLIC_API_URL}/users/${review.userId}`
+        )
+      );
+      const responses = await Promise.all(userPromises);
+      setReviewers(responses.map((res) => res.data));
+    };
+    if (reviews.length > 0) {
+      fetchReviewersData();
+    }
+  }, [reviews]);
 
   return (
     <View
@@ -88,9 +92,6 @@ export default function Profil() {
         position: "relative",
       }}
     >
-      <Pressable onPress={() => router.back()} style={webStyles.backIcon}>
-        <BackIcon width={30} height={30} color={Colors.accent} />
-      </Pressable>
       <ScrollView
         style={{ backgroundColor: Colors.background }}
         contentContainerStyle={{

@@ -1,20 +1,11 @@
-import BackIcon from "@/assets/icons/back.svg";
-import { Colors } from "@/constants/Colors";
 import { Link, useRouter } from "expo-router";
-import { Platform, Pressable, Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
 import { styles, webStyles } from "./index.styles";
 
 export default function RecommendationChoice() {
   const router = useRouter();
   return (
     <View style={styles.container}>
-      <Pressable
-        onPress={() => router.back()}
-        style={styles.backIcon}
-        hitSlop={20}
-      >
-        <BackIcon color={Colors.accent} width={30} height={30} />
-      </Pressable>
       <View>
         <Text
           style={Platform.select({

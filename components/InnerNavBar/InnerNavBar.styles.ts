@@ -11,14 +11,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     zIndex: 10,
+    alignSelf: "center",
   },
   navbarButton: {
     padding: 10,
     backgroundColor: Colors.accent,
-    width: "50%",
+    width: "55%",
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
+    borderWidth: 4,
+    borderColor: Colors.accent,
   },
   navbarButtonActive: {
     backgroundColor: Colors.background,
@@ -45,6 +48,7 @@ const webStyles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     zIndex: 10,
+    alignSelf: "center",
   },
 });
 

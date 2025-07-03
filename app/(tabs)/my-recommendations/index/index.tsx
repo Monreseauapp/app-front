@@ -129,8 +129,6 @@ export default function MyRecommendations() {
   return (
     <View
       style={{
-        width: "100%",
-        height: "100%",
         flex: 1,
         backgroundColor: Colors.background,
         justifyContent: "center",
@@ -143,6 +141,7 @@ export default function MyRecommendations() {
         tabs={["Envoyées", "Reçues"]}
         activeIndex={page === "sent" ? 0 : 1}
         setActiveIndex={() => setPage(page === "sent" ? "received" : "sent")}
+        style={{ alignSelf: "center", marginLeft: "-4%" }}
       />
       <KeyboardAvoidingView
         style={{ flex: 1, width: "100%" }}

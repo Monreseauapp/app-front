@@ -1,4 +1,3 @@
-import BackIcon from "@/assets/icons/back.svg";
 import AddressInputs from "@/components/AddressInputs";
 import Input from "@/components/form/Input";
 import Search from "@/components/form/Search/Search";
@@ -170,13 +169,6 @@ export default function RecommendationForm() {
             position: "relative",
           }}
         >
-          <Pressable
-            onPress={() => router.back()}
-            style={styles.backIcon}
-            hitSlop={20}
-          >
-            <BackIcon color={Colors.accent} width={30} height={30} />
-          </Pressable>
           <KeyboardAwareScrollView
             style={styles.container}
             contentContainerStyle={{
@@ -292,10 +284,10 @@ export default function RecommendationForm() {
                 handleChange={handleChange}
                 isDataValid={isDataValid}
               />
+              {type !== "company" && (
+                <PriorityStars starId={starId} setStarId={setStarId} />
+              )}
             </View>
-            {type !== "company" && (
-              <PriorityStars starId={starId} setStarId={setStarId} />
-            )}
             <View style={{ alignSelf: "center" }}>
               <Pressable
                 onPress={() => {

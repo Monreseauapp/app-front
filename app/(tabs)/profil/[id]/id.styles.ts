@@ -8,13 +8,6 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
-  backIcon: {
-    position: "absolute",
-    top: 55,
-    left: 30,
-    zIndex: 10,
-    padding: 20,
-  },
   profilePicture: {
     width: 200,
     height: 200,
@@ -125,13 +118,6 @@ const webStyles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     flexDirection: width >= 768 ? "row" : "column",
-  },
-  backIcon: {
-    position: "absolute",
-    top: 55,
-    left: 30,
-    zIndex: 10000,
-    padding: 20,
   },
 });
 

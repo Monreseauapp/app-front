@@ -16,13 +16,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     marginHorizontal: "auto",
   },
-  backIcon: {
-    position: "absolute",
-    top: 55,
-    left: 30,
-    zIndex: 10,
-    padding: 20,
-  },
+
   inputTitle: {
     color: Colors.text,
   },

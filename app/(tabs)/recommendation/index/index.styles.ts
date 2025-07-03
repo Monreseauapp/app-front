@@ -34,13 +34,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  backIcon: {
-    position: "absolute",
-    top: 55,
-    left: 30,
-    zIndex: 10,
-    padding: 20,
-  },
 });
 
 const webStyles = StyleSheet.create({

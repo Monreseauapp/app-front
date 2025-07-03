@@ -35,7 +35,6 @@ export default function CheckBoxList({ title, choices }: InputProps) {
             onChange={(value) => {
               const newChecked = [...checked];
               newChecked[index] = value;
-              console.log("Checkbox changed:", newChecked);
               setChecked(newChecked);
             }}
           />

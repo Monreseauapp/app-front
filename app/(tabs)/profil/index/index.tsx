@@ -52,7 +52,6 @@ export default function Profil() {
         setReviews(response);
       };
       fetchProfileData(userId as string);
-      console.log(companyId);
       if (companyId) {
         fetchReviews();
       }
@@ -145,7 +144,7 @@ export default function Profil() {
               </Pressable>
             )}
           </View>
-          <Link style={styles.button} href="/profil/modify?type=company">
+          <Link style={styles.button} href="/profil/modify">
             <Text style={styles.buttonText}>Modifier mon profil</Text>
           </Link>
         </View>
