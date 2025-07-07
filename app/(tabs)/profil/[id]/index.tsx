@@ -48,18 +48,22 @@ export default function Profil() {
         return response;
       };
       const fetchReviews = async () => {
-        const response = await axios
-          .get(
-            `${process.env.EXPO_PUBLIC_API_URL}/review/company/${user?.companyId}`
-          )
-          .then((response) => {
-            const reviewsData = response.data;
-            setReviews(reviewsData);
-          })
-          .catch((error) => {
-            console.error("Error fetching reviews:", error.request);
-          });
-        return response;
+        if (user?.companyId) {
+          const response = await axios
+            .get(
+              `${process.env.EXPO_PUBLIC_API_URL}/review/company/${user?.companyId}`
+            )
+            .then((response) => {
+              const reviewsData = response.data;
+              setReviews(reviewsData);
+            })
+            .catch((error) => {
+              console.error("Error fetching reviews:", error.request);
+            });
+          return response;
+        } else {
+          setReviews([]);
+        }
       };
       fetchProfileData(id as string);
       if (user?.companyId) {

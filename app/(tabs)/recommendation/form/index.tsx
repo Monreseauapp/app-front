@@ -1,6 +1,7 @@
 import AddressInputs from "@/components/AddressInputs";
 import Input from "@/components/form/Input";
 import Search from "@/components/form/Search/Search";
+import CompanyDetails from "@/components/recommendation/CompanyDetails";
 import DetailsInput from "@/components/recommendation/DetailsInput";
 import PersonalInformations from "@/components/recommendation/PersonalInformations";
 import PersonTypeSelector from "@/components/recommendation/PersonTypeSelector";
@@ -45,7 +46,7 @@ export default function RecommendationForm() {
   const titles: RecommendationFormTitles[] = [
     {
       label: "company",
-      title: "JE RECOMMANDE UNE ENTREPRISE",
+      title: "JE RECOMMANDE",
       sendText: "Envoyer ma recommandation",
     },
     {
@@ -76,7 +77,8 @@ export default function RecommendationForm() {
   const [users, setUsers] = useState<User[]>([]);
   const [companyName, setCompanyName] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
-  const [intern, setIntern] = useState<boolean>(false);
+  const [internUser, setInternUser] = useState<boolean>(true);
+  const [internCompany, setInternCompany] = useState<boolean>(true);
   const [isDataValid, setIsDataValid] = useState<boolean | undefined>(
     undefined
   );
@@ -89,7 +91,8 @@ export default function RecommendationForm() {
     });
     setCompanyName("");
     setUserName("");
-    setIntern(false);
+    setInternUser(true);
+    setInternCompany(true);
     setIsDataValid(undefined);
     setStarId(0);
   };
@@ -189,31 +192,52 @@ export default function RecommendationForm() {
               }}
             >
               {type !== "lead" && (
-                <Search
-                  name="Nom de l'entreprise"
-                  list={companies.map((c) => c.name)}
-                  placeholder="Chercher une entreprise..."
-                  titleStyle={styles.inputTitle}
-                  inputStyle={{
-                    ...styles.input,
-                    color: Colors.background,
-                    placeholderTextColor: Colors.background,
-                  }}
-                  value={companyName}
-                  onChangeText={(text) => {
-                    setCompanyName(text);
-                    handleChange(
-                      "companyId",
-                      companies.find((c) => c.name === text)?.id || ""
-                    );
-                  }}
-                  valid={isDataValid}
-                />
+                <>
+                  <PersonTypeSelector
+                    intern={internCompany}
+                    setIntern={setInternCompany}
+                    type="company"
+                  />
+                  {internCompany ? (
+                    <Search
+                      name="Nom de l'entreprise"
+                      list={companies.map((c) => c.name)}
+                      placeholder="Chercher une entreprise..."
+                      titleStyle={styles.inputTitle}
+                      inputStyle={{
+                        ...styles.input,
+                        color: Colors.background,
+                        placeholderTextColor: Colors.background,
+                      }}
+                      value={companyName}
+                      onChangeText={(text) => {
+                        setCompanyName(text);
+                        handleChange(
+                          "companyId",
+                          companies.find((c) => c.name === text)?.id || ""
+                        );
+                      }}
+                      valid={isDataValid}
+                    />
+                  ) : (
+                    <>
+                      <CompanyDetails
+                        data={type === "company" ? recommandation : project}
+                        handleChange={handleChange}
+                        isDataValid={isDataValid}
+                      />
+                    </>
+                  )}
+                </>
               )}
               {type !== "project" ? (
                 <>
-                  <PersonTypeSelector intern={intern} setIntern={setIntern} />
-                  {intern ? (
+                  <PersonTypeSelector
+                    intern={internUser}
+                    setIntern={setInternUser}
+                    type="user"
+                  />
+                  {internUser ? (
                     <>
                       <Search
                         name="Nom de l'utilisateur"
@@ -244,7 +268,7 @@ export default function RecommendationForm() {
                             });
                           }
                         }}
-                        valid={intern && isDataValid}
+                        valid={internUser && isDataValid}
                       />
                     </>
                   ) : (

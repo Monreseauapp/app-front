@@ -12,7 +12,7 @@ interface Page3Props {
   user: User;
   handleChangeUser: (
     field: keyof User,
-    value: string | number | undefined
+    value: string | number | boolean | undefined
   ) => void;
   isDataValid: boolean | undefined;
   setIsDataValid: (isValid: boolean) => void;

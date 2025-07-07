@@ -9,11 +9,11 @@ interface Page4Props {
   company: Company;
   handleChangeCompany: (
     field: keyof Company,
-    value: string | number | undefined
+    value: string | number | boolean | undefined
   ) => void;
   handleChangeUser: (
     field: keyof User,
-    value: string | number | undefined
+    value: string | number | boolean | undefined
   ) => void;
   isDataValid: boolean | undefined;
 }

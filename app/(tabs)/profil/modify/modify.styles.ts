@@ -31,6 +31,18 @@ const styles = StyleSheet.create({
     color: Colors.text,
     borderWidth: 4,
   },
+  checkBox: {
+    alignSelf: "center",
+    backgroundColor: Colors.accent,
+    marginBottom: 20,
+  },
+  checkBoxTitle: {
+    color: Colors.text,
+    fontSize: 22,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 10,
+  },
   button: {
     alignSelf: "center",
     backgroundColor: Colors.accent,

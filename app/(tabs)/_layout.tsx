@@ -114,7 +114,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="home/index"
           options={{
-            title: "Menu principal",
+            title: "Tableau de bord",
           }}
         />
         <Tabs.Screen

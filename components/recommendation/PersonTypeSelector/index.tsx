@@ -6,9 +6,11 @@ import styles from "./PersonTypeSelector.styles";
 export default function PersonTypeSelector({
   intern,
   setIntern,
+  type,
 }: {
   intern: boolean;
   setIntern: (value: boolean) => void;
+  type: "company" | "user";
 }) {
   return (
     <View
@@ -26,7 +28,8 @@ export default function PersonTypeSelector({
           textAlign: "center",
         }}
       >
-        La personne est interne/externe à l'application
+        {type === "company" ? "L'entreprise" : "La personne"} est membre de
+        l'application ?
       </Text>
       <View
         style={{
@@ -37,8 +40,8 @@ export default function PersonTypeSelector({
           alignItems: "center",
         }}
       >
-        <View style={{ width: 100, alignItems: "center" }}>
-          <Text style={styles.basicText}>Interne</Text>
+        <View style={{ width: 150, alignItems: "center" }}>
+          <Text style={styles.basicText}>Membre</Text>
           <CustomCheckbox
             checked={intern}
             onChange={(value) => setIntern(value)}
@@ -48,8 +51,8 @@ export default function PersonTypeSelector({
             markerStyle={Colors.background}
           />
         </View>
-        <View style={{ width: 100, alignItems: "center" }}>
-          <Text style={styles.basicText}>Externe</Text>
+        <View style={{ width: 150, alignItems: "center" }}>
+          <Text style={styles.basicText}>Non-membre</Text>
           <CustomCheckbox
             checked={!intern}
             onChange={(value) => setIntern(!value)}

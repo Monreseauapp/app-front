@@ -12,7 +12,7 @@ interface PersonalInformationsProps {
   handleChange: (
     type: "user" | "company",
     field: keyof User | keyof Company,
-    value: string | number | undefined
+    value: string | number | boolean | undefined
   ) => void;
 }
 

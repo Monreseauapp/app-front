@@ -14,4 +14,5 @@ export const initialCompany = {
   ).toISOString(),
   updatedAt: new Date().toISOString(),
   lastLogin: new Date().toISOString(), // To be remove
+  OpentoReco: false,
 };

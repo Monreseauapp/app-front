@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import { useLocalSearchParams } from "expo-router/build/hooks";
 import React from "react";
 import {
+  Dimensions,
   Image,
   Platform,
   Pressable,
@@ -19,6 +20,7 @@ type paramsType = {
 export default function ConditionScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<paramsType>();
+  const { width } = Dimensions.get("window");
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
@@ -28,7 +30,7 @@ export default function ConditionScreen() {
       />
       <View
         style={{
-          marginTop: Platform.OS === "web" ? 25 : 50,
+          marginTop: Platform.OS === "web" ? (width < 600 ? 25 : 150) : 50,
           width: "100%",
           alignItems: "center",
           justifyContent: "center",

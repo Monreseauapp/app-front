@@ -28,7 +28,7 @@ export default function RecommendationChoice() {
               default: styles.buttonText,
             })}
           >
-            Je recommande une entreprise
+            Je recommande
           </Text>
         </Link>
         <Link

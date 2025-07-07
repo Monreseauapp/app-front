@@ -12,9 +12,12 @@ interface AddressFields {
   [key: string]: any;
 }
 
-interface PersonalInformationsProps<T extends AddressFields> {
+interface AdressInputsProps<T extends AddressFields> {
   data: T;
-  handleChange: (field: keyof T, value: string | number | undefined) => void;
+  handleChange: (
+    field: keyof T,
+    value: string | number | boolean | undefined
+  ) => void;
   isDataValid?: boolean;
   titleColor?: string;
   inputColor?: string;
@@ -28,7 +31,7 @@ export default function AddressInputs<T extends AddressFields>({
   titleColor = Colors.text,
   inputColor = Colors.text,
   placeholderColor = Colors.grey,
-}: PersonalInformationsProps<T>) {
+}: AdressInputsProps<T>) {
   return (
     <View
       style={{
@@ -51,7 +54,6 @@ export default function AddressInputs<T extends AddressFields>({
         }}
         value={data.address}
         onChangeText={(text) => handleChange("address", text)}
-        valid={isDataValid}
       />
       <Input
         name="Adresse ligne 2"
@@ -102,7 +104,6 @@ export default function AddressInputs<T extends AddressFields>({
             Number(text.replace(/\D/g, "")) || undefined
           )
         }
-        valid={isDataValid}
       />
       <Input
         name="Pays"
@@ -116,7 +117,6 @@ export default function AddressInputs<T extends AddressFields>({
         }}
         value={data.country}
         onChangeText={(text) => handleChange("country", text)}
-        valid={isDataValid}
       />
     </View>
   );
