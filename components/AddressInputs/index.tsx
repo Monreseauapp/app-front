@@ -12,7 +12,7 @@ interface AddressFields {
   [key: string]: any;
 }
 
-interface AdressInputsProps<T extends AddressFields> {
+interface AddressInputsProps<T extends AddressFields> {
   data: T;
   handleChange: (
     field: keyof T,
@@ -31,7 +31,7 @@ export default function AddressInputs<T extends AddressFields>({
   titleColor = Colors.text,
   inputColor = Colors.text,
   placeholderColor = Colors.grey,
-}: AdressInputsProps<T>) {
+}: AddressInputsProps<T>) {
   return (
     <View
       style={{

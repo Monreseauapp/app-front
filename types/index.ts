@@ -164,7 +164,7 @@ export interface Recommandation {
   endDate?: (Date | string) | null;
   isAccepted?: boolean;
   RecoStateRecipient?: RecoState;
-  rejectionReasonInitiator?: string | null;
+  rejectionReasonRecipient?: string | null;
   RecoStateCompany?: RecoState;
   rejectionReasonCompany?: string | null;
   companyId: string;

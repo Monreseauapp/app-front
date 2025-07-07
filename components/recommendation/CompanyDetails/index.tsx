@@ -81,7 +81,7 @@ export default function CompanyDetails({
             color: Colors.accent,
           }}
           value={data.companyAddress || ""}
-          onChangeText={(text) => handleChange("address", text)}
+          onChangeText={(text) => handleChange("companyAddress", text)}
         />
         <Input
           name="Adresse ligne 2"
@@ -96,7 +96,9 @@ export default function CompanyDetails({
             color: Colors.accent,
           }}
           value={data.companyAddressComplement ?? ""}
-          onChangeText={(text) => handleChange("addressComplement", text)}
+          onChangeText={(text) =>
+            handleChange("companyAddressComplement", text)
+          }
         />
         <Input
           name="Ville"
@@ -110,7 +112,7 @@ export default function CompanyDetails({
             color: Colors.accent,
           }}
           value={data.companyCity || ""}
-          onChangeText={(text) => handleChange("city", text)}
+          onChangeText={(text) => handleChange("companyCity", text)}
           valid={isDataValid}
         />
         <Input
@@ -128,7 +130,7 @@ export default function CompanyDetails({
           value={data.companyPostalCode?.toString()}
           onChangeText={(text) =>
             handleChange(
-              "postalCode",
+              "companyPostalCode",
               Number(text.replace(/\D/g, "")) || undefined
             )
           }
