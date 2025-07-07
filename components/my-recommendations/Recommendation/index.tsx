@@ -49,7 +49,7 @@ export default function Recommendation({
           }
         : {
             ...recommandation,
-            RecoStateInitiator: isRejected
+            RecoStateRecipient: isRejected
               ? RecoState.REJECTED
               : RecoState.ACCEPTED,
             rejectionReasonInitiator: rejectionReason,
@@ -114,10 +114,10 @@ export default function Recommendation({
             style={[
               styles.text,
               styles.span,
-              colorState[recommandation.RecoStateInitiator as RecoState],
+              colorState[recommandation.RecoStateRecipient as RecoState],
             ]}
           >
-            {stateTranslation[recommandation.RecoStateInitiator as RecoState]}
+            {stateTranslation[recommandation.RecoStateRecipient as RecoState]}
           </Text>
           <Text
             style={[
@@ -133,7 +133,7 @@ export default function Recommendation({
       {page === "received" &&
         (isCompanyReception
           ? recommandation.RecoStateCompany
-          : recommandation.RecoStateInitiator) === RecoState.PENDING && (
+          : recommandation.RecoStateRecipient) === RecoState.PENDING && (
           <ValidationForm
             isRejected={isRejected}
             setIsRejected={setIsRejected}

@@ -1,5 +1,5 @@
 import Input from "@/components/form/Input";
-import Select from "@/components/form/Select";
+import JobDomainSelect from "@/components/JobDomainSelect";
 import { Company, User } from "@/types";
 import { Platform, View } from "react-native";
 import styles, { webStyles } from "./pages.styles";
@@ -10,11 +10,11 @@ interface Page2Props {
   jobDomains: { id: string; domaine: string }[];
   handleChangeUser: (
     field: keyof User,
-    value: string | number | undefined
+    value: string | number | boolean | undefined
   ) => void;
   handleChangeCompany: (
     field: keyof Company,
-    value: string | number | undefined
+    value: string | number | boolean | undefined
   ) => void;
   isDataValid: boolean | undefined;
 }
@@ -34,24 +34,12 @@ export default function Page2({
         default: styles.formPage,
       })}
     >
-      <Select
-        title="Domaine d'activité"
-        choices={[
-          "Sélectionner un domaine",
-          ...jobDomains?.map((domain) => domain.domaine),
-        ]}
-        selected={
-          jobDomains.find((domain) => domain.id === user.domainId)?.domaine ||
-          ""
+      <JobDomainSelect
+        data={user}
+        handleChange={(key, value) =>
+          handleChangeUser(key as keyof User, value)
         }
-        setSelected={(value) => {
-          const selectedDomain = jobDomains.find(
-            (domain) => domain.domaine === value
-          );
-          if (selectedDomain) {
-            handleChangeUser("domainId", selectedDomain.id);
-          }
-        }}
+        domainIdKey={"domainId"}
         valid={isDataValid}
       />
       {type === "company" && (

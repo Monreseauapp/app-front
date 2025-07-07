@@ -1,3 +1,4 @@
+import CustomCheckbox from "@/components/form/CustomCheckbox";
 import DocumentInput from "@/components/form/DocumentInput";
 import Input from "@/components/form/Input";
 import InnerNavBar from "@/components/InnerNavBar";
@@ -38,7 +39,7 @@ export default function ModifyProfile() {
   const handleChange = (
     type: "user" | "company",
     key: keyof User | keyof Company,
-    value: string | number | undefined
+    value: string | number | boolean | undefined
   ) => {
     if (key !== "addressComplement") {
       if (type === "company") {
@@ -69,7 +70,9 @@ export default function ModifyProfile() {
           });
       };
       fetchUserData();
+      setCompany(initialCompany);
     } else {
+      console.log("here");
       const fetchCompanyData = async () => {
         axios
           .get(`${API_URL}/users/${userId}/company`)
@@ -85,18 +88,7 @@ export default function ModifyProfile() {
       };
       fetchCompanyData();
     }
-    const fetchJobDomains = async () => {
-      axios
-        .get(`${API_URL}/job-domain`)
-        .then((response) => {
-          setJobDomains(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching job domains:", error.request);
-        });
-    };
-    fetchJobDomains();
-  }, []);
+  }, [companyId, userId]);
 
   const updateData = async () => {
     axios.patch(`${API_URL}/users/${userId}`, { ...user }).catch((error) => {
@@ -127,7 +119,7 @@ export default function ModifyProfile() {
             position: "relative",
           }}
         >
-          {company && (
+          {companyId && (
             <InnerNavBar
               tabs={["Personnel", "Entreprise"]}
               activeIndex={isCompanyPage ? 1 : 0}
@@ -167,6 +159,37 @@ export default function ModifyProfile() {
                 isCompanyPage={isCompanyPage}
                 handleChange={handleChange}
               />
+              {((!isCompanyPage &&
+                user.allowRecommendationDataAccess !== undefined) ||
+                isCompanyPage) && (
+                <>
+                  <Text style={styles.checkBoxTitle}>
+                    {isCompanyPage
+                      ? "Souhaitez-vous recevoir des recommandations ?"
+                      : "Autoriser l'accès à vos données pour les entreprises lors des recommandations :"}
+                  </Text>
+                  <CustomCheckbox
+                    checked={
+                      isCompanyPage
+                        ? company.OpentoReco
+                        : user.allowRecommendationDataAccess || false
+                    }
+                    onChange={(value) =>
+                      handleChange(
+                        isCompanyPage ? "company" : "user",
+                        isCompanyPage
+                          ? "OpentoReco"
+                          : "allowRecommendationDataAccess",
+                        value
+                      )
+                    }
+                    width={35}
+                    height={35}
+                    style={styles.checkBox}
+                    markerStyle={Colors.background}
+                  />
+                </>
+              )}
               <DocumentInput
                 title="Photo de profil"
                 type={["image/jpeg", "image/png", "image/webp"]}
@@ -175,7 +198,6 @@ export default function ModifyProfile() {
               {!isCompanyPage && (
                 <JobInformations
                   user={user}
-                  jobDomains={jobDomains}
                   handleChange={(field, value) =>
                     handleChange(
                       isCompanyPage ? "company" : "user",

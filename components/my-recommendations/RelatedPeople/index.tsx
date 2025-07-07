@@ -26,12 +26,12 @@ export default function RelatedPeople({
   const arrowColor = () => {
     if (
       recommendation?.RecoStateCompany === RecoState.REJECTED ||
-      recommendation?.RecoStateInitiator === RecoState.REJECTED
+      recommendation?.RecoStateRecipient === RecoState.REJECTED
     ) {
       return Colors.red;
     } else if (
       recommendation?.RecoStateCompany === RecoState.ACCEPTED ||
-      recommendation?.RecoStateInitiator === RecoState.ACCEPTED
+      recommendation?.RecoStateRecipient === RecoState.ACCEPTED
     ) {
       return Colors.green;
     }

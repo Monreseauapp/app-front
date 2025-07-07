@@ -9,7 +9,7 @@ interface Page1Props {
   user: User;
   handleChangeUser: (
     field: keyof User,
-    value: string | number | undefined
+    value: string | number | boolean | undefined
   ) => void;
   scrollToPage: (index: number) => void;
   isDataValid?: boolean | undefined;

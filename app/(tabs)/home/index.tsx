@@ -209,7 +209,7 @@ export default function Home() {
                   .filter(
                     (r) =>
                       r.RecoStateCompany === "PENDING" &&
-                      r.RecoStateInitiator === "PENDING"
+                      r.RecoStateRecipient === "PENDING"
                   )
                   .length.toString(),
               },
@@ -219,7 +219,7 @@ export default function Home() {
                   .filter(
                     (r) =>
                       r.RecoStateCompany !== "PENDING" &&
-                      r.RecoStateInitiator === "PENDING"
+                      r.RecoStateRecipient === "PENDING"
                   )
                   .length.toString(),
               },
@@ -235,7 +235,7 @@ export default function Home() {
                     .filter(
                       (r) =>
                         r.RecoStateCompany === "PENDING" &&
-                        r.RecoStateInitiator === "PENDING"
+                        r.RecoStateRecipient === "PENDING"
                     )
                     .length.toString(),
                 },
@@ -245,7 +245,7 @@ export default function Home() {
                     .filter(
                       (r) =>
                         r.RecoStateCompany !== "PENDING" &&
-                        r.RecoStateInitiator !== "PENDING"
+                        r.RecoStateRecipient !== "PENDING"
                     )
                     .length.toString(),
                 },

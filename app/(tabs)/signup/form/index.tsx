@@ -249,7 +249,10 @@ export default function FormSignUp() {
                 <View
                   style={{
                     flex: Platform.OS === "web" ? 1 : undefined,
-                    width: width * (width >= 600 ? 0.55 : 0.9),
+                    width:
+                      Platform.OS === "web"
+                        ? width * (width >= 600 ? 0.55 : 0.9)
+                        : width,
                   }}
                 >
                   {item.content(index)}
@@ -263,7 +266,7 @@ export default function FormSignUp() {
                     : undefined,
               }}
               scrollEnabled={false}
-              initialScrollIndex={0}
+              initialScrollIndex={currentPage}
               extraData={currentPage}
             />
 

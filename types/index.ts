@@ -89,6 +89,7 @@ export interface User {
   rententionDate: Date | string;
   consentTerms?: boolean;
   consentMarketing?: boolean;
+  allowRecommendationDataAccess?: boolean;
 }
 
 export interface JobDomain {
@@ -118,6 +119,7 @@ export interface Company {
   linkedin?: string | null;
   subscriptionId?: string | null;
   ownerId: string;
+  OpentoReco: boolean;
   retentionDate: Date | string;
 }
 
@@ -148,13 +150,21 @@ export interface Recommandation {
   addressComplement?: string | null;
   postalCode: number | undefined;
   city: string;
+  companyName: string | null;
+  companyAddress?: string | null;
+  companyAddressComplement?: string | null;
+  companyPostalCode?: number | null;
+  companyCity: string | null;
+  companyEmail: string | null;
+  companyPhone: string | null;
+  companyJobDomain: string | null;
   description?: string | null;
   startDate?: (Date | string) | null;
   inProgressAt?: (Date | string) | null;
   endDate?: (Date | string) | null;
   isAccepted?: boolean;
-  RecoStateInitiator?: RecoState;
-  rejectionReasonInitiator?: string | null;
+  RecoStateRecipient?: RecoState;
+  rejectionReasonRecipient?: string | null;
   RecoStateCompany?: RecoState;
   rejectionReasonCompany?: string | null;
   companyId: string;
@@ -169,6 +179,14 @@ export interface Project {
   updatedAt: Date | string;
   name: string;
   description?: string | null;
+  companyName: string | null;
+  companyAddress?: string | null;
+  companyAddressComplement?: string | null;
+  companyPostalCode?: number | null;
+  companyCity: string | null;
+  companyEmail: string | null;
+  companyPhone: string | null;
+  companyJobDomain?: string | null;
   startDate?: (Date | string) | null;
   endDate?: (Date | string) | null;
   priority?: number;

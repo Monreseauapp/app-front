@@ -90,7 +90,6 @@ export default function SignIn() {
                 onPress={() => {
                   router.dismissAll();
                 }}
-                dismissTo
                 style={styles.connectionButton}
               >
                 <Text
