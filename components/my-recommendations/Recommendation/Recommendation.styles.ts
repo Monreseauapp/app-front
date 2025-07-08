@@ -7,13 +7,13 @@ const styles = StyleSheet.create({
   container: {
     width: "90%",
     padding: 16,
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     borderRadius: 10,
     alignItems: "center",
   },
   text: {
     fontSize: 16,
-    color: Colors.background,
+    color: Colors.white,
   },
   span: {
     fontWeight: "bold",
@@ -66,7 +66,7 @@ const webStyles = StyleSheet.create({
   container: {
     width: width >= 1024 ? "30%" : width >= 600 ? "45%" : "90%",
     padding: 16,
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     borderRadius: 10,
     alignItems: "center",
   },

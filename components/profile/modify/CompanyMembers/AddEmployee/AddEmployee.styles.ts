@@ -2,24 +2,27 @@ import { Colors } from "@/constants/Colors";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 8,
-    color: Colors.black,
-  },
   container: {
-    backgroundColor: Colors.violet,
-    padding: 12,
-    borderRadius: 50,
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
-  text: {
+  titleSearch: {
+    color: Colors.black,
+  },
+  addButton: {
+    alignSelf: "center",
+    backgroundColor: Colors.green,
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  addButtonText: {
+    color: Colors.white,
     fontSize: 16,
     fontWeight: "bold",
-    color: Colors.white,
   },
 });
 
+export { styles };
 export default styles;

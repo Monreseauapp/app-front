@@ -14,14 +14,14 @@ const styles = StyleSheet.create({
     width: width >= 1024 ? 200 : 150,
     marginHorizontal: 3,
     padding: 20,
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     justifyContent: "center",
     alignItems: "center",
   },
   statText: {
     fontSize: width >= 1024 ? 26 : 22,
     fontWeight: "bold",
-    color: Colors.background,
+    color: Colors.white,
     marginVertical: 5,
   },
 });

@@ -28,7 +28,7 @@ export default function CheckBoxList({ title, choices }: InputProps) {
         <View style={styles.section} key={index}>
           <CustomCheckbox
             style={styles.checkbox}
-            markerStyle={Colors.background}
+            markerStyle={Colors.white}
             width={25}
             height={25}
             checked={checked[index]}

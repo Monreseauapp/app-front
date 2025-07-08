@@ -190,7 +190,8 @@ export interface Project {
   startDate?: (Date | string) | null;
   endDate?: (Date | string) | null;
   priority?: number;
-  isPublic?: boolean;
+  isPublic: boolean;
+  companyNumber: number;
   companyId: string;
   projectState?: ProjectState;
   ProjectChoiceCompany: ProjectChoiceState;

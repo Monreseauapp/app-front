@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   picker: {
     height: 200,
     width: "100%",
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
   },
 });
 
@@ -17,10 +17,10 @@ const webStyles = StyleSheet.create({
     width: "100%",
     alignSelf: "center",
     marginTop: 10,
-    backgroundColor: Colors.accent,
-    color: Colors.background,
+    backgroundColor: Colors.violet,
+    color: Colors.white,
     fontSize: 18,
-    borderColor: Colors.background,
+    borderColor: Colors.white,
     borderRadius: width >= 600 ? 10 : 5,
     padding: 10,
   },

@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.white,
     position: "relative",
   },
   title: {
@@ -34,21 +34,21 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   button: {
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     padding: 10,
     borderRadius: 20,
   },
   buttonText: {
     fontSize: 18,
     padding: 6,
-    color: Colors.background,
+    color: Colors.white,
     fontWeight: "bold",
     alignSelf: "center",
   },
   connectionText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: Colors.accent,
+    color: Colors.violet,
     textDecorationLine: "underline",
   },
 });
@@ -78,7 +78,7 @@ const webStyles = StyleSheet.create({
   },
   button: {
     width: width >= 600 ? 350 : 300,
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     padding: 10,
     borderRadius: 25,
     marginTop: width >= 600 ? 30 : 10,
@@ -86,14 +86,14 @@ const webStyles = StyleSheet.create({
   buttonText: {
     fontSize: width >= 600 ? 22 : 18,
     padding: 6,
-    color: Colors.background,
+    color: Colors.white,
     fontWeight: "bold",
     alignSelf: "center",
   },
   connectionText: {
     fontSize: width >= 600 ? 20 : 18,
     fontWeight: "bold",
-    color: Colors.accent,
+    color: Colors.violet,
     textDecorationLine: "underline",
   },
 });

@@ -67,7 +67,7 @@ export default function Search({
           fontWeight: "bold",
           paddingBottom: 10,
           paddingLeft: 16,
-          color: Colors.background,
+          color: Colors.white,
           ...titleStyle,
         }}
       >
@@ -97,15 +97,15 @@ export default function Search({
         }}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setTimeout(() => setIsFocused(false), 75)}
-        placeholderTextColor={placeholderTextColor || Colors.accent}
+        placeholderTextColor={placeholderTextColor || Colors.violet}
         placeholder={placeholder}
         ref={inputRef}
         returnKeyType="search"
         style={{
           width: "100%",
           height: 50,
-          backgroundColor: Colors.accent,
-          color: Colors.background,
+          backgroundColor: Colors.violet,
+          color: Colors.white,
           borderRadius: 50,
           paddingHorizontal: 20,
           paddingVertical: 10,
@@ -129,11 +129,11 @@ export default function Search({
             >
               <Text
                 style={{
-                  color: Colors.text,
+                  color: Colors.black,
                   fontSize: 16,
                   paddingVertical: 10,
                   paddingHorizontal: 20,
-                  borderBottomColor: Colors.accent,
+                  borderBottomColor: Colors.violet,
                   borderBottomWidth: index !== list.length - 1 ? 1 : 0,
                 }}
               >

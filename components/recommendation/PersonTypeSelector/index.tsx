@@ -22,7 +22,7 @@ export default function PersonTypeSelector({
     >
       <Text
         style={{
-          color: Colors.text,
+          color: Colors.black,
           fontSize: 20,
           fontWeight: "bold",
           textAlign: "center",
@@ -48,7 +48,7 @@ export default function PersonTypeSelector({
             width={40}
             height={40}
             style={styles.checkbox}
-            markerStyle={Colors.background}
+            markerStyle={Colors.white}
           />
         </View>
         <View style={{ width: 150, alignItems: "center" }}>
@@ -59,7 +59,7 @@ export default function PersonTypeSelector({
             width={40}
             height={40}
             style={styles.checkbox}
-            markerStyle={Colors.background}
+            markerStyle={Colors.white}
           />
         </View>
       </View>

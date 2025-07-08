@@ -224,7 +224,7 @@ export default function FormSignUp() {
           ) : (
             <Text style={styles.introText}>
               Inscrivez vous dès maintenant et vivez l'expérience{" "}
-              <Text style={{ ...styles.span, color: Colors.accent }}>
+              <Text style={{ ...styles.span, color: Colors.violet }}>
                 Mon Réseau
               </Text>{" "}
               dès maintenant.

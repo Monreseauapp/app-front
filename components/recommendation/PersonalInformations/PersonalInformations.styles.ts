@@ -3,11 +3,11 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   inputTitle: {
-    color: Colors.text,
+    color: Colors.black,
   },
   input: {
-    borderColor: Colors.accent,
-    color: Colors.text,
+    borderColor: Colors.violet,
+    color: Colors.black,
     borderWidth: 4,
   },
 });

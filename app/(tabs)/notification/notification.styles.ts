@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     marginTop: 140,
     fontSize: 24,
     fontWeight: "bold",
-    color: Colors.accent,
+    color: Colors.violet,
   },
   notificationContainer: {
     flex: 1,
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   notificationTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: Colors.text,
+    color: Colors.black,
     marginBottom: 20,
     marginLeft: 20,
   },
@@ -30,12 +30,12 @@ const styles = StyleSheet.create({
   },
   notification: {
     width: "100%",
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     padding: 20,
     marginBottom: 1,
   },
   notificationText: {
-    color: Colors.background,
+    color: Colors.white,
     fontSize: 18,
     fontWeight: "bold",
   },
@@ -43,10 +43,8 @@ const styles = StyleSheet.create({
 
 const webStyles = StyleSheet.create({
   notification: {
-    width: width >= 768 ? undefined : "100%",
-    minWidth: "30%",
-    maxWidth: width >= 768 ? "45%" : "100%",
-    backgroundColor: Colors.accent,
+    width: width >= 768 ? "30%" : "100%",
+    backgroundColor: Colors.violet,
     padding: 20,
     marginBottom: 1,
   },

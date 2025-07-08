@@ -28,8 +28,8 @@ export default function AddressInputs<T extends AddressFields>({
   data,
   handleChange,
   isDataValid = undefined,
-  titleColor = Colors.text,
-  inputColor = Colors.text,
+  titleColor = Colors.black,
+  inputColor = Colors.black,
   placeholderColor = Colors.grey,
 }: AddressInputsProps<T>) {
   return (

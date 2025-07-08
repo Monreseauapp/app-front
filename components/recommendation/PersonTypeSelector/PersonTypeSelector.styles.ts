@@ -3,14 +3,14 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   basicText: {
-    color: Colors.text,
+    color: Colors.black,
     fontSize: 16,
     fontWeight: "bold",
   },
   checkbox: {
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     borderWidth: 2,
-    borderColor: Colors.background,
+    borderColor: Colors.white,
     borderRadius: 4,
   },
 });

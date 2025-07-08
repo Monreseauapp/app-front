@@ -48,13 +48,13 @@ export default function TabLayout() {
   ].some((path) => route === path || route.startsWith(path + "/"));
 
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.background }}>
+    <View style={{ flex: 1, backgroundColor: Colors.white }}>
       {isBackButtonVisible && (
         <Pressable
           style={Platform.OS === "web" ? webStyles.backIcon : styles.backIcon}
           onPress={() => history && router.back()}
         >
-          <BackIcon width={35} height={35} color={Colors.accent} />
+          <BackIcon width={35} height={35} color={Colors.violet} />
         </Pressable>
       )}
       {!isLogoInvisible && (
@@ -185,8 +185,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     fontSize: 20,
     fontWeight: "bold",
-    backgroundColor: Colors.accent,
-    color: Colors.background,
+    backgroundColor: Colors.violet,
+    color: Colors.white,
     borderRadius: 25,
     alignItems: "center",
     zIndex: 100,
@@ -229,8 +229,8 @@ const webStyles = StyleSheet.create({
     paddingVertical: 10,
     fontSize: 20,
     fontWeight: "bold",
-    backgroundColor: Colors.accent,
-    color: Colors.background,
+    backgroundColor: Colors.violet,
+    color: Colors.white,
     borderRadius: 25,
     alignItems: "center",
     zIndex: 100,

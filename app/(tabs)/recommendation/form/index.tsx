@@ -1,4 +1,5 @@
 import AddressInputs from "@/components/AddressInputs";
+import CustomCheckbox from "@/components/form/CustomCheckbox";
 import Input from "@/components/form/Input";
 import Search from "@/components/form/Search/Search";
 import CompanyDetails from "@/components/recommendation/CompanyDetails";
@@ -146,14 +147,9 @@ export default function RecommendationForm() {
   };
 
   const sendProjectData = async () => {
-    axios
-      .post(`${API_URL}/project`, {
-        ...project,
-        isPublic: project.companyId ? false : true,
-      })
-      .catch((error) => {
-        console.error("Error sending project:", error);
-      });
+    axios.post(`${API_URL}/project`, project).catch((error) => {
+      console.error("Error sending project:", error);
+    });
   };
 
   return (
@@ -168,7 +164,7 @@ export default function RecommendationForm() {
         <View
           style={{
             flex: 1,
-            backgroundColor: Colors.background,
+            backgroundColor: Colors.white,
             position: "relative",
           }}
         >
@@ -191,7 +187,45 @@ export default function RecommendationForm() {
                 alignSelf: "center",
               }}
             >
-              {type !== "lead" && (
+              {type === "project" && (
+                <>
+                  <View style={styles.checkboxContainer}>
+                    <Text style={styles.checkboxText}>
+                      Voulez-vous que le projet soit public ?
+                    </Text>
+                    <CustomCheckbox
+                      checked={project.isPublic}
+                      onChange={(checked) => handleChange("isPublic", checked)}
+                      width={35}
+                      height={35}
+                      style={styles.checkbox}
+                      markerStyle={Colors.white}
+                    />
+                  </View>
+                  <Input
+                    name="Nombre d'entreprises auxquelles vous voulez ouvrir le projet"
+                    placeholder="0"
+                    type="off"
+                    offType="number"
+                    titleStyle={styles.inputTitle}
+                    inputStyle={{
+                      ...styles.input,
+                      color: Colors.black,
+                      placeholderTextColor: Colors.white,
+                    }}
+                    value={project.companyNumber?.toString()}
+                    onChangeText={(text) =>
+                      handleChange(
+                        "companyNumber",
+                        Number(text.replace(/\D/g, "")) || undefined
+                      )
+                    }
+                    valid={isDataValid}
+                  />
+                </>
+              )}
+              {((type === "project" && project.companyNumber === 1) ||
+                type === "company") && (
                 <>
                   <PersonTypeSelector
                     intern={internCompany}
@@ -206,8 +240,8 @@ export default function RecommendationForm() {
                       titleStyle={styles.inputTitle}
                       inputStyle={{
                         ...styles.input,
-                        color: Colors.background,
-                        placeholderTextColor: Colors.background,
+                        color: Colors.white,
+                        placeholderTextColor: Colors.white,
                       }}
                       value={companyName}
                       onChangeText={(text) => {
@@ -246,8 +280,8 @@ export default function RecommendationForm() {
                         titleStyle={styles.inputTitle}
                         inputStyle={{
                           ...styles.input,
-                          color: Colors.background,
-                          placeholderTextColor: Colors.background,
+                          color: Colors.white,
+                          placeholderTextColor: Colors.white,
                         }}
                         value={userName}
                         onChangeText={(text) => {

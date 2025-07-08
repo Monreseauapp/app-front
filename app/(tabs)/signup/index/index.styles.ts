@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 24,
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
   },
   logo: {
     width: 320,
@@ -20,15 +20,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: "bold",
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.white,
     paddingVertical: 12,
     paddingHorizontal: 16,
-    color: Colors.accent,
+    color: Colors.violet,
   },
   subtitle: {
     fontSize: 25,
     fontWeight: "bold",
-    color: Colors.background,
+    color: Colors.white,
     textAlign: "center",
     marginVertical: 30,
   },
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
-    color: Colors.background,
+    color: Colors.white,
   },
   listElem: {
     flexDirection: "row",
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   bullet: {
     fontSize: 24,
     marginRight: 8,
-    color: Colors.background,
+    color: Colors.white,
   },
 });
 
@@ -63,7 +63,7 @@ const webStyles = StyleSheet.create({
   subtitle: {
     fontSize: 25,
     fontWeight: "bold",
-    color: Colors.background,
+    color: Colors.white,
     marginVertical: width >= 600 ? 30 : 15,
     textAlign: "center",
   },

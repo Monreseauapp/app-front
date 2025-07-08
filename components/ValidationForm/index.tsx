@@ -22,10 +22,10 @@ export default function ValidationForm({
 }: ValidationFormProps) {
   return (
     <View style={styles.choiceContainer}>
-      <Text style={{ ...styles.text, marginBottom: 4, color: Colors.text }}>
+      <Text style={{ ...styles.text, marginBottom: 4, color: Colors.black }}>
         Vous n'avez toujours pas fait de choix !
       </Text>
-      <Text style={[styles.text, styles.span, { color: Colors.text }]}>
+      <Text style={[styles.text, styles.span, { color: Colors.black }]}>
         Souhaitez vous :
       </Text>
       <View style={styles.choiceButtonContainer}>
@@ -37,9 +37,7 @@ export default function ValidationForm({
           ]}
           onPress={() => setIsRejected(false)}
         >
-          <Text
-            style={[styles.text, styles.span, { color: Colors.background }]}
-          >
+          <Text style={[styles.text, styles.span, { color: Colors.white }]}>
             ACCEPTER
           </Text>
         </Pressable>
@@ -51,9 +49,7 @@ export default function ValidationForm({
           ]}
           onPress={() => setIsRejected(true)}
         >
-          <Text
-            style={[styles.text, styles.span, { color: Colors.background }]}
-          >
+          <Text style={[styles.text, styles.span, { color: Colors.white }]}>
             REFUSER
           </Text>
         </Pressable>
@@ -66,7 +62,7 @@ export default function ValidationForm({
           inputStyle={{
             alignSelf: "center",
             width: "90%",
-            borderColor: Colors.accent,
+            borderColor: Colors.violet,
             borderWidth: 4,
             placeholderTextColor: Colors.grey,
             marginTop: -20,

@@ -1,4 +1,7 @@
+import { AppContext } from "@/context/context";
+import axios from "axios";
 import * as DocumentPicker from "expo-document-picker";
+import { useContext } from "react";
 import { Pressable, Text, View } from "react-native";
 import styles from "./DocumentInput.styles";
 
@@ -11,7 +14,9 @@ type DocumentTypes =
 interface DocumentInputProps {
   title: string;
   type: DocumentTypes[];
-  setValue?: (value: object | null) => void;
+  category?: string;
+  description?: string;
+  setValue: (value: string) => void;
   titleStyle?: object;
   containerStyle?: object;
   textStyle?: object;
@@ -20,11 +25,34 @@ interface DocumentInputProps {
 export default function DocumentInput({
   title,
   type,
+  category,
+  description,
   setValue,
   titleStyle,
   containerStyle,
   textStyle,
 }: DocumentInputProps) {
+  const { API_URL, userId } = useContext(AppContext);
+  const uploadFile = async (file: object) => {
+    const formData = new FormData();
+    formData.append("file", file as any);
+    formData.append("userId", userId as string);
+    category && formData.append("category", category);
+    description && formData.append("description", description);
+    axios
+      .post(`${API_URL}/files/upload/image`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        const resp = response.data;
+        setValue(resp.id);
+      })
+      .catch((error) => {
+        console.error("Error uploading file:", error.request);
+      });
+  };
   return (
     <View
       style={{
@@ -40,7 +68,14 @@ export default function DocumentInput({
           const result = await DocumentPicker.getDocumentAsync({
             type: type,
           });
-          setValue?.(result);
+          if (result.assets && result.assets.length > 0) {
+            const file = {
+              uri: result.assets[0].uri,
+              name: result.assets[0].name,
+              type: result.assets[0].mimeType || "application/octet-stream",
+            };
+            uploadFile(file);
+          }
         }}
         style={styles.container}
       >

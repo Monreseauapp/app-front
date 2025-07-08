@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingBottom: 10,
     paddingLeft: 16,
-    color: Colors.background,
+    color: Colors.white,
   },
   required: {
     color: Colors.red,
@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     fontSize: 16,
     fontWeight: "bold",
-    backgroundColor: Colors.background,
-    color: Colors.accent,
+    backgroundColor: Colors.white,
+    color: Colors.violet,
   },
 });
 
@@ -36,7 +36,7 @@ const webStyles = StyleSheet.create({
     fontWeight: "bold",
     paddingBottom: 10,
     paddingLeft: 16,
-    color: Colors.background,
+    color: Colors.white,
   },
   required: {
     color: Colors.red,
@@ -52,8 +52,8 @@ const webStyles = StyleSheet.create({
     paddingVertical: 10,
     fontSize: 16,
     fontWeight: "bold",
-    backgroundColor: Colors.background,
-    color: Colors.accent,
+    backgroundColor: Colors.white,
+    color: Colors.violet,
   },
 });
 

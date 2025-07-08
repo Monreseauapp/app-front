@@ -24,7 +24,7 @@ export default function DashboardStats({ title, stats }: DashboardStatsProps) {
       }}
     >
       <View style={{ marginBottom: 10 }}>
-        <Text style={{ fontSize: 24, fontWeight: "bold", color: Colors.text }}>
+        <Text style={{ fontSize: 24, fontWeight: "bold", color: Colors.black }}>
           {title}
         </Text>
       </View>

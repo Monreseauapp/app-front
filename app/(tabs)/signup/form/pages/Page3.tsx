@@ -61,9 +61,9 @@ export default function Page3({
         data={user}
         handleChange={handleChangeUser}
         isDataValid={isDataValid}
-        inputColor={Colors.accent}
-        titleColor={Colors.background}
-        placeholderColor={Colors.accent}
+        inputColor={Colors.violet}
+        titleColor={Colors.white}
+        placeholderColor={Colors.violet}
       />
       {type === "guest" && (
         <View style={{ width: "100%", alignItems: "center" }}>
@@ -83,7 +83,7 @@ export default function Page3({
               style={{
                 fontSize: 18,
                 fontWeight: "bold",
-                color: Colors.background,
+                color: Colors.white,
               }}
             >
               Valider

@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     flexDirection: "column",
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.white,
   },
   title: {
     width: "90%",
@@ -18,21 +18,21 @@ const styles = StyleSheet.create({
   },
 
   inputTitle: {
-    color: Colors.text,
+    color: Colors.black,
   },
   input: {
-    borderColor: Colors.accent,
-    color: Colors.text,
+    borderColor: Colors.violet,
+    color: Colors.black,
     borderWidth: 4,
   },
   select: {
-    backgroundColor: Colors.background,
-    color: Colors.text,
+    backgroundColor: Colors.white,
+    color: Colors.black,
   },
   validationButton: {
     paddingHorizontal: 20,
     paddingVertical: 10,
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
@@ -40,9 +40,23 @@ const styles = StyleSheet.create({
     marginBottom: 80,
   },
   buttonText: {
-    color: Colors.background,
+    color: Colors.white,
     fontWeight: "bold",
     fontSize: 18,
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: 10,
+  },
+  checkboxText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: Colors.black,
+  },
+  checkbox: {
+    backgroundColor: Colors.violet,
   },
 });
 

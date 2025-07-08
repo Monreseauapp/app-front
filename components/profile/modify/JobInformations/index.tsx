@@ -32,7 +32,7 @@ export default function JobInformations({
       />
       <JobDomainSelect
         data={user}
-        style={{ ...styles.select, pickerTextColor: Colors.text }}
+        style={{ ...styles.select, pickerTextColor: Colors.black }}
         titleStyle={styles.inputTitle}
         handleChange={(key, value) => handleChange(key as keyof User, value)}
         domainIdKey="domainId"

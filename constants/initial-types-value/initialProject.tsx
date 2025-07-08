@@ -14,6 +14,8 @@ export const initialProject = {
   companyPhone: "",
   companyJobDomain: "",
   ProjectChoiceCompany: ProjectChoiceState.PENDING,
+  companyNumber: 0,
+  isPublic: true,
   createdAt: new Date(),
   updatedAt: new Date(),
   retentionDate: new Date(
