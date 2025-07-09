@@ -4,8 +4,8 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   input: {
     height: 50,
-    borderColor: Colors.accent,
-    color: Colors.text,
+    borderColor: Colors.violet,
+    color: Colors.black,
     borderWidth: 4,
   },
 });

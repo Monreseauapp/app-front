@@ -88,7 +88,7 @@ export default function Page1({
       <Link href={{ pathname: "/signin" }} asChild>
         <Text
           style={{
-            color: Colors.background,
+            color: Colors.white,
             fontSize: 16,
             fontWeight: "bold",
             textDecorationLine: "underline",

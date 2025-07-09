@@ -1,4 +1,6 @@
 import { Colors } from "@/constants/Colors";
+import useNotificationFetch from "@/hooks/useNotificationFetch";
+import useNotificationTransform from "@/hooks/useNotificationTransform";
 import { useRouter } from "expo-router";
 import { Dimensions, Platform, ScrollView, Text, View } from "react-native";
 import { styles, webStyles } from "./notification.styles";
@@ -7,12 +9,14 @@ import { styles, webStyles } from "./notification.styles";
 
 export default function Notification() {
   const router = useRouter();
+  const notifications = useNotificationTransform(useNotificationFetch());
+  console.log("Notifications:", notifications);
   const { width } = Dimensions.get("window");
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.white,
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -23,7 +27,7 @@ export default function Notification() {
           flex: 1,
           width: width >= 768 ? "80%" : "100%",
           marginTop: 20,
-          backgroundColor: Colors.background,
+          backgroundColor: Colors.white,
         }}
         contentContainerStyle={{
           justifyContent: "center",

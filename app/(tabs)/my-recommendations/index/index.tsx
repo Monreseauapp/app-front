@@ -130,7 +130,7 @@ export default function MyRecommendations() {
     <View
       style={{
         flex: 1,
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.white,
         justifyContent: "center",
         alignItems: "center",
         marginTop: Platform.OS === "web" ? -30 : 0,
@@ -156,7 +156,7 @@ export default function MyRecommendations() {
               flex: 1,
               width: "100%",
               marginTop: 20,
-              backgroundColor: Colors.background,
+              backgroundColor: Colors.white,
             }}
             contentContainerStyle={{
               justifyContent: "center",

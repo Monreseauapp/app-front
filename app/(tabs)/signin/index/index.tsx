@@ -104,7 +104,7 @@ export default function SignIn() {
               <View style={styles.googleContainer}>
                 <Text
                   style={{
-                    color: Colors.text,
+                    color: Colors.black,
                     fontSize: 18,
                     fontWeight: "bold",
                   }}

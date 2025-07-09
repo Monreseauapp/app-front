@@ -27,8 +27,8 @@ export default function PriorityStars({
         <StarIcon
           color={
             i <= stars - 1
-              ? activeColor || Colors.accent
-              : inactiveColor || Colors.text
+              ? activeColor || Colors.violet
+              : inactiveColor || Colors.black
           }
           width={40}
           height={40}

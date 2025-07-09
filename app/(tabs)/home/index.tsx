@@ -101,7 +101,7 @@ export default function Home() {
     <View
       style={{
         flex: 1,
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.white,
         justifyContent: "center",
         alignItems: "center",
         flexDirection: width >= 600 ? "row" : "column",
@@ -116,7 +116,7 @@ export default function Home() {
           default: styles.notification,
         })}
       >
-        <NotificationIcon width={40} height={40} color={Colors.accent} />
+        <NotificationIcon width={40} height={40} color={Colors.violet} />
       </Link>
       {!companyId && (
         <View
@@ -266,13 +266,13 @@ export default function Home() {
           <Link
             style={{
               marginTop: width >= 600 ? 50 : 0,
-              backgroundColor: Colors.accent,
+              backgroundColor: Colors.violet,
               padding: 15,
               borderRadius: 50,
             }}
             href="/recommendation/index"
           >
-            <PlusIcon width={50} height={50} color={Colors.background} />
+            <PlusIcon width={50} height={50} color={Colors.white} />
           </Link>
         )}
       </View>

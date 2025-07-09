@@ -13,13 +13,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: "bold",
     paddingLeft: 16,
-    color: Colors.background,
+    color: Colors.white,
   },
   checkbox: {
     margin: 10,
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     borderWidth: 2,
-    borderColor: Colors.background,
+    borderColor: Colors.white,
     borderRadius: 4,
   },
 });
@@ -30,7 +30,7 @@ const webStyles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: "bold",
     paddingLeft: 16,
-    color: Colors.background,
+    color: Colors.white,
   },
 });
 

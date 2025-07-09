@@ -53,7 +53,7 @@ export default function CompanyDetails({
       />
       <JobDomainSelect
         data={data}
-        style={{ ...styles.select, pickerTextColor: Colors.text }}
+        style={{ ...styles.select, pickerTextColor: Colors.black }}
         titleStyle={styles.inputTitle}
         handleChange={(key, value) =>
           handleChange(key as keyof Recommandation | keyof Project, value)
@@ -74,11 +74,11 @@ export default function CompanyDetails({
           placeholder="18 avenue des Champs-Élysées"
           type="address-line1"
           sameLine={2}
-          titleStyle={{ color: Colors.text }}
+          titleStyle={{ color: Colors.black }}
           inputStyle={{
             ...styles.input,
             placeholderTextColor: Colors.grey,
-            color: Colors.accent,
+            color: Colors.violet,
           }}
           value={data.companyAddress || ""}
           onChangeText={(text) => handleChange("companyAddress", text)}
@@ -88,12 +88,12 @@ export default function CompanyDetails({
           placeholder="Apt 42"
           type="address-line2"
           sameLine={2}
-          titleStyle={{ color: Colors.text }}
+          titleStyle={{ color: Colors.black }}
           inputStyle={{
             ...styles.input,
             placeholderTextColor: Colors.grey,
             alignSelf: "flex-end",
-            color: Colors.accent,
+            color: Colors.violet,
           }}
           value={data.companyAddressComplement ?? ""}
           onChangeText={(text) =>
@@ -105,11 +105,11 @@ export default function CompanyDetails({
           placeholder="Paris"
           type="off"
           sameLine={2}
-          titleStyle={{ color: Colors.text }}
+          titleStyle={{ color: Colors.black }}
           inputStyle={{
             ...styles.input,
             placeholderTextColor: Colors.grey,
-            color: Colors.accent,
+            color: Colors.violet,
           }}
           value={data.companyCity || ""}
           onChangeText={(text) => handleChange("companyCity", text)}
@@ -120,12 +120,12 @@ export default function CompanyDetails({
           placeholder="75000"
           type="postal-code"
           sameLine={2}
-          titleStyle={{ color: Colors.text }}
+          titleStyle={{ color: Colors.black }}
           inputStyle={{
             ...styles.input,
             placeholderTextColor: Colors.grey,
             alignSelf: "flex-end",
-            color: Colors.accent,
+            color: Colors.violet,
           }}
           value={data.companyPostalCode?.toString()}
           onChangeText={(text) =>

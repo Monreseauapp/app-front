@@ -13,7 +13,7 @@ export default function LegalNotice() {
         flex: 1,
         alignItems: "center",
         justifyContent: Platform.OS === "web" ? "center" : "flex-end",
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.white,
       }}
     >
       <Image
@@ -75,7 +75,7 @@ export default function LegalNotice() {
           <CustomCheckbox
             checked={agreedToTerms}
             onChange={() => setAgreedToTerms(!agreedToTerms)}
-            markerStyle={Colors.background}
+            markerStyle={Colors.white}
             style={styles.checkbox}
             width={25}
             height={25}

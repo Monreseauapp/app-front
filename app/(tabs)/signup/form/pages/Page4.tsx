@@ -47,9 +47,9 @@ export default function Page4({
         data={company}
         handleChange={handleChangeCompany}
         isDataValid={isDataValid}
-        inputColor={Colors.accent}
-        titleColor={Colors.background}
-        placeholderColor={Colors.accent}
+        inputColor={Colors.violet}
+        titleColor={Colors.white}
+        placeholderColor={Colors.violet}
       />
       <Input
         name="Téléphone professionnel"

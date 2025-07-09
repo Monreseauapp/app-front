@@ -94,7 +94,7 @@ export default function TabBar({ state, descriptors, navigation }: any) {
           >
             <Text
               style={{
-                color: Colors.accent,
+                color: Colors.violet,
                 fontWeight: "bold",
                 fontSize: 16,
                 textAlign: "center",

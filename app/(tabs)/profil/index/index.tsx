@@ -23,7 +23,7 @@ import { styles, webStyles } from "./index.styles";
 
 export default function Profil() {
   const { width } = Dimensions.get("window");
-  const { userId, companyId } = useContext(AppContext);
+  const { API_URL, userId, companyId } = useContext(AppContext);
   const [user, setUser] = useState<(User & { company: Company }) | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewers, setReviewers] = useState<User[]>([]);
@@ -32,7 +32,7 @@ export default function Profil() {
     const fetchData = async () => {
       const fetchProfileData = async (id: string) => {
         const response = await axios
-          .get(`${process.env.EXPO_PUBLIC_API_URL}/users/${id}/company`)
+          .get(`${API_URL}/users/${id}/company`)
           .then((response) => {
             const userData = response.data;
             setUser(userData);
@@ -44,7 +44,7 @@ export default function Profil() {
       };
       const fetchReviews = async () => {
         const response = await axios
-          .get(`${process.env.EXPO_PUBLIC_API_URL}/review/company/${companyId}`)
+          .get(`${API_URL}/review/company/${companyId}`)
           .then((response) => response.data)
           .catch((error) => {
             console.error("Error fetching reviews:", error.request);
@@ -62,9 +62,7 @@ export default function Profil() {
   useEffect(() => {
     const fetchReviewers = async () => {
       const userPromises = reviews.map((review) =>
-        axios.get<User>(
-          `${process.env.EXPO_PUBLIC_API_URL}/users/${review.userId}`
-        )
+        axios.get<User>(`${API_URL}/users/${review.userId}`)
       );
       const responses = await Promise.all(userPromises);
       setReviewers(responses.map((res) => res.data));
@@ -76,7 +74,7 @@ export default function Profil() {
 
   return (
     <ScrollView
-      style={{ backgroundColor: Colors.background }}
+      style={{ backgroundColor: Colors.white }}
       contentContainerStyle={{
         justifyContent: "center",
         alignItems: "center",
@@ -98,7 +96,7 @@ export default function Profil() {
             <Image
               source={
                 user?.photoUrl
-                  ? { uri: user.photoUrl }
+                  ? { uri: `${API_URL}/files/view/${user.photoUrl}` }
                   : require("@/assets/images/profilepicture.jpg")
               }
               style={styles.profilePicture}
@@ -114,7 +112,7 @@ export default function Profil() {
                 style={styles.icon}
                 onPress={() => Linking.openURL(user?.company?.linkedin || "")}
               >
-                <LinkedinIcon color={Colors.accent} width={40} height={40} />
+                <LinkedinIcon color={Colors.violet} width={40} height={40} />
               </Pressable>
             )}
             {user?.company?.phone && (
@@ -122,7 +120,7 @@ export default function Profil() {
                 style={styles.icon}
                 onPress={() => Linking.openURL(`tel:${user?.company?.phone}`)}
               >
-                <PhoneIcon color={Colors.background} width={40} height={40} />
+                <PhoneIcon color={Colors.white} width={40} height={40} />
               </Pressable>
             )}
             {user?.company?.email && (
@@ -132,7 +130,7 @@ export default function Profil() {
                   Linking.openURL(`mailto:${user?.company?.email}`)
                 }
               >
-                <MailIcon color={Colors.background} width={40} height={40} />
+                <MailIcon color={Colors.white} width={40} height={40} />
               </Pressable>
             )}
             {user?.company?.website && (
@@ -140,7 +138,7 @@ export default function Profil() {
                 style={styles.icon}
                 onPress={() => Linking.openURL(user?.company?.website || "")}
               >
-                <WebsiteIcon color={Colors.background} width={38} height={38} />
+                <WebsiteIcon color={Colors.white} width={38} height={38} />
               </Pressable>
             )}
           </View>
@@ -220,8 +218,8 @@ export default function Profil() {
                             key={i}
                             color={
                               i < (review.rating || 0)
-                                ? Colors.background
-                                : Colors.text
+                                ? Colors.white
+                                : Colors.black
                             }
                             width={20}
                             height={20}
@@ -262,8 +260,8 @@ export default function Profil() {
                           0
                         ) /
                           reviews.length
-                          ? Colors.accent
-                          : Colors.text
+                          ? Colors.violet
+                          : Colors.black
                       }
                       width={40}
                       height={40}

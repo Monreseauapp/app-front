@@ -17,12 +17,12 @@ const styles = StyleSheet.create({
   profileName: {
     fontSize: 24,
     fontWeight: "bold",
-    color: Colors.text,
+    color: Colors.black,
   },
   profileCompany: {
     fontSize: 24,
     fontWeight: "bold",
-    color: Colors.accent,
+    color: Colors.violet,
   },
   iconContainer: {
     flexDirection: "row",
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   icon: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     width: 50,
     height: 50,
     borderRadius: 25,
@@ -42,10 +42,10 @@ const styles = StyleSheet.create({
   description: {
     width: "100%",
     fontSize: 16,
-    color: Colors.text,
+    color: Colors.black,
     marginTop: 10,
     padding: 10,
-    borderColor: Colors.accent,
+    borderColor: Colors.violet,
     borderWidth: 2,
     borderRadius: 20,
     textAlign: "left",
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   miniTitle: {
     fontSize: 22,
     fontWeight: "bold",
-    color: Colors.accent,
+    color: Colors.violet,
     marginLeft: 10,
   },
   projectsContainer: {
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "90%",
     padding: 10,
-    borderColor: Colors.accent,
+    borderColor: Colors.violet,
     borderWidth: 2,
     borderRadius: 20,
     marginBottom: 20,
@@ -82,24 +82,24 @@ const styles = StyleSheet.create({
   review: {
     width: "100%",
     padding: 15,
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     borderRadius: 20,
     marginBottom: 10,
   },
   reviewer: {
     fontSize: 18,
     fontWeight: "bold",
-    color: Colors.background,
+    color: Colors.white,
     marginBottom: 5,
     marginRight: 10,
   },
   reviewText: {
     fontSize: 16,
-    color: Colors.background,
+    color: Colors.white,
     marginBottom: 5,
   },
   button: {
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonText: {
-    color: Colors.background,
+    color: Colors.white,
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",

@@ -34,7 +34,7 @@ export default function Select({
           fontSize: 20,
           fontWeight: "bold",
           paddingLeft: 16,
-          color: Colors.background,
+          color: Colors.white,
           ...titleStyle,
         }}
       >
@@ -66,7 +66,7 @@ export default function Select({
             key={index}
             label={choice}
             value={choice}
-            color={pickerTextColor || Colors.background}
+            color={pickerTextColor || Colors.white}
             style={{
               fontSize: 18,
               fontWeight: "bold",

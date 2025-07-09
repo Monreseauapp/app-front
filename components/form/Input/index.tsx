@@ -31,7 +31,7 @@ type InputProps = {
     | "tel" // Global
     | "tel-national" // Android
     | "url"; // IOS
-  offType?: "date";
+  offType?: "date" | "number";
   sameLine?: number;
   multiline?: boolean;
   titleStyle?: object;
@@ -69,7 +69,8 @@ export default function Input({
   } else if (
     type === "postal-code" ||
     type === "one-time-code" ||
-    offType === "date"
+    offType === "date" ||
+    offType === "number"
   ) {
     keyboardType = "numeric";
   }
@@ -108,7 +109,7 @@ export default function Input({
             onChangeText(e.nativeEvent.text);
           }
         }}
-        placeholderTextColor={placeholderTextColor || Colors.accent}
+        placeholderTextColor={placeholderTextColor || Colors.violet}
         placeholder={placeholder}
         ref={inputRef}
         secureTextEntry={type.includes("password")}

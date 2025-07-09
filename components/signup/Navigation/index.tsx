@@ -31,7 +31,7 @@ export default function Navigation({
               height: 40,
             }}
           >
-            <LeftArrow width={40} height={40} color={Colors.background} />
+            <LeftArrow width={40} height={40} color={Colors.white} />
           </Pressable>
 
           {currentPage < pages.length - 1 && type === "company" && (
@@ -45,7 +45,7 @@ export default function Navigation({
                 height: 40,
               }}
             >
-              <RightArrow width={40} height={40} color={Colors.background} />
+              <RightArrow width={40} height={40} color={Colors.white} />
             </Pressable>
           )}
         </>

@@ -111,7 +111,7 @@ export default function ConditionScreen() {
             });
           }}
           style={{
-            backgroundColor: Colors.background,
+            backgroundColor: Colors.white,
             paddingVertical: 12,
             paddingHorizontal: 30,
             borderRadius: 50,
@@ -122,7 +122,7 @@ export default function ConditionScreen() {
             style={{
               fontSize: 20,
               fontWeight: "bold",
-              color: Colors.accent,
+              color: Colors.violet,
             }}
           >
             Continuer

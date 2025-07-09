@@ -37,7 +37,7 @@ export default function PriorityStars({
             }}
           >
             <StarIcon
-              color={i <= starId ? Colors.accent : Colors.text}
+              color={i <= starId ? Colors.violet : Colors.black}
               width={40}
               height={40}
               style={{ marginRight: 5 }}

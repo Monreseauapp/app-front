@@ -2,6 +2,7 @@ import CustomCheckbox from "@/components/form/CustomCheckbox";
 import DocumentInput from "@/components/form/DocumentInput";
 import Input from "@/components/form/Input";
 import InnerNavBar from "@/components/InnerNavBar";
+import CompanyMembers from "@/components/profile/modify/CompanyMembers";
 import JobInformations from "@/components/profile/modify/JobInformations";
 import LinksInputs from "@/components/profile/modify/LinksInputs";
 import PersonalInformations from "@/components/profile/modify/PersonalInformations";
@@ -31,10 +32,6 @@ export default function ModifyProfile() {
   const [isCompanyPage, setIsCompanyPage] = useState(false);
   const [user, setUser] = useState<User>(initialUser);
   const [company, setCompany] = useState<Company>(initialCompany);
-  const [jobDomains, setJobDomains] = useState<
-    { id: string; domaine: string }[]
-  >([]);
-  const [image, setImage] = useState<object | null>(null);
 
   const handleChange = (
     type: "user" | "company",
@@ -72,7 +69,6 @@ export default function ModifyProfile() {
       fetchUserData();
       setCompany(initialCompany);
     } else {
-      console.log("here");
       const fetchCompanyData = async () => {
         axios
           .get(`${API_URL}/users/${userId}/company`)
@@ -105,7 +101,7 @@ export default function ModifyProfile() {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={{ flex: 1, position: "relative" }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={0}
     >
@@ -115,11 +111,11 @@ export default function ModifyProfile() {
         <View
           style={{
             flex: 1,
-            backgroundColor: Colors.background,
+            backgroundColor: Colors.white,
             position: "relative",
           }}
         >
-          {companyId && (
+          {companyId && company.ownerId === userId && (
             <InnerNavBar
               tabs={["Personnel", "Entreprise"]}
               activeIndex={isCompanyPage ? 1 : 0}
@@ -186,15 +182,21 @@ export default function ModifyProfile() {
                     width={35}
                     height={35}
                     style={styles.checkBox}
-                    markerStyle={Colors.background}
+                    markerStyle={Colors.white}
                   />
                 </>
               )}
-              <DocumentInput
-                title="Photo de profil"
-                type={["image/jpeg", "image/png", "image/webp"]}
-                setValue={setImage}
-              />
+              {!isCompanyPage && (
+                <DocumentInput
+                  title="Photo de profil"
+                  category="profile"
+                  type={["image/jpeg", "image/png", "image/webp"]}
+                  setValue={(value) => {
+                    handleChange("user", "photoUrl", value);
+                  }}
+                />
+              )}
+
               {!isCompanyPage && (
                 <JobInformations
                   user={user}
@@ -214,22 +216,25 @@ export default function ModifyProfile() {
                 handleChange={handleChange}
               />
               {isCompanyPage && (
-                <Input
-                  name="Description"
-                  placeholder="Entrez une description"
-                  type="off"
-                  multiline={true}
-                  value={company.description || ""}
-                  onChangeText={(text) =>
-                    handleChange("company", "description", text)
-                  }
-                  inputStyle={{
-                    ...styles.input,
-                    placeholderTextColor: Colors.grey,
-                    height: 100,
-                  }}
-                  titleStyle={styles.inputTitle}
-                />
+                <>
+                  <Input
+                    name="Description"
+                    placeholder="Entrez une description"
+                    type="off"
+                    multiline={true}
+                    value={company.description || ""}
+                    onChangeText={(text) =>
+                      handleChange("company", "description", text)
+                    }
+                    inputStyle={{
+                      ...styles.input,
+                      placeholderTextColor: Colors.grey,
+                      height: 100,
+                    }}
+                    titleStyle={styles.inputTitle}
+                  />
+                  <CompanyMembers />
+                </>
               )}
               <Pressable
                 style={styles.button}

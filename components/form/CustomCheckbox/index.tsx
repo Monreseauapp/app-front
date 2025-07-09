@@ -28,7 +28,7 @@ export default function CustomCheckbox({
             height / (Platform.OS === "web" && screenWidth < 600 ? 1.25 : 1),
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: checked ? Colors.background : Colors.accent,
+          backgroundColor: checked ? Colors.white : Colors.violet,
           ...style,
         }}
       >
@@ -40,7 +40,7 @@ export default function CustomCheckbox({
             height={
               height / (Platform.OS === "web" && screenWidth < 600 ? 2 : 1.5)
             }
-            color={markerStyle || Colors.accent}
+            color={markerStyle || Colors.violet}
           />
         )}
       </View>

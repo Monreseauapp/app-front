@@ -5,7 +5,7 @@ const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   priority: {
-    color: Colors.text,
+    color: Colors.black,
     fontSize: width >= 768 ? 22 : 20,
     fontWeight: "bold",
     paddingHorizontal: 10,

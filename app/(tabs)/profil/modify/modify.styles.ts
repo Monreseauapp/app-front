@@ -5,39 +5,40 @@ const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "100%",
+    flex: 1,
+    position: "relative",
     flexDirection: "column",
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.white,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: Colors.accent,
+    color: Colors.violet,
     marginBottom: 20,
     alignSelf: "center",
   },
   inputsContainer: {
+    flex: 1,
     width: "90%",
     flexDirection: "column",
     alignSelf: "center",
   },
   inputTitle: {
-    color: Colors.text,
+    color: Colors.black,
   },
   input: {
     height: 50,
-    borderColor: Colors.accent,
-    color: Colors.text,
+    borderColor: Colors.violet,
+    color: Colors.black,
     borderWidth: 4,
   },
   checkBox: {
     alignSelf: "center",
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     marginBottom: 20,
   },
   checkBoxTitle: {
-    color: Colors.text,
+    color: Colors.black,
     fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: "center",
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonText: {
-    color: Colors.background,
+    color: Colors.white,
     fontSize: 20,
     fontWeight: "bold",
   },
@@ -68,7 +69,7 @@ const webStyles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: Colors.accent,
+    color: Colors.violet,
     marginBottom: 20,
     alignSelf: "center",
   },

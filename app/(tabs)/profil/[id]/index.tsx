@@ -92,12 +92,12 @@ export default function Profil() {
     <View
       style={{
         flex: 1,
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.white,
         position: "relative",
       }}
     >
       <ScrollView
-        style={{ backgroundColor: Colors.background }}
+        style={{ backgroundColor: Colors.white }}
         contentContainerStyle={{
           justifyContent: "center",
           alignItems: "center",
@@ -142,7 +142,7 @@ export default function Profil() {
                     }
                   >
                     <LinkedinIcon
-                      color={Colors.accent}
+                      color={Colors.violet}
                       width={40}
                       height={40}
                     />
@@ -155,11 +155,7 @@ export default function Profil() {
                       Linking.openURL(`tel:${user?.company?.phone}`)
                     }
                   >
-                    <PhoneIcon
-                      color={Colors.background}
-                      width={40}
-                      height={40}
-                    />
+                    <PhoneIcon color={Colors.white} width={40} height={40} />
                   </Pressable>
                 )}
                 {user?.company?.email && media === "yes" && (
@@ -169,11 +165,7 @@ export default function Profil() {
                       Linking.openURL(`mailto:${user?.company?.email}`)
                     }
                   >
-                    <MailIcon
-                      color={Colors.background}
-                      width={40}
-                      height={40}
-                    />
+                    <MailIcon color={Colors.white} width={40} height={40} />
                   </Pressable>
                 )}
                 {user?.company?.website && (
@@ -183,11 +175,7 @@ export default function Profil() {
                       Linking.openURL(user?.company?.website || "")
                     }
                   >
-                    <WebsiteIcon
-                      color={Colors.background}
-                      width={38}
-                      height={38}
-                    />
+                    <WebsiteIcon color={Colors.white} width={38} height={38} />
                   </Pressable>
                 )}
               </View>
@@ -269,8 +257,8 @@ export default function Profil() {
                               key={i}
                               color={
                                 i < (review.rating || 0)
-                                  ? Colors.background
-                                  : Colors.text
+                                  ? Colors.white
+                                  : Colors.black
                               }
                               width={20}
                               height={20}
@@ -311,8 +299,8 @@ export default function Profil() {
                             0
                           ) /
                             reviews.length
-                            ? Colors.accent
-                            : Colors.text
+                            ? Colors.violet
+                            : Colors.black
                         }
                         width={40}
                         height={40}

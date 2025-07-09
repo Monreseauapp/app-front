@@ -41,18 +41,16 @@ export default function Recommendation({
       `${API_URL}/recommandation/${recommandation.id}`,
       isCompanyReception
         ? {
-            ...recommandation,
             RecoStateCompany: isRejected
               ? RecoState.REJECTED
               : RecoState.ACCEPTED,
             rejectionReasonCompany: rejectionReason,
           }
         : {
-            ...recommandation,
             RecoStateRecipient: isRejected
               ? RecoState.REJECTED
               : RecoState.ACCEPTED,
-            rejectionReasonInitiator: rejectionReason,
+            rejectionReasonRecipient: rejectionReason,
           }
     );
   };
