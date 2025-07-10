@@ -10,34 +10,24 @@ const styles = StyleSheet.create({
     color: Colors.violet,
     marginTop: 50,
   },
-  notification: {
-    position: "absolute",
-    top: 50,
-    left: 30,
+  notifications: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: width >= 768 ? "row" : "column",
+    flexWrap: "wrap",
+    gap: width >= 768 ? 10 : 0,
   },
-  image: {
-    width: 125,
-    height: 125,
-    borderRadius: 100,
-    marginBottom: 20,
-  },
-  profileDescription: {
-    fontSize: 16,
-    color: Colors.black,
-    textAlign: "center",
-    marginBottom: 10,
-  },
-  button: {
+  notificationContainer: {
+    width: width,
     backgroundColor: Colors.violet,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 50,
-    marginTop: 10,
+    padding: 20,
+    marginBottom: 1,
   },
-  buttonText: {
+  notificationText: {
     color: Colors.white,
+    fontSize: 18,
     fontWeight: "bold",
-    fontSize: 20,
   },
 });
 
@@ -48,12 +38,7 @@ const webStyles = StyleSheet.create({
     color: Colors.violet,
     marginTop: 20,
   },
-  notification: {
-    position: "absolute",
-    top: 10,
-    left: width >= 768 ? 110 : 30,
-    zIndex: 10,
-  },
+
   notificationContainer: {
     width: width >= 768 ? "30%" : "100%",
     alignSelf: "center",

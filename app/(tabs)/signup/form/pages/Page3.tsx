@@ -44,7 +44,7 @@ export default function Page3({
           placeholder="+33 6 12 34 56 78"
           type="tel"
           value={user.phone}
-          onChangeText={(text) => handleChangeUser("phone", text)}
+          onChangeText={(text) => handleChangeUser("phone", text.trim())}
           valid={isDataValid}
         />
       )}

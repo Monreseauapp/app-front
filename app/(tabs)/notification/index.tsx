@@ -9,8 +9,27 @@ import { styles, webStyles } from "./notification.styles";
 
 export default function Notification() {
   const router = useRouter();
-  const notifications = useNotificationTransform(useNotificationFetch());
-  console.log("Notifications:", notifications);
+  const MONTHS: Record<number, string> = {
+    1: "janvier",
+    2: "février",
+    3: "mars",
+    4: "avril",
+    5: "mai",
+    6: "juin",
+    7: "juillet",
+    8: "août",
+    9: "septembre",
+    10: "octobre",
+    11: "novembre",
+    12: "décembre",
+  };
+  const { notificationsByDate } = useNotificationTransform(
+    useNotificationFetch()
+  );
+  const date = new Date();
+  const formattedDate = `${date.getDate()} ${
+    MONTHS[date.getMonth() + 1]
+  } ${date.getFullYear()}`;
   const { width } = Dimensions.get("window");
   return (
     <View
@@ -34,109 +53,31 @@ export default function Notification() {
           gap: 30,
         }}
       >
-        <View style={styles.notificationContainer}>
-          <Text style={styles.notificationTitle}>AUJOURD'HUI</Text>
-          <View style={styles.notifications}>
-            <View
-              style={
-                Platform.OS === "web"
-                  ? webStyles.notification
-                  : styles.notification
-              }
-            >
-              <Text style={styles.notificationText}>
-                Vous avez reçu une nouvelle demande de contact.
+        {notificationsByDate &&
+          notificationsByDate.map(([date, notificationList], index) => (
+            <View style={styles.notificationContainer}>
+              <Text style={styles.notificationTitle}>
+                {formattedDate === date ? "Aujourd'hui" : date}
               </Text>
+              <View style={styles.notifications}>
+                {notificationList &&
+                  (notificationList as string[]).map((notification, idx) => (
+                    <View
+                      key={idx}
+                      style={
+                        Platform.OS === "web"
+                          ? webStyles.notification
+                          : styles.notification
+                      }
+                    >
+                      <Text style={styles.notificationText}>
+                        {notification}
+                      </Text>
+                    </View>
+                  ))}
+              </View>
             </View>
-            <View
-              style={
-                Platform.OS === "web"
-                  ? webStyles.notification
-                  : styles.notification
-              }
-            >
-              <Text style={styles.notificationText}>
-                Votre profil a été consulté par un membre de votre réseau.
-              </Text>
-            </View>
-            <View
-              style={
-                Platform.OS === "web"
-                  ? webStyles.notification
-                  : styles.notification
-              }
-            >
-              <Text style={styles.notificationText}>
-                Vous avez reçu une nouvelle demande de contact.
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.notificationContainer}>
-          <Text style={styles.notificationTitle}>LE 17 JUIN 2025</Text>
-          <View style={styles.notifications}>
-            <View
-              style={
-                Platform.OS === "web"
-                  ? webStyles.notification
-                  : styles.notification
-              }
-            >
-              <Text style={styles.notificationText}>
-                Vous avez reçu une nouvelle demande de contact.
-              </Text>
-            </View>
-            <View
-              style={
-                Platform.OS === "web"
-                  ? webStyles.notification
-                  : styles.notification
-              }
-            >
-              <Text style={styles.notificationText}>
-                Votre profil a été consulté par un membre de votre réseau.
-              </Text>
-            </View>
-            <View
-              style={
-                Platform.OS === "web"
-                  ? webStyles.notification
-                  : styles.notification
-              }
-            >
-              <Text style={styles.notificationText}>
-                Vous avez reçu une nouvelle demande de contact.
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.notificationContainer}>
-          <Text style={styles.notificationTitle}>LE 16 JUIN 2025</Text>
-          <View style={styles.notifications}>
-            <View
-              style={
-                Platform.OS === "web"
-                  ? webStyles.notification
-                  : styles.notification
-              }
-            >
-              <Text style={styles.notificationText}>
-                Vous avez reçu une nouvelle demande de contact.
-              </Text>
-            </View>
-            <View
-              style={
-                Platform.OS === "web"
-                  ? webStyles.notification
-                  : styles.notification
-              }
-            >
-              <Text style={styles.notificationText}>
-                Votre profil a été consulté par un membre de votre réseau.
-              </Text>
-            </View>
-          </View>
-        </View>
+          ))}
       </ScrollView>
     </View>
   );

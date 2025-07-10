@@ -7,7 +7,7 @@ import styles, { webStyles } from "./pages.styles";
 interface Page2Props {
   type: "company" | "guest";
   user: User;
-  jobDomains: { id: string; domaine: string }[];
+  company: Company;
   handleChangeUser: (
     field: keyof User,
     value: string | number | boolean | undefined
@@ -22,7 +22,7 @@ interface Page2Props {
 export default function Page2({
   type,
   user,
-  jobDomains,
+  company,
   handleChangeUser,
   handleChangeCompany,
   isDataValid = undefined,
@@ -43,14 +43,24 @@ export default function Page2({
         valid={isDataValid}
       />
       {type === "company" && (
-        <Input
-          name="Email de l'entreprise"
-          placeholder="exemple@gmail.com"
-          type="email"
-          value={user.email}
-          onChangeText={(text) => handleChangeCompany("email", text)}
-          valid={isDataValid}
-        />
+        <>
+          <Input
+            name="Nom de l'entreprise"
+            placeholder="Google"
+            type="organization"
+            value={company.name}
+            onChangeText={(text) => handleChangeCompany("name", text)}
+            valid={isDataValid}
+          />
+          <Input
+            name="Email de l'entreprise"
+            placeholder="exemple@gmail.com"
+            type="email"
+            value={company.email}
+            onChangeText={(text) => handleChangeCompany("email", text)}
+            valid={isDataValid}
+          />
+        </>
       )}
     </View>
   );

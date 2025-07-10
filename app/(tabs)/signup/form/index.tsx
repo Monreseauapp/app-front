@@ -4,9 +4,8 @@ import { initialCompany } from "@/constants/initial-types-value/initialCompany";
 import { initialUser } from "@/constants/initial-types-value/initialUser";
 import { AppContext } from "@/context/context";
 import { Company, SubscriptionType, User } from "@/types";
-import axios from "axios";
 import { useLocalSearchParams } from "expo-router";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -35,9 +34,6 @@ export default function FormSignUp() {
   const { type } = useLocalSearchParams<{ type: "company" | "guest" }>();
   const flatListRef = useRef<FlatList>(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [jobDomains, setJobDomains] = useState<
-    { id: string; domaine: string }[]
-  >([]);
   const [user, setUser] = useState<User>(initialUser);
 
   const [company, setCompany] = useState<Company>(initialCompany);
@@ -61,26 +57,6 @@ export default function FormSignUp() {
     setSubscriptionType(undefined);
     setIsDataValid(false);
   };
-
-  useEffect(() => {
-    const fetchJobDomains = async () => {
-      axios
-        .get(`${API_URL}/job-domain`)
-        .then((response) => {
-          const domains = response.data;
-          setJobDomains(
-            domains.map((domain: { id: string; domaine: string }) => ({
-              id: domain.id,
-              domaine: domain.domaine,
-            }))
-          );
-        })
-        .catch((error) => {
-          console.error("Error fetching job domains:", error.response);
-        });
-    };
-    fetchJobDomains();
-  }, []);
 
   const scrollToPage = (index: number) => {
     if (flatListRef.current) {
@@ -124,7 +100,7 @@ export default function FormSignUp() {
         <Page2
           type={type}
           user={user}
-          jobDomains={jobDomains}
+          company={company}
           handleChangeUser={handleChangeUser}
           handleChangeCompany={handleChangeCompany}
           isDataValid={isDataValid}
@@ -176,6 +152,7 @@ export default function FormSignUp() {
         <Page7
           user={user}
           company={company}
+          subscriptionType={subscriptionType}
           resetForm={resetForm}
           setIsDataValid={setIsDataValid}
           isDataValid={isDataValid}

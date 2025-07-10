@@ -43,7 +43,11 @@ export default function useNotificationTransform<T extends NotificationData>(
     ...(companyRecommendations || []),
     ...(projectsInitiated || []),
     ...(projectsReceived || []),
-  ];
+  ].sort((a, b) => {
+    const dateA = new Date(a.updatedAt);
+    const dateB = new Date(b.updatedAt);
+    return dateB.getTime() - dateA.getTime();
+  });
 
   const notifications = transformedData.map((item) => {
     let text = "";
@@ -96,7 +100,8 @@ export default function useNotificationTransform<T extends NotificationData>(
     }
   );
   return {
-    notifications: sortedNotificationsByDate
+    notifications: notifications,
+    notificationsByDate: sortedNotificationsByDate
       .map(([dateStr, notifications]) => {
         const [day, month, year] = dateStr.split(" ");
         return [`${day} ${MONTHS[Number(month)]} ${year}`, notifications];

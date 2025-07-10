@@ -1,27 +1,22 @@
-import AddressInputs from "@/components/AddressInputs";
-import CustomCheckbox from "@/components/form/CustomCheckbox";
-import Input from "@/components/form/Input";
-import Search from "@/components/form/Search/Search";
-import CompanyDetails from "@/components/recommendation/CompanyDetails";
+import CompanyInformations from "@/components/recommendation/CompanyInformations";
+import CompanyNumber from "@/components/recommendation/CompanyNumber";
 import DetailsInput from "@/components/recommendation/DetailsInput";
-import PersonalInformations from "@/components/recommendation/PersonalInformations";
-import PersonTypeSelector from "@/components/recommendation/PersonTypeSelector";
 import PriorityStars from "@/components/recommendation/PriorityStars";
+import UserInformations from "@/components/recommendation/UserInformations";
+import ValidateForm from "@/components/recommendation/ValidateForm";
 import { Colors } from "@/constants/Colors";
 import { initialProject } from "@/constants/initial-types-value/initialProject";
 import { initialRecommendation } from "@/constants/initial-types-value/initialRecommendation";
 import { AppContext } from "@/context/context";
-import useFormValidation from "@/hooks/useFormValidation";
-import { Project, Recommandation, User } from "@/types";
+import { Company, Project, Recommandation, User } from "@/types";
 import axios from "axios";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import {
   Dimensions,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   Text,
   TouchableWithoutFeedback,
   View,
@@ -33,7 +28,7 @@ type RecommendationFormParams = {
   type: "company" | "lead" | "project";
 };
 
-type RecommendationFormTitles = {
+export type RecommendationFormTitles = {
   label: RecommendationFormParams["type"];
   title: string;
   sendText: string;
@@ -42,7 +37,6 @@ type RecommendationFormTitles = {
 export default function RecommendationForm() {
   const { width } = Dimensions.get("window");
   const { API_URL, userId } = useContext(AppContext);
-  const router = useRouter();
   const { type } = useLocalSearchParams<RecommendationFormParams>();
   const titles: RecommendationFormTitles[] = [
     {
@@ -72,14 +66,10 @@ export default function RecommendationForm() {
     userId: userId?.toString() || "",
     priority: starId + 1,
   });
-  const [companies, setCompanies] = useState<{ id: string; name: string }[]>(
-    []
-  );
+  const [companies, setCompanies] = useState<Company[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [companyName, setCompanyName] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
-  const [internUser, setInternUser] = useState<boolean>(true);
-  const [internCompany, setInternCompany] = useState<boolean>(true);
   const [isDataValid, setIsDataValid] = useState<boolean | undefined>(
     undefined
   );
@@ -92,8 +82,6 @@ export default function RecommendationForm() {
     });
     setCompanyName("");
     setUserName("");
-    setInternUser(true);
-    setInternCompany(true);
     setIsDataValid(undefined);
     setStarId(0);
   };
@@ -102,7 +90,7 @@ export default function RecommendationForm() {
     key: keyof Recommandation | keyof Project,
     value: any
   ) => {
-    if (type === "project" && key in project) {
+    if (type === "project") {
       setProject((prev) => ({ ...prev, [key]: value }));
       return;
     }
@@ -114,12 +102,7 @@ export default function RecommendationForm() {
       const fetchCompanies = async () => {
         axios.get(`${API_URL}/company`).then((response) => {
           const resp = response.data;
-          setCompanies(
-            resp.map((company: { id: string; name: string }) => ({
-              id: company.id,
-              name: company.name,
-            }))
-          );
+          setCompanies(resp);
         });
       };
       fetchCompanies();
@@ -132,25 +115,6 @@ export default function RecommendationForm() {
     };
     fetchUsers();
   }, []);
-
-  const sendRecommendationData = async () => {
-    axios
-      .post(`${API_URL}/recommandation`, {
-        ...recommandation,
-        recipientId: users.find(
-          (u) => u.firstName + " " + u.lastName === userName
-        )?.id,
-      })
-      .catch((error) => {
-        console.error("Error sending recommendation:", error);
-      });
-  };
-
-  const sendProjectData = async () => {
-    axios.post(`${API_URL}/project`, project).catch((error) => {
-      console.error("Error sending project:", error);
-    });
-  };
 
   return (
     <KeyboardAvoidingView
@@ -187,154 +151,34 @@ export default function RecommendationForm() {
                 alignSelf: "center",
               }}
             >
-              {type === "project" && (
-                <>
-                  <View style={styles.checkboxContainer}>
-                    <Text style={styles.checkboxText}>
-                      Voulez-vous que le projet soit public ?
-                    </Text>
-                    <CustomCheckbox
-                      checked={project.isPublic}
-                      onChange={(checked) => handleChange("isPublic", checked)}
-                      width={35}
-                      height={35}
-                      style={styles.checkbox}
-                      markerStyle={Colors.white}
-                    />
-                  </View>
-                  <Input
-                    name="Nombre d'entreprises auxquelles vous voulez ouvrir le projet"
-                    placeholder="0"
-                    type="off"
-                    offType="number"
-                    titleStyle={styles.inputTitle}
-                    inputStyle={{
-                      ...styles.input,
-                      color: Colors.black,
-                      placeholderTextColor: Colors.white,
-                    }}
-                    value={project.companyNumber?.toString()}
-                    onChangeText={(text) =>
-                      handleChange(
-                        "companyNumber",
-                        Number(text.replace(/\D/g, "")) || undefined
-                      )
-                    }
-                    valid={isDataValid}
-                  />
-                </>
-              )}
-              {((type === "project" && project.companyNumber === 1) ||
-                type === "company") && (
-                <>
-                  <PersonTypeSelector
-                    intern={internCompany}
-                    setIntern={setInternCompany}
-                    type="company"
-                  />
-                  {internCompany ? (
-                    <Search
-                      name="Nom de l'entreprise"
-                      list={companies.map((c) => c.name)}
-                      placeholder="Chercher une entreprise..."
-                      titleStyle={styles.inputTitle}
-                      inputStyle={{
-                        ...styles.input,
-                        color: Colors.white,
-                        placeholderTextColor: Colors.white,
-                      }}
-                      value={companyName}
-                      onChangeText={(text) => {
-                        setCompanyName(text);
-                        handleChange(
-                          "companyId",
-                          companies.find((c) => c.name === text)?.id || ""
-                        );
-                      }}
-                      valid={isDataValid}
-                    />
-                  ) : (
-                    <>
-                      <CompanyDetails
-                        data={type === "company" ? recommandation : project}
-                        handleChange={handleChange}
-                        isDataValid={isDataValid}
-                      />
-                    </>
-                  )}
-                </>
-              )}
-              {type !== "project" ? (
-                <>
-                  <PersonTypeSelector
-                    intern={internUser}
-                    setIntern={setInternUser}
-                    type="user"
-                  />
-                  {internUser ? (
-                    <>
-                      <Search
-                        name="Nom de l'utilisateur"
-                        list={users.map((u) => u.firstName + " " + u.lastName)}
-                        placeholder="Chercher un utilisateur..."
-                        titleStyle={styles.inputTitle}
-                        inputStyle={{
-                          ...styles.input,
-                          color: Colors.white,
-                          placeholderTextColor: Colors.white,
-                        }}
-                        value={userName}
-                        onChangeText={(text) => {
-                          setUserName(text);
-                          const user =
-                            users.find(
-                              (u) => u.firstName + " " + u.lastName === text
-                            ) || "";
-                          if (user) {
-                            (
-                              Object.keys(
-                                recommandation
-                              ) as (keyof Recommandation)[]
-                            ).forEach((key) => {
-                              if (key in user && key !== "companyId") {
-                                handleChange(key, user[key as keyof User]);
-                              }
-                            });
-                          }
-                        }}
-                        valid={internUser && isDataValid}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <PersonalInformations
-                        recommandation={recommandation}
-                        handleChange={handleChange}
-                        isDataValid={isDataValid}
-                      />
-                      <AddressInputs
-                        data={recommandation}
-                        handleChange={handleChange}
-                        isDataValid={isDataValid}
-                      />
-                    </>
-                  )}
-                </>
-              ) : (
-                <Input
-                  name="Nom du projet"
-                  placeholder="Développement d'une application mobile"
-                  type="off"
-                  titleStyle={styles.inputTitle}
-                  inputStyle={{
-                    ...styles.input,
-                    placeholderTextColor: Colors.grey,
-                  }}
-                  value={project.name}
-                  onChangeText={(text) => handleChange("name", text || "")}
-                  valid={isDataValid}
+              <CompanyNumber
+                type={type}
+                project={project}
+                handleChange={handleChange}
+                isDataValid={isDataValid}
+              />
+              {!project.isPublic && (
+                <CompanyInformations
+                  type={type}
+                  project={project}
+                  recommandation={recommandation}
+                  companies={companies}
+                  companyName={companyName}
+                  setCompanyName={setCompanyName}
+                  handleChange={handleChange}
+                  isDataValid={isDataValid || project.isPublic}
                 />
               )}
+              <UserInformations
+                type={type}
+                recommandation={recommandation}
+                project={project}
+                users={users}
+                userName={userName}
+                setUserName={setUserName}
+                handleChange={handleChange}
+                isDataValid={isDataValid}
+              />
               <DetailsInput
                 type={type}
                 recommandation={recommandation}
@@ -346,33 +190,14 @@ export default function RecommendationForm() {
                 <PriorityStars starId={starId} setStarId={setStarId} />
               )}
             </View>
-            <View style={{ alignSelf: "center" }}>
-              <Pressable
-                onPress={() => {
-                  const data = type === "project" ? project : recommandation;
-                  let valid: boolean;
-                  if ("addressComplement" in data) {
-                    const { addressComplement, ...rest } = data;
-                    valid = useFormValidation(rest);
-                  } else {
-                    valid = useFormValidation(data);
-                  }
-                  setIsDataValid(valid);
-                  if (valid) {
-                    type === "project"
-                      ? sendProjectData()
-                      : sendRecommendationData();
-                    resetForm();
-                    router.back();
-                  }
-                }}
-                style={styles.validationButton}
-              >
-                <Text style={styles.buttonText}>
-                  {titles.find((title) => title.label === type)?.sendText}
-                </Text>
-              </Pressable>
-            </View>
+            <ValidateForm
+              type={type}
+              titles={titles}
+              project={project}
+              recommandation={recommandation}
+              setIsDataValid={setIsDataValid}
+              resetForm={resetForm}
+            />
           </KeyboardAwareScrollView>
         </View>
       </TouchableWithoutFeedback>

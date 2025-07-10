@@ -16,47 +16,9 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     marginHorizontal: "auto",
   },
-
-  inputTitle: {
-    color: Colors.black,
-  },
-  input: {
-    borderColor: Colors.violet,
-    color: Colors.black,
-    borderWidth: 4,
-  },
   select: {
     backgroundColor: Colors.white,
     color: Colors.black,
-  },
-  validationButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: Colors.violet,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20,
-    marginBottom: 80,
-  },
-  buttonText: {
-    color: Colors.white,
-    fontWeight: "bold",
-    fontSize: 18,
-  },
-  checkboxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginVertical: 10,
-  },
-  checkboxText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: Colors.black,
-  },
-  checkbox: {
-    backgroundColor: Colors.violet,
   },
 });
 

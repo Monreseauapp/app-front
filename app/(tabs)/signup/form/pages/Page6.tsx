@@ -21,7 +21,7 @@ export default function Page6({
           placeholder="Expliquez-nous en quelques mots votre expérience."
           type="off"
           multiline={true}
-          valid={isDataValid}
+          // valid={isDataValid}
         />
       </View>
       <CheckBoxList

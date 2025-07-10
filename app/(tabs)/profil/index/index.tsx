@@ -7,8 +7,8 @@ import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { Company, Review, User } from "@/types";
 import axios from "axios";
-import { Link } from "expo-router";
-import { useContext, useEffect, useState } from "react";
+import { Link, useFocusEffect } from "expo-router";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -28,36 +28,38 @@ export default function Profil() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewers, setReviewers] = useState<User[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchProfileData = async (id: string) => {
-        const response = await axios
-          .get(`${API_URL}/users/${id}/company`)
-          .then((response) => {
-            const userData = response.data;
-            setUser(userData);
-          })
-          .catch((error) => {
-            console.error("Error fetching user data:", error.request);
-          });
-        return response;
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        const fetchProfileData = async (id: string) => {
+          const response = await axios
+            .get(`${API_URL}/users/${id}/company`)
+            .then((response) => {
+              const userData = response.data;
+              setUser(userData);
+            })
+            .catch((error) => {
+              console.error("Error fetching user data:", error.request);
+            });
+          return response;
+        };
+        const fetchReviews = async () => {
+          const response = await axios
+            .get(`${API_URL}/review/company/${companyId}`)
+            .then((response) => response.data)
+            .catch((error) => {
+              console.error("Error fetching reviews:", error.request);
+            });
+          setReviews(response);
+        };
+        fetchProfileData(userId as string);
+        if (companyId) {
+          fetchReviews();
+        }
       };
-      const fetchReviews = async () => {
-        const response = await axios
-          .get(`${API_URL}/review/company/${companyId}`)
-          .then((response) => response.data)
-          .catch((error) => {
-            console.error("Error fetching reviews:", error.request);
-          });
-        setReviews(response);
-      };
-      fetchProfileData(userId as string);
-      if (companyId) {
-        fetchReviews();
-      }
-    };
-    fetchData();
-  }, [userId, companyId]);
+      fetchData();
+    }, [userId, companyId, API_URL])
+  );
 
   useEffect(() => {
     const fetchReviewers = async () => {
