@@ -19,6 +19,7 @@ import styles, { webStyles } from "./home.styles";
 
 export default function Home() {
   const { width } = Dimensions.get("window");
+  console.log(width);
   const { userId, companyId } = useContext(AppContext);
   const [user, setUser] = useState<User | null>(null);
   const MONTHS: Record<number, string> = {
@@ -153,8 +154,8 @@ export default function Home() {
             </Link>
           </View>
         )}
+        <Dashboard />
       </View>
-      <Dashboard />
       <News />
     </ScrollView>
   );
