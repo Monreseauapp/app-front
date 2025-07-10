@@ -4,7 +4,7 @@ import Input from "../form/Input";
 import styles from "./AddressInputs.styles";
 
 interface AddressFields {
-  address: string;
+  address?: string;
   addressComplement?: string | null;
   city: string;
   postalCode?: string | number;

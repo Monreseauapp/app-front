@@ -47,7 +47,10 @@ export default function JobDomainSelect<T extends JobDomainData>({
   return (
     <Select
       title="Domaine d'activité"
-      choices={jobDomains.map((domain) => domain.domaine)}
+      choices={[
+        "Choisissez un domaine",
+        ...jobDomains.map((domain) => domain.domaine),
+      ]}
       selectStyle={style}
       titleStyle={titleStyle}
       selected={

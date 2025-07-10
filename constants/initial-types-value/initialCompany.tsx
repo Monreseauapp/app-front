@@ -1,14 +1,9 @@
 export const initialCompany = {
   name: "",
-  address: "",
-  addressComplement: "",
-  postalCode: undefined,
   city: "",
-  country: "",
   email: "",
   phone: "",
-  subscriptionId: "free",
-  ownerId: "",
+  subscriptionId: null,
   retentionDate: new Date(
     new Date().setFullYear(new Date().getFullYear() + 3)
   ).toISOString(),

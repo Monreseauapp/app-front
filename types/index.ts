@@ -73,11 +73,11 @@ export interface User {
   email: string;
   photoUrl?: string | null;
   jobTitle?: string | null;
-  address: string;
+  address?: string;
   addressComplement?: string;
-  postalCode: number | undefined;
+  postalCode?: number | undefined;
   city: string;
-  country: string;
+  country?: string;
   createdAt?: Date | string;
   updatedAt: Date | string;
   lastLogin?: (Date | string) | null;
@@ -102,11 +102,11 @@ export interface JobDomain {
 export interface Company {
   id?: string;
   name: string;
-  address: string;
+  address?: string;
   addressComplement?: string;
-  postalCode: number | undefined;
+  postalCode?: number | undefined;
   city: string;
-  country: string;
+  country?: string;
   createdAt?: Date | string;
   updatedAt: Date | string;
   lastLogin: Date | string;
@@ -118,7 +118,7 @@ export interface Company {
   description?: string | null;
   linkedin?: string | null;
   subscriptionId?: string | null;
-  ownerId: string;
+  ownerId?: string;
   OpentoReco: boolean;
   retentionDate: Date | string;
 }
@@ -179,20 +179,20 @@ export interface Project {
   updatedAt: Date | string;
   name: string;
   description?: string | null;
-  companyName: string | null;
+  companyName?: string | null;
   companyAddress?: string | null;
   companyAddressComplement?: string | null;
   companyPostalCode?: number | null;
-  companyCity: string | null;
-  companyEmail: string | null;
-  companyPhone: string | null;
+  companyCity?: string | null;
+  companyEmail?: string | null;
+  companyPhone?: string | null;
   companyJobDomain?: string | null;
   startDate?: (Date | string) | null;
   endDate?: (Date | string) | null;
   priority?: number;
   isPublic: boolean;
   companyNumber: number;
-  companyId: string;
+  companyId?: string;
   projectState?: ProjectState;
   ProjectChoiceCompany: ProjectChoiceState;
   RejectionReasonCompany?: string | null;

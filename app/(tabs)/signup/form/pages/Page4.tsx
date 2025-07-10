@@ -57,8 +57,8 @@ export default function Page4({
         type="tel"
         value={company.phone}
         onChangeText={(text) => {
-          handleChangeUser("phone", text);
-          handleChangeCompany("phone", text);
+          handleChangeUser("phone", text.trim());
+          handleChangeCompany("phone", text.trim());
         }}
         valid={isDataValid}
       />

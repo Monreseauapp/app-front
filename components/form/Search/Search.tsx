@@ -14,6 +14,7 @@ type InputProps = {
   value?: string;
   onChangeText?: (text: string) => void;
   valid?: boolean;
+  zIndex?: number;
 };
 
 export default function Search({
@@ -27,6 +28,7 @@ export default function Search({
   value,
   onChangeText,
   valid = undefined,
+  zIndex = 0,
 }: InputProps) {
   const { placeholderTextColor }: any = inputStyle || {};
   if (placeholderTextColor) {
@@ -58,7 +60,7 @@ export default function Search({
         marginBottom: 20,
         position: "relative",
         overflow: "visible",
-        zIndex: 10,
+        zIndex: 10 + zIndex,
       }}
     >
       <Text

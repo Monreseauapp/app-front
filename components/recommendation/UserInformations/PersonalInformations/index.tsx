@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/Colors";
 import { Recommandation } from "@/types";
 import { Platform, View } from "react-native";
-import Input from "../../form/Input";
+import Input from "../../../form/Input";
 import styles from "./PersonalInformations.styles";
 
 interface PersonalInformationsProps {
@@ -35,7 +35,7 @@ export default function PersonalInformations({
             placeholderTextColor: Colors.grey,
           }}
           value={recommandation.firstName}
-          onChangeText={(text) => handleChange("firstName", text)}
+          onChangeText={(text: string) => handleChange("firstName", text)}
           valid={isDataValid}
         />
         <Input
@@ -50,7 +50,7 @@ export default function PersonalInformations({
             alignSelf: "flex-end",
           }}
           value={recommandation.lastName}
-          onChangeText={(text) => handleChange("lastName", text)}
+          onChangeText={(text: string) => handleChange("lastName", text)}
           valid={isDataValid}
         />
       </View>
@@ -64,7 +64,7 @@ export default function PersonalInformations({
           placeholderTextColor: Colors.grey,
         }}
         value={recommandation.phone}
-        onChangeText={(text) => handleChange("phone", text)}
+        onChangeText={(text: string) => handleChange("phone", text)}
         valid={isDataValid}
       />
       <Input
@@ -77,7 +77,7 @@ export default function PersonalInformations({
           placeholderTextColor: Colors.grey,
         }}
         value={recommandation.email}
-        onChangeText={(text) => handleChange("email", text)}
+        onChangeText={(text: string) => handleChange("email", text)}
         valid={isDataValid}
       />
     </>

@@ -58,8 +58,7 @@ export default function CompanyDetails({
         handleChange={(key, value) =>
           handleChange(key as keyof Recommandation | keyof Project, value)
         }
-        domainIdKey="companyDomainId"
-        valid={isDataValid}
+        domainIdKey="companyJobDomain"
       />
       <View
         style={{
@@ -78,7 +77,6 @@ export default function CompanyDetails({
           inputStyle={{
             ...styles.input,
             placeholderTextColor: Colors.grey,
-            color: Colors.violet,
           }}
           value={data.companyAddress || ""}
           onChangeText={(text) => handleChange("companyAddress", text)}
@@ -93,7 +91,6 @@ export default function CompanyDetails({
             ...styles.input,
             placeholderTextColor: Colors.grey,
             alignSelf: "flex-end",
-            color: Colors.violet,
           }}
           value={data.companyAddressComplement ?? ""}
           onChangeText={(text) =>
@@ -109,7 +106,6 @@ export default function CompanyDetails({
           inputStyle={{
             ...styles.input,
             placeholderTextColor: Colors.grey,
-            color: Colors.violet,
           }}
           value={data.companyCity || ""}
           onChangeText={(text) => handleChange("companyCity", text)}
@@ -125,7 +121,6 @@ export default function CompanyDetails({
             ...styles.input,
             placeholderTextColor: Colors.grey,
             alignSelf: "flex-end",
-            color: Colors.violet,
           }}
           value={data.companyPostalCode?.toString()}
           onChangeText={(text) =>

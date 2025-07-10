@@ -7,8 +7,8 @@ import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { Company, Review, User } from "@/types";
 import axios from "axios";
-import { Link } from "expo-router";
-import { useContext, useEffect, useState } from "react";
+import { Link, useFocusEffect } from "expo-router";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -28,36 +28,38 @@ export default function Profil() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewers, setReviewers] = useState<User[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchProfileData = async (id: string) => {
-        const response = await axios
-          .get(`${API_URL}/users/${id}/company`)
-          .then((response) => {
-            const userData = response.data;
-            setUser(userData);
-          })
-          .catch((error) => {
-            console.error("Error fetching user data:", error.request);
-          });
-        return response;
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        const fetchProfileData = async (id: string) => {
+          const response = await axios
+            .get(`${API_URL}/users/${id}/company`)
+            .then((response) => {
+              const userData = response.data;
+              setUser(userData);
+            })
+            .catch((error) => {
+              console.error("Error fetching user data:", error.request);
+            });
+          return response;
+        };
+        const fetchReviews = async () => {
+          const response = await axios
+            .get(`${API_URL}/review/company/${companyId}`)
+            .then((response) => response.data)
+            .catch((error) => {
+              console.error("Error fetching reviews:", error.request);
+            });
+          setReviews(response);
+        };
+        fetchProfileData(userId as string);
+        if (companyId) {
+          fetchReviews();
+        }
       };
-      const fetchReviews = async () => {
-        const response = await axios
-          .get(`${API_URL}/review/company/${companyId}`)
-          .then((response) => response.data)
-          .catch((error) => {
-            console.error("Error fetching reviews:", error.request);
-          });
-        setReviews(response);
-      };
-      fetchProfileData(userId as string);
-      if (companyId) {
-        fetchReviews();
-      }
-    };
-    fetchData();
-  }, [userId, companyId]);
+      fetchData();
+    }, [userId, companyId, API_URL])
+  );
 
   useEffect(() => {
     const fetchReviewers = async () => {
@@ -113,6 +115,7 @@ export default function Profil() {
                 onPress={() => Linking.openURL(user?.company?.linkedin || "")}
               >
                 <LinkedinIcon color={Colors.violet} width={40} height={40} />
+                <LinkedinIcon color={Colors.violet} width={40} height={40} />
               </Pressable>
             )}
             {user?.company?.phone && (
@@ -120,6 +123,7 @@ export default function Profil() {
                 style={styles.icon}
                 onPress={() => Linking.openURL(`tel:${user?.company?.phone}`)}
               >
+                <PhoneIcon color={Colors.white} width={40} height={40} />
                 <PhoneIcon color={Colors.white} width={40} height={40} />
               </Pressable>
             )}
@@ -131,6 +135,7 @@ export default function Profil() {
                 }
               >
                 <MailIcon color={Colors.white} width={40} height={40} />
+                <MailIcon color={Colors.white} width={40} height={40} />
               </Pressable>
             )}
             {user?.company?.website && (
@@ -138,6 +143,7 @@ export default function Profil() {
                 style={styles.icon}
                 onPress={() => Linking.openURL(user?.company?.website || "")}
               >
+                <WebsiteIcon color={Colors.white} width={38} height={38} />
                 <WebsiteIcon color={Colors.white} width={38} height={38} />
               </Pressable>
             )}
@@ -220,6 +226,8 @@ export default function Profil() {
                               i < (review.rating || 0)
                                 ? Colors.white
                                 : Colors.black
+                                ? Colors.white
+                                : Colors.black
                             }
                             width={20}
                             height={20}
@@ -260,6 +268,8 @@ export default function Profil() {
                           0
                         ) /
                           reviews.length
+                          ? Colors.violet
+                          : Colors.black
                           ? Colors.violet
                           : Colors.black
                       }

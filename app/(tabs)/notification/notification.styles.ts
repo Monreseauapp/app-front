@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     color: Colors.violet,
   },
   notificationContainer: {
-    flex: 1,
     alignItems: "flex-start",
     marginBottom: 20,
   },

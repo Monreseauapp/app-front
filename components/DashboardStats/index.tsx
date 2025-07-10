@@ -20,7 +20,6 @@ export default function DashboardStats({ title, stats }: DashboardStatsProps) {
         flexDirection: "column",
         alignItems: "center",
         width: "auto",
-        marginVertical: width >= 768 ? 20 : 10,
       }}
     >
       <View style={{ marginBottom: 10 }}>

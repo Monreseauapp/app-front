@@ -31,7 +31,7 @@ export default function DetailsInput({
             ...styles.input,
             placeholderTextColor: Colors.grey,
           }}
-          value={recommandation.description ?? ""}
+          value={recommandation.description || ""}
           onChangeText={(text) => handleChange("description", text)}
           valid={isDataValid}
         />
@@ -49,7 +49,7 @@ export default function DetailsInput({
           value={
             (type === "project"
               ? project.description
-              : recommandation.description) ?? ""
+              : recommandation.description) || ""
           }
           onChangeText={(text) => handleChange("description", text)}
           valid={isDataValid}

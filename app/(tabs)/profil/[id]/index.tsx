@@ -206,27 +206,7 @@ export default function Profil() {
                   </Text>
                 </>
               )}
-              {/* <Text style={styles.miniTitle}>Mes certifications</Text>
-            <Text style={styles.description}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
-              officia, vero blanditiis, eaque tempore perferendis eligendi
-              placeat cupiditate commodi atque accusamus asperiores similique
-              recusandae vel inventore pariatur neque vitae? Magni!
-            </Text> */}
             </View>
-            {/* <View style={styles.projectsContainer}>
-            <Text style={styles.miniTitle}>Supports et réalisations</Text>
-            <View style={styles.projects}>
-              <Image
-                source={require("@/assets/images/wordle.png")}
-                style={styles.image}
-              />
-              <Image
-                source={require("@/assets/images/sudokusolver.png")}
-                style={styles.image}
-              />
-            </View>
-          </View> */}
             {reviews.length > 0 && (
               <View style={{ alignItems: "flex-start", width: "90%" }}>
                 <View style={{ width: "100%" }}>
