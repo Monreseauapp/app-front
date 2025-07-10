@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   text: {
     fontSize: 16,
-    color: Colors.background,
+    color: Colors.white,
   },
   span: {
     fontWeight: "bold",
@@ -32,11 +32,11 @@ const styles = StyleSheet.create({
   validationButton: {
     padding: 10,
     borderRadius: 5,
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     marginTop: 10,
   },
   validationText: {
-    color: Colors.background,
+    color: Colors.white,
     fontSize: 18,
     fontWeight: "bold",
   },

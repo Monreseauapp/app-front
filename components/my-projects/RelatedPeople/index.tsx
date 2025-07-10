@@ -38,7 +38,7 @@ export default function RelatedPeople({
             {initiator?.firstName} {initiator?.lastName}
           </Text>
         </Link>
-        <RightArrow width={40} height={40} color={Colors.background} />
+        <RightArrow width={40} height={40} color={Colors.white} />
         <Link
           href={{
             pathname: "/profil/[id]",

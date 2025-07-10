@@ -1,73 +1,102 @@
-import { Colors } from "@/constants/Colors";
 import { Link, useRouter } from "expo-router";
-import { Image, Pressable, StatusBar, Text, View } from "react-native";
-import styles from "./index.styles";
+import {
+  Image,
+  Platform,
+  Pressable,
+  StatusBar,
+  Text,
+  View,
+} from "react-native";
+import { styles, webStyles } from "./index.styles";
 
 export default function Index() {
   const router = useRouter();
 
   return (
-    <View
-      style={{
-        flex: 1,
-        height: 90,
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: Colors.background,
-        position: "relative",
-      }}
-    >
+    <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
       <Image
         source={require("@/assets/images/white-logo.png")}
-        style={styles.logo}
+        style={Platform.select({
+          web: webStyles.logo,
+          default: styles.logo,
+        })}
       />
       <Text
-        style={{
-          fontWeight: "bold",
-          fontSize: 30,
-        }}
+        style={Platform.select({ web: webStyles.title, default: styles.title })}
       >
         Je m'inscris
       </Text>
       <Text
-        style={{
-          fontSize: 20,
-        }}
+        style={Platform.select({
+          web: webStyles.subTitle,
+          default: styles.subTitle,
+        })}
       >
         (inscription obligatoire)
       </Text>
-      <Pressable
-        style={[styles.button, { marginTop: 40 }]}
-        onPress={() => {
-          router.push({
-            pathname: "/signup",
-            params: { type: "company" },
-          });
-        }}
+      <View
+        style={
+          Platform.OS === "web"
+            ? webStyles.buttonsContainer
+            : styles.buttonsContainer
+        }
       >
-        <Text style={styles.buttonText}>Devenir membre (entreprise)</Text>
-      </Pressable>
-      <Pressable
-        style={[styles.button, { marginTop: 10 }]}
-        onPress={() => {
-          router.push({
-            pathname: "/signup",
-            params: { type: "guest" },
-          });
-        }}
-      >
-        <Text style={styles.buttonText}>Je découvre mon réseau</Text>
-      </Pressable>
-      <Link href="/signin" style={{ marginTop: 40 }}>
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: "bold",
-            color: Colors.accent,
-            textDecorationLine: "underline",
+        <Pressable
+          style={Platform.select({
+            web: { ...webStyles.button },
+            default: { ...styles.button, marginTop: 40 },
+          })}
+          onPress={() => {
+            router.push({
+              // @ts-ignore
+              pathname: "/signup",
+              params: { type: "company" },
+            });
           }}
+        >
+          <Text
+            style={Platform.select({
+              web: webStyles.buttonText,
+              default: styles.buttonText,
+            })}
+          >
+            Devenir membre (entreprise)
+          </Text>
+        </Pressable>
+        <Pressable
+          style={Platform.select({
+            web: { ...webStyles.button },
+            default: { ...styles.button, marginTop: 10 },
+          })}
+          onPress={() => {
+            router.push({
+              // @ts-ignore
+              pathname: "/signup",
+              params: { type: "guest" },
+            });
+          }}
+        >
+          <Text
+            style={Platform.select({
+              web: webStyles.buttonText,
+              default: styles.buttonText,
+            })}
+          >
+            Je découvre mon réseau
+          </Text>
+        </Pressable>
+      </View>
+      <Link
+        // @ts-ignore
+        href="/signin"
+        style={{ marginTop: 40 }}
+      >
+        <Text
+          style={Platform.select({
+            web: webStyles.connectionText,
+            default: styles.connectionText,
+          })}
         >
           Je possède déjà un compte
         </Text>

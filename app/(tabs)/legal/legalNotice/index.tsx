@@ -2,8 +2,8 @@ import CustomCheckbox from "@/components/form/CustomCheckbox";
 import { Colors } from "@/constants/Colors";
 import { Link } from "expo-router";
 import { useState } from "react";
-import { Image, ScrollView, Text, View } from "react-native";
-import styles from "./legalNotice.styles";
+import { Image, Platform, ScrollView, Text, View } from "react-native";
+import { styles, webStyles } from "./legalNotice.styles";
 
 export default function LegalNotice() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
@@ -12,15 +12,17 @@ export default function LegalNotice() {
       style={{
         flex: 1,
         alignItems: "center",
-        justifyContent: "flex-end",
-        backgroundColor: Colors.background,
+        justifyContent: Platform.OS === "web" ? "center" : "flex-end",
+        backgroundColor: Colors.white,
       }}
     >
       <Image
         source={require("@/assets/images/white-logo.png")}
-        style={styles.logo}
+        style={Platform.select({ web: webStyles.logo, default: styles.logo })}
       />
-      <View style={styles.container}>
+      <View
+        style={Platform.OS === "web" ? webStyles.container : styles.container}
+      >
         <Text style={styles.title}>Validez les conditions d'accès.</Text>
         <Text style={styles.subtitle}>Les mentions légales</Text>
         <ScrollView style={styles.noticeContainer}>
@@ -73,7 +75,7 @@ export default function LegalNotice() {
           <CustomCheckbox
             checked={agreedToTerms}
             onChange={() => setAgreedToTerms(!agreedToTerms)}
-            markerStyle={Colors.background}
+            markerStyle={Colors.white}
             style={styles.checkbox}
             width={25}
             height={25}

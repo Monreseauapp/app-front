@@ -3,10 +3,10 @@ import { AppContext } from "@/context/context";
 import { RecoState } from "@/types";
 import axios from "axios";
 import { useContext, useState } from "react";
-import { Linking, Pressable, Text, View } from "react-native";
+import { Linking, Platform, Pressable, Text, View } from "react-native";
 import ValidationForm from "../../ValidationForm";
 import RelatedPeople from "../RelatedPeople";
-import styles from "./Recommendation.styles";
+import { styles, webStyles } from "./Recommendation.styles";
 
 interface RecommendationProps extends CompleteRecommendation {
   page: string;
@@ -41,24 +41,24 @@ export default function Recommendation({
       `${API_URL}/recommandation/${recommandation.id}`,
       isCompanyReception
         ? {
-            ...recommandation,
             RecoStateCompany: isRejected
               ? RecoState.REJECTED
               : RecoState.ACCEPTED,
             rejectionReasonCompany: rejectionReason,
           }
         : {
-            ...recommandation,
-            RecoStateInitiator: isRejected
+            RecoStateRecipient: isRejected
               ? RecoState.REJECTED
               : RecoState.ACCEPTED,
-            rejectionReasonInitiator: rejectionReason,
+            rejectionReasonRecipient: rejectionReason,
           }
     );
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={Platform.OS === "web" ? webStyles.container : styles.container}
+    >
       <View style={{ alignItems: "center", width: "100%" }}>
         <RelatedPeople
           recommendation={recommandation}
@@ -112,10 +112,10 @@ export default function Recommendation({
             style={[
               styles.text,
               styles.span,
-              colorState[recommandation.RecoStateInitiator as RecoState],
+              colorState[recommandation.RecoStateRecipient as RecoState],
             ]}
           >
-            {stateTranslation[recommandation.RecoStateInitiator as RecoState]}
+            {stateTranslation[recommandation.RecoStateRecipient as RecoState]}
           </Text>
           <Text
             style={[
@@ -131,7 +131,7 @@ export default function Recommendation({
       {page === "received" &&
         (isCompanyReception
           ? recommandation.RecoStateCompany
-          : recommandation.RecoStateInitiator) === RecoState.PENDING && (
+          : recommandation.RecoStateRecipient) === RecoState.PENDING && (
           <ValidationForm
             isRejected={isRejected}
             setIsRejected={setIsRejected}

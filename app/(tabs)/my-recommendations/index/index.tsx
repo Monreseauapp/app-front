@@ -129,12 +129,11 @@ export default function MyRecommendations() {
   return (
     <View
       style={{
-        width: "100%",
-        height: "100%",
         flex: 1,
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.white,
         justifyContent: "center",
         alignItems: "center",
+        marginTop: Platform.OS === "web" ? -30 : 0,
       }}
     >
       <Text style={styles.title}>Mes Recommandations</Text>
@@ -142,23 +141,28 @@ export default function MyRecommendations() {
         tabs={["Envoyées", "Reçues"]}
         activeIndex={page === "sent" ? 0 : 1}
         setActiveIndex={() => setPage(page === "sent" ? "received" : "sent")}
+        style={{ alignSelf: "center", marginLeft: "-4%" }}
       />
       <KeyboardAvoidingView
         style={{ flex: 1, width: "100%" }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={0}
       >
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <TouchableWithoutFeedback
+          onPress={() => Platform.OS !== "web" && Keyboard.dismiss()}
+        >
           <ScrollView
             style={{
               flex: 1,
               width: "100%",
               marginTop: 20,
-              backgroundColor: Colors.background,
+              backgroundColor: Colors.white,
             }}
             contentContainerStyle={{
               justifyContent: "center",
               alignItems: "center",
+              flexDirection: Platform.OS === "web" ? "row" : "column",
+              flexWrap: Platform.OS === "web" ? "wrap" : "nowrap",
               gap: 20,
             }}
           >

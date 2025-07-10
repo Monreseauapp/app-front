@@ -1,8 +1,8 @@
 import { Colors } from "@/constants/Colors";
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
 import CustomCheckbox from "../CustomCheckbox";
-import styles from "./CheckboxList.styles";
+import styles, { webStyles } from "./CheckboxList.styles";
 
 interface InputProps {
   title: string;
@@ -17,13 +17,10 @@ export default function CheckBoxList({ title, choices }: InputProps) {
   return (
     <View style={{ width: `100%`, marginBottom: 20 }}>
       <Text
-        style={{
-          fontSize: 20,
-          marginBottom: 10,
-          fontWeight: "bold",
-          paddingLeft: 16,
-          color: Colors.background,
-        }}
+        style={Platform.select({
+          web: webStyles.title,
+          default: styles.title,
+        })}
       >
         {title}
       </Text>
@@ -31,6 +28,7 @@ export default function CheckBoxList({ title, choices }: InputProps) {
         <View style={styles.section} key={index}>
           <CustomCheckbox
             style={styles.checkbox}
+            markerStyle={Colors.white}
             width={25}
             height={25}
             checked={checked[index]}

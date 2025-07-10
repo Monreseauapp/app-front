@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   text: {
     fontSize: 16,
-    color: Colors.background,
+    color: Colors.white,
   },
   span: {
     fontWeight: "bold",

@@ -14,6 +14,7 @@ type InputProps = {
   value?: string;
   onChangeText?: (text: string) => void;
   valid?: boolean;
+  zIndex?: number;
 };
 
 export default function Search({
@@ -27,6 +28,7 @@ export default function Search({
   value,
   onChangeText,
   valid = undefined,
+  zIndex = 0,
 }: InputProps) {
   const { placeholderTextColor }: any = inputStyle || {};
   if (placeholderTextColor) {
@@ -58,6 +60,7 @@ export default function Search({
         marginBottom: 20,
         position: "relative",
         overflow: "visible",
+        zIndex: 10 + zIndex,
       }}
     >
       <Text
@@ -66,7 +69,7 @@ export default function Search({
           fontWeight: "bold",
           paddingBottom: 10,
           paddingLeft: 16,
-          color: Colors.background,
+          color: Colors.white,
           ...titleStyle,
         }}
       >
@@ -95,16 +98,16 @@ export default function Search({
           }
         }}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        placeholderTextColor={placeholderTextColor || Colors.accent}
+        onBlur={() => setTimeout(() => setIsFocused(false), 75)}
+        placeholderTextColor={placeholderTextColor || Colors.violet}
         placeholder={placeholder}
         ref={inputRef}
         returnKeyType="search"
         style={{
           width: "100%",
           height: 50,
-          backgroundColor: Colors.accent,
-          color: Colors.background,
+          backgroundColor: Colors.violet,
+          color: Colors.white,
           borderRadius: 50,
           paddingHorizontal: 20,
           paddingVertical: 10,
@@ -124,19 +127,15 @@ export default function Search({
           {filteredList.map((item, index) => (
             <Pressable
               key={index}
-              onPress={() => {
-                if (onChangeText) {
-                  onChangeText(item);
-                }
-              }}
+              onPress={() => onChangeText && onChangeText(item)}
             >
               <Text
                 style={{
-                  color: Colors.text,
+                  color: Colors.black,
                   fontSize: 16,
                   paddingVertical: 10,
                   paddingHorizontal: 20,
-                  borderBottomColor: Colors.accent,
+                  borderBottomColor: Colors.violet,
                   borderBottomWidth: index !== list.length - 1 ? 1 : 0,
                 }}
               >

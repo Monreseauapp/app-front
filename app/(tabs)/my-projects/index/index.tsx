@@ -5,7 +5,7 @@ import { AppContext } from "@/context/context";
 import { Company, Project, User } from "@/types";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { Platform, ScrollView, Text, View } from "react-native";
 import styles from "./index.styles";
 
 export interface CompleteProject {
@@ -104,9 +104,10 @@ export default function MyRecommendations() {
         width: "100%",
         height: "100%",
         flex: 1,
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.white,
         justifyContent: "center",
         alignItems: "center",
+        marginTop: Platform.OS === "web" ? -30 : 0,
       }}
     >
       <Text style={styles.title}>Mes Projets</Text>
@@ -122,11 +123,13 @@ export default function MyRecommendations() {
           flex: 1,
           width: "100%",
           marginTop: 20,
-          backgroundColor: Colors.background,
+          backgroundColor: Colors.white,
         }}
         contentContainerStyle={{
           justifyContent: "center",
           alignItems: "center",
+          flexDirection: Platform.OS === "web" ? "row" : "column",
+          flexWrap: Platform.OS === "web" ? "wrap" : "nowrap",
           gap: 20,
         }}
       >

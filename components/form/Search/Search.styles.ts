@@ -8,11 +8,11 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     position: "absolute",
     alignSelf: "center",
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.white,
     borderWidth: 4,
-    borderColor: Colors.accent,
+    borderColor: Colors.violet,
     top: 80,
-    zIndex: 1000,
+    zIndex: 100,
   },
 });
 

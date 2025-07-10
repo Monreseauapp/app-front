@@ -1,12 +1,14 @@
+import BackIcon from "@/assets/icons/back.svg";
 import TabBar from "@/components/TabBar";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { BlurView } from "expo-blur";
-import { Tabs, usePathname } from "expo-router";
+import { router, Tabs, useNavigation, usePathname } from "expo-router";
 import { useContext } from "react";
 import {
   Dimensions,
   Image,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -19,24 +21,49 @@ const { width } = Dimensions.get("window");
 export default function TabLayout() {
   const { isMenuOpen, setIsMenuOpen } = useContext(AppContext);
   const route = usePathname();
+  const navigation = useNavigation();
+  const history = navigation.getState()?.routes[0].state?.history;
 
   const isTabBarInvisible = [
     // "/index",
     "/recommendation",
     "/legal",
     "/profil/modify",
+    "/signin",
+    "/signup",
   ].some((path) => route === path || route.startsWith(path + "/"));
 
-  const isLogoInvisible = ["/index", "/legal", "/profil/modify"].some(
-    (path) => route === path || route.startsWith(path + "/")
-  );
+  const isLogoInvisible = [
+    "/index",
+    "/legal",
+    "/profil/modify",
+    "/signin",
+    "/signup",
+  ].some((path) => route === path || route.startsWith(path + "/"));
+
+  const isBackButtonVisible = [
+    "/notification",
+    "/profil",
+    "/recommendation",
+  ].some((path) => route === path || route.startsWith(path + "/"));
 
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.background }}>
+    <View style={{ flex: 1, backgroundColor: Colors.white }}>
+      {isBackButtonVisible && (
+        <Pressable
+          style={Platform.OS === "web" ? webStyles.backIcon : styles.backIcon}
+          onPress={() => history && router.back()}
+        >
+          <BackIcon width={35} height={35} color={Colors.violet} />
+        </Pressable>
+      )}
       {!isLogoInvisible && (
         <Image
           source={require("@/assets/images/white-logo.png")}
-          style={styles.logo}
+          style={Platform.select({
+            web: webStyles.logo,
+            default: styles.logo,
+          })}
         />
       )}
       <Tabs
@@ -47,8 +74,8 @@ export default function TabLayout() {
               <View
                 style={{
                   ...styles.tabBarContainer,
-                  width: isMenuOpen ? "100%" : 200,
-                  height: isMenuOpen ? "100%" : 90,
+                  width: isMenuOpen ? "100%" : 0,
+                  height: isMenuOpen ? "100%" : 0,
                 }}
               >
                 <BlurView
@@ -59,7 +86,14 @@ export default function TabLayout() {
                   }}
                 >
                   <Pressable onPress={() => setIsMenuOpen(!isMenuOpen)}>
-                    <Text style={styles.menuButton}>Menu</Text>
+                    <Text
+                      style={Platform.select({
+                        web: webStyles.menuButton,
+                        default: styles.menuButton,
+                      })}
+                    >
+                      Menu
+                    </Text>
                   </Pressable>
                   {isMenuOpen && <TabBar {...props} />}
                 </BlurView>
@@ -80,7 +114,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="home/index"
           options={{
-            title: "Menu principal",
+            title: "Tableau de bord",
           }}
         />
         <Tabs.Screen
@@ -151,8 +185,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     fontSize: 20,
     fontWeight: "bold",
-    backgroundColor: Colors.accent,
-    color: Colors.background,
+    backgroundColor: Colors.violet,
+    color: Colors.white,
     borderRadius: 25,
     alignItems: "center",
     zIndex: 100,
@@ -177,5 +211,44 @@ const styles = StyleSheet.create({
     left: "50%",
     transform: [{ translateX: "-50%" }],
     zIndex: 2,
+  },
+  backIcon: {
+    position: "absolute",
+    top: 70,
+    left: 30,
+    zIndex: 10,
+  },
+});
+
+const webStyles = StyleSheet.create({
+  menuButton: {
+    position: "absolute",
+    top: 30,
+    left: width >= 768 ? width - 100 - width / 16 : width - 110,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    fontSize: 20,
+    fontWeight: "bold",
+    backgroundColor: Colors.violet,
+    color: Colors.white,
+    borderRadius: 25,
+    alignItems: "center",
+    zIndex: 100,
+  },
+  logo: {
+    width: width >= 768 ? 320 : 160,
+    height: width >= 768 ? 100 : 50,
+    marginBottom: 20,
+    position: "absolute",
+    top: width >= 768 ? 15 : 30,
+    left: "50%",
+    transform: [{ translateX: "-50%" }],
+    zIndex: 2,
+  },
+  backIcon: {
+    position: "absolute",
+    top: 30,
+    left: width >= 768 ? 110 : 30,
+    zIndex: 10,
   },
 });

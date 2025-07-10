@@ -1,5 +1,7 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   navbar: {
@@ -9,30 +11,46 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     zIndex: 10,
+    alignSelf: "center",
   },
   navbarButton: {
     padding: 10,
-    backgroundColor: Colors.accent,
-    width: "50%",
+    backgroundColor: Colors.violet,
+    width: "55%",
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
+    borderWidth: 4,
+    borderColor: Colors.violet,
   },
   navbarButtonActive: {
-    backgroundColor: Colors.background,
-    borderColor: Colors.accent,
+    backgroundColor: Colors.white,
+    borderColor: Colors.violet,
     borderWidth: 4,
   },
   navbarText: {
-    color: Colors.background,
+    color: Colors.white,
     fontWeight: "bold",
     fontSize: 16,
   },
   navbarTextActive: {
-    color: Colors.accent,
+    color: Colors.violet,
     fontWeight: "bold",
     fontSize: 16,
   },
 });
 
+const webStyles = StyleSheet.create({
+  navbar: {
+    width: width >= 600 ? "40%" : "50%",
+    height: 50,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    zIndex: 10,
+    alignSelf: "center",
+  },
+});
+
+export { styles, webStyles };
 export default styles;

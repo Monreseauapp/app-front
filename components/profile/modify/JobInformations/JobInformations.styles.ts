@@ -3,12 +3,22 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   inputTitle: {
-    color: Colors.text,
+    color: Colors.black,
   },
   input: {
-    borderColor: Colors.accent,
-    color: Colors.text,
+    height: 50,
+    borderColor: Colors.violet,
+    color: Colors.black,
     borderWidth: 4,
+  },
+  select: {
+    backgroundColor: Colors.white,
+    borderColor: Colors.violet,
+    borderWidth: 4,
+    borderRadius: 50,
+    color: Colors.black,
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 

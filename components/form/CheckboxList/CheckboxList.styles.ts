@@ -1,18 +1,38 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   section: {
     flexDirection: "row",
     alignItems: "center",
   },
+  title: {
+    fontSize: 20,
+    marginBottom: 10,
+    fontWeight: "bold",
+    paddingLeft: 16,
+    color: Colors.white,
+  },
   checkbox: {
     margin: 10,
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     borderWidth: 2,
-    borderColor: Colors.background,
+    borderColor: Colors.white,
     borderRadius: 4,
   },
 });
 
+const webStyles = StyleSheet.create({
+  title: {
+    fontSize: width >= 600 ? 20 : 16,
+    marginBottom: 10,
+    fontWeight: "bold",
+    paddingLeft: 16,
+    color: Colors.white,
+  },
+});
+
+export { styles, webStyles };
 export default styles;

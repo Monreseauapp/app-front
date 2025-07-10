@@ -4,8 +4,6 @@ import { createContext, useEffect, useState } from "react";
 export type AppContextType = {
   isMenuOpen: boolean;
   setIsMenuOpen: (isOpen: boolean) => void;
-  accountType: "company" | "guest" | null;
-  setAccountType: (type: "company" | "guest" | null) => void;
   API_URL?: string;
   userId?: string;
   setUserId?: (userId: string) => void;
@@ -16,8 +14,6 @@ export type AppContextType = {
 const AppContext = createContext<AppContextType>({
   isMenuOpen: false,
   setIsMenuOpen: () => {},
-  accountType: null,
-  setAccountType: () => {},
   API_URL: process.env.EXPO_PUBLIC_API_URL,
   userId: "user1",
   setUserId: () => {},
@@ -29,9 +25,6 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 function Context({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [accountType, setAccountType] = useState<"company" | "guest" | null>(
-    null
-  );
   const [userId, setUserId] = useState<string | undefined>("user1");
   const [companyId, setCompanyId] = useState<string | undefined>(undefined);
 
@@ -40,16 +33,10 @@ function Context({ children }: { children: React.ReactNode }) {
       .get(`${API_URL}/users/${userId}`)
       .then((response) => {
         const user = response.data;
-        if (user.companyId) {
-          setAccountType("company");
-          setCompanyId(user.companyId);
-        } else {
-          setAccountType("guest");
-        }
+        setCompanyId(user.companyId);
       })
       .catch((error) => {
         console.error("Error fetching user data:", error.request);
-        setAccountType(null);
       });
   }, [userId]);
 
@@ -58,8 +45,6 @@ function Context({ children }: { children: React.ReactNode }) {
       value={{
         isMenuOpen,
         setIsMenuOpen,
-        accountType,
-        setAccountType,
         API_URL,
         userId,
         setUserId,

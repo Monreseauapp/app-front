@@ -26,16 +26,16 @@ export default function RelatedPeople({
   const arrowColor = () => {
     if (
       recommendation?.RecoStateCompany === RecoState.REJECTED ||
-      recommendation?.RecoStateInitiator === RecoState.REJECTED
+      recommendation?.RecoStateRecipient === RecoState.REJECTED
     ) {
       return Colors.red;
     } else if (
       recommendation?.RecoStateCompany === RecoState.ACCEPTED ||
-      recommendation?.RecoStateInitiator === RecoState.ACCEPTED
+      recommendation?.RecoStateRecipient === RecoState.ACCEPTED
     ) {
       return Colors.green;
     }
-    return Colors.background;
+    return Colors.white;
   };
   return (
     <>
@@ -56,7 +56,7 @@ export default function RelatedPeople({
             {recipient?.firstName} {recipient?.lastName}
           </Text>
         </Link>
-        <RightArrow width={40} height={40} color={Colors.background} />
+        <RightArrow width={40} height={40} color={Colors.white} />
         <Link
           href={{
             pathname: "/profil/[id]",

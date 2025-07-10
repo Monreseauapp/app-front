@@ -1,14 +1,14 @@
 import { CompleteProject } from "@/app/(tabs)/my-projects/index/index";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
-import { ProjectChoiceState, RecoState } from "@/types";
+import { ProjectChoiceState } from "@/types";
 import axios from "axios";
 import { useContext, useState } from "react";
-import { Linking, Pressable, Text, View } from "react-native";
+import { Linking, Platform, Pressable, Text, View } from "react-native";
 import PriorityStars from "../../PriorityStars";
 import ValidationForm from "../../ValidationForm";
 import RelatedPeople from "../RelatedPeople";
-import styles from "./project.styles";
+import { styles, webStyles } from "./project.styles";
 
 interface ProjectProps extends CompleteProject {
   page: string;
@@ -27,14 +27,14 @@ export default function Project({
   const [rejectionReason, setRejectionReason] = useState<string>("");
   const isCompanyReception = page === "received";
   const stateTranslation = {
-    [RecoState.ACCEPTED]: "Acceptée",
-    [RecoState.PENDING]: "En attente...",
-    [RecoState.REJECTED]: "Refusée",
+    [ProjectChoiceState.ACCEPTED]: "Acceptée",
+    [ProjectChoiceState.PENDING]: "En attente...",
+    [ProjectChoiceState.REJECTED]: "Refusée",
   };
   const colorState = {
-    [RecoState.ACCEPTED]: styles.accepted,
-    [RecoState.PENDING]: {},
-    [RecoState.REJECTED]: styles.rejected,
+    [ProjectChoiceState.ACCEPTED]: styles.accepted,
+    [ProjectChoiceState.PENDING]: {},
+    [ProjectChoiceState.REJECTED]: styles.rejected,
   };
 
   const updateProject = async () => {
@@ -42,14 +42,16 @@ export default function Project({
     axios.patch(`${API_URL}/project/${project.id}`, {
       ...projectWithoutUserId,
       ProjectChoiceCompany: isRejected
-        ? RecoState.REJECTED
-        : RecoState.ACCEPTED,
+        ? ProjectChoiceState.REJECTED
+        : ProjectChoiceState.ACCEPTED,
       rejectionReasonCompany: rejectionReason,
     });
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={Platform.OS === "web" ? webStyles.container : styles.container}
+    >
       <RelatedPeople
         initiator={initiator}
         company={company}
@@ -92,10 +94,7 @@ export default function Project({
         </View>
         <View style={styles.priorityContainer}>
           <Text style={[styles.text, styles.span]}>Priorité :</Text>
-          <PriorityStars
-            stars={project.priority}
-            activeColor={Colors.background}
-          />
+          <PriorityStars stars={project.priority} activeColor={Colors.white} />
         </View>
       </View>
       <View style={styles.stateContainer}>

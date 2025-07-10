@@ -1,46 +1,52 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "100%",
+    flex: 1,
+    position: "relative",
     flexDirection: "column",
-    backgroundColor: Colors.background,
-  },
-  backIcon: {
-    width: 50,
-    height: 50,
-    position: "absolute",
-    top: 55,
-    left: 20,
-    zIndex: 10,
-    padding: 20,
+    backgroundColor: Colors.white,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: Colors.accent,
+    color: Colors.violet,
     marginBottom: 20,
     alignSelf: "center",
   },
   inputsContainer: {
+    flex: 1,
     width: "90%",
     flexDirection: "column",
     alignSelf: "center",
-    // marginBottom: 70,
   },
   inputTitle: {
-    color: Colors.text,
+    color: Colors.black,
   },
   input: {
-    borderColor: Colors.accent,
-    color: Colors.text,
+    height: 50,
+    borderColor: Colors.violet,
+    color: Colors.black,
     borderWidth: 4,
+  },
+  checkBox: {
+    alignSelf: "center",
+    backgroundColor: Colors.violet,
+    marginBottom: 20,
+  },
+  checkBoxTitle: {
+    color: Colors.black,
+    fontSize: 22,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 10,
   },
   button: {
     alignSelf: "center",
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
@@ -48,10 +54,26 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonText: {
-    color: Colors.background,
+    color: Colors.white,
     fontSize: 20,
     fontWeight: "bold",
   },
 });
 
+const webStyles = StyleSheet.create({
+  inputsContainer: {
+    width: width >= 768 ? "50%" : "90%",
+    flexDirection: "column",
+    alignSelf: "center",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: Colors.violet,
+    marginBottom: 20,
+    alignSelf: "center",
+  },
+});
+
+export { styles, webStyles };
 export default styles;

@@ -6,10 +6,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 8,
-    color: Colors.text,
+    color: Colors.black,
   },
   container: {
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     padding: 12,
     borderRadius: 50,
     alignItems: "center",
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontWeight: "bold",
-    color: Colors.background,
+    color: Colors.white,
   },
 });
 

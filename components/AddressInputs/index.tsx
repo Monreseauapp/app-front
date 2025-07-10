@@ -4,7 +4,7 @@ import Input from "../form/Input";
 import styles from "./AddressInputs.styles";
 
 interface AddressFields {
-  address: string;
+  address?: string;
   addressComplement?: string | null;
   city: string;
   postalCode?: string | number;
@@ -12,17 +12,26 @@ interface AddressFields {
   [key: string]: any;
 }
 
-interface PersonalInformationsProps<T extends AddressFields> {
+interface AddressInputsProps<T extends AddressFields> {
   data: T;
-  handleChange: (field: keyof T, value: string | number | undefined) => void;
+  handleChange: (
+    field: keyof T,
+    value: string | number | boolean | undefined
+  ) => void;
   isDataValid?: boolean;
+  titleColor?: string;
+  inputColor?: string;
+  placeholderColor?: string;
 }
 
 export default function AddressInputs<T extends AddressFields>({
   data,
   handleChange,
   isDataValid = undefined,
-}: PersonalInformationsProps<T>) {
+  titleColor = Colors.black,
+  inputColor = Colors.black,
+  placeholderColor = Colors.grey,
+}: AddressInputsProps<T>) {
   return (
     <View
       style={{
@@ -37,25 +46,26 @@ export default function AddressInputs<T extends AddressFields>({
         placeholder="18 avenue des Champs-Élysées"
         type="address-line1"
         sameLine={2}
-        titleStyle={styles.inputTitle}
+        titleStyle={{ color: titleColor }}
         inputStyle={{
           ...styles.input,
-          placeholderTextColor: Colors.grey,
+          placeholderTextColor: placeholderColor,
+          color: inputColor,
         }}
         value={data.address}
         onChangeText={(text) => handleChange("address", text)}
-        valid={isDataValid}
       />
       <Input
         name="Adresse ligne 2"
         placeholder="Apt 42"
         type="address-line2"
         sameLine={2}
-        titleStyle={styles.inputTitle}
+        titleStyle={{ color: titleColor }}
         inputStyle={{
           ...styles.input,
-          placeholderTextColor: Colors.grey,
+          placeholderTextColor: placeholderColor,
           alignSelf: "flex-end",
+          color: inputColor,
         }}
         value={data.addressComplement ?? ""}
         onChangeText={(text) => handleChange("addressComplement", text)}
@@ -65,10 +75,11 @@ export default function AddressInputs<T extends AddressFields>({
         placeholder="Paris"
         type="off"
         sameLine={2}
-        titleStyle={styles.inputTitle}
+        titleStyle={{ color: titleColor }}
         inputStyle={{
           ...styles.input,
-          placeholderTextColor: Colors.grey,
+          placeholderTextColor: placeholderColor,
+          color: inputColor,
         }}
         value={data.city}
         onChangeText={(text) => handleChange("city", text)}
@@ -79,11 +90,12 @@ export default function AddressInputs<T extends AddressFields>({
         placeholder="75000"
         type="postal-code"
         sameLine={2}
-        titleStyle={styles.inputTitle}
+        titleStyle={{ color: titleColor }}
         inputStyle={{
           ...styles.input,
-          placeholderTextColor: Colors.grey,
+          placeholderTextColor: placeholderColor,
           alignSelf: "flex-end",
+          color: inputColor,
         }}
         value={data.postalCode?.toString()}
         onChangeText={(text) =>
@@ -92,20 +104,19 @@ export default function AddressInputs<T extends AddressFields>({
             Number(text.replace(/\D/g, "")) || undefined
           )
         }
-        valid={isDataValid}
       />
       <Input
         name="Pays"
         placeholder="France"
         type="country"
-        titleStyle={styles.inputTitle}
+        titleStyle={{ color: titleColor }}
         inputStyle={{
           ...styles.input,
-          placeholderTextColor: Colors.grey,
+          placeholderTextColor: placeholderColor,
+          color: inputColor,
         }}
         value={data.country}
         onChangeText={(text) => handleChange("country", text)}
-        valid={isDataValid}
       />
     </View>
   );

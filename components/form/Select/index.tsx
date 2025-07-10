@@ -1,6 +1,7 @@
 import { Colors } from "@/constants/Colors";
 import { Picker } from "@react-native-picker/picker";
-import { Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
+import { styles, webStyles } from "./Select.styles";
 
 interface InputProps {
   title: string;
@@ -33,7 +34,7 @@ export default function Select({
           fontSize: 20,
           fontWeight: "bold",
           paddingLeft: 16,
-          color: Colors.background,
+          color: Colors.white,
           ...titleStyle,
         }}
       >
@@ -56,9 +57,7 @@ export default function Select({
         selectedValue={selected}
         onValueChange={setSelected}
         style={{
-          height: 200,
-          width: "100%",
-          backgroundColor: Colors.accent,
+          ...Platform.select({ web: webStyles.picker, default: styles.picker }),
           ...selectStyle,
         }}
       >
@@ -67,7 +66,7 @@ export default function Select({
             key={index}
             label={choice}
             value={choice}
-            color={pickerTextColor || Colors.background}
+            color={pickerTextColor || Colors.white}
             style={{
               fontSize: 18,
               fontWeight: "bold",

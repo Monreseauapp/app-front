@@ -1,5 +1,7 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   statsContainer: {
@@ -9,17 +11,17 @@ const styles = StyleSheet.create({
   uniqueStat: {
     flex: 1,
     flexDirection: "column",
-    width: "50%",
+    width: width >= 1024 ? 200 : 150,
     marginHorizontal: 3,
     padding: 20,
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.violet,
     justifyContent: "center",
     alignItems: "center",
   },
   statText: {
-    fontSize: 22,
+    fontSize: width >= 1024 ? 26 : 22,
     fontWeight: "bold",
-    color: Colors.background,
+    color: Colors.white,
     marginVertical: 5,
   },
 });
