@@ -20,6 +20,20 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     color: Colors.black,
   },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: 10,
+  },
+  checkboxText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: Colors.black,
+  },
+  checkbox: {
+    backgroundColor: Colors.violet,
+  },
 });
 
 export default styles;

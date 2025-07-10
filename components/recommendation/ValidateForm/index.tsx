@@ -63,8 +63,6 @@ export default function ValidateForm({
             valid = useFormValidation(data);
           }
           setIsDataValid(valid);
-          console.log("Data is valid:", valid);
-          console.log(project);
           if (valid) {
             type === "project" ? sendProjectData() : sendRecommendationData();
             resetForm();

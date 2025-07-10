@@ -115,6 +115,7 @@ export default function Profil() {
                 onPress={() => Linking.openURL(user?.company?.linkedin || "")}
               >
                 <LinkedinIcon color={Colors.violet} width={40} height={40} />
+                <LinkedinIcon color={Colors.violet} width={40} height={40} />
               </Pressable>
             )}
             {user?.company?.phone && (
@@ -122,6 +123,7 @@ export default function Profil() {
                 style={styles.icon}
                 onPress={() => Linking.openURL(`tel:${user?.company?.phone}`)}
               >
+                <PhoneIcon color={Colors.white} width={40} height={40} />
                 <PhoneIcon color={Colors.white} width={40} height={40} />
               </Pressable>
             )}
@@ -133,6 +135,7 @@ export default function Profil() {
                 }
               >
                 <MailIcon color={Colors.white} width={40} height={40} />
+                <MailIcon color={Colors.white} width={40} height={40} />
               </Pressable>
             )}
             {user?.company?.website && (
@@ -140,6 +143,7 @@ export default function Profil() {
                 style={styles.icon}
                 onPress={() => Linking.openURL(user?.company?.website || "")}
               >
+                <WebsiteIcon color={Colors.white} width={38} height={38} />
                 <WebsiteIcon color={Colors.white} width={38} height={38} />
               </Pressable>
             )}
@@ -222,6 +226,8 @@ export default function Profil() {
                               i < (review.rating || 0)
                                 ? Colors.white
                                 : Colors.black
+                                ? Colors.white
+                                : Colors.black
                             }
                             width={20}
                             height={20}
@@ -262,6 +268,8 @@ export default function Profil() {
                           0
                         ) /
                           reviews.length
+                          ? Colors.violet
+                          : Colors.black
                           ? Colors.violet
                           : Colors.black
                       }
