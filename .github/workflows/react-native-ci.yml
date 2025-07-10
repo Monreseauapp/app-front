@@ -1,0 +1,364 @@
+name: React Native CI/CD
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+env:
+  NODE_VERSION: '18.x'
+  JAVA_VERSION: '17'
+  RUBY_VERSION: '3.2'
+  XCODE_VERSION: '15.0'
+
+jobs:
+  lint-and-format:
+    name: 🔍 Lint & Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Check Prettier formatting
+        run: npm run format:check
+
+      - name: TypeScript type check
+        run: npm run type-check
+
+  codeql-analysis:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [typescript]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+  test:
+    name: 🧪 Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:unit --coverage --watchAll=false
+
+      - name: Run component tests
+        run: npm run test:components --coverage --watchAll=false
+
+      - name: Run snapshot tests
+        run: npm run test:snapshots --coverage --watchAll=false
+
+      - name: Generate test coverage
+        run: npm run test:coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: react-native-coverage
+
+  android-build:
+    name: 🤖 Android Build & Test
+    runs-on: ubuntu-latest
+    needs: [lint-and-format, test]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create environment files
+        run: |
+          echo "API_URL=${{ secrets.API_URL_STAGING }}" > .env.staging
+          echo "APP_ENV=staging" >> .env.staging
+          echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env.staging
+
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
+
+      - name: Clean Android build
+        run: |
+          cd android
+          ./gradlew clean
+
+      - name: Build Android Debug APK
+        run: |
+          cd android
+          ./gradlew assembleDebug
+
+      - name: Build Android Release APK
+        if: github.ref == 'refs/heads/master'
+        run: |
+          cd android
+          ./gradlew assembleRelease
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-debug-apk
+          path: android/app/build/outputs/apk/debug/*.apk
+
+      - name: Upload Release APK
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release-apk
+          path: android/app/build/outputs/apk/release/*.apk
+
+  ios-build:
+    name: 🍎 iOS Build & Test
+    runs-on: macos-14
+    needs: [lint-and-format, test]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+
+      - name: Select Xcode version
+        run: sudo xcode-select -switch /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v3
+        with:
+          path: ios/Pods
+          key: pods-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock') }}
+
+      - name: Install CocoaPods
+        run: |
+          cd ios
+          pod install --repo-update
+
+      - name: Create environment files
+        run: |
+          echo "API_URL=${{ secrets.API_URL_STAGING }}" > .env.staging
+          echo "APP_ENV=staging" >> .env.staging
+          echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env.staging
+
+      - name: Build iOS Debug
+        run: |
+          cd ios
+          xcodebuild -workspace MonApp.xcworkspace \
+            -scheme MonApp \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -derivedDataPath build/ \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Build iOS Release
+        if: github.ref == 'refs/heads/master'
+        run: |
+          cd ios
+          xcodebuild -workspace MonApp.xcworkspace \
+            -scheme MonApp \
+            -configuration Release \
+            -archivePath build/MonApp.xcarchive \
+            archive \
+            CODE_SIGN_IDENTITY="${{ secrets.IOS_CODE_SIGN_IDENTITY }}" \
+            PROVISIONING_PROFILE_SPECIFIER="${{ secrets.IOS_PROVISIONING_PROFILE }}"
+
+      - name: Upload iOS Debug Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-debug-build
+          path: ios/build/Build/Products/Debug-iphonesimulator/
+
+      - name: Upload iOS Archive
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-release-archive
+          path: ios/build/MonApp.xcarchive
+
+  bundle-analysis:
+    name: 📦 Bundle Analysis
+    runs-on: ubuntu-latest
+    needs: [lint-and-format]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate bundle for Android
+        run: npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android-bundle.js --assets-dest android-assets/
+
+      - name: Generate bundle for iOS
+        run: npx react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-bundle.js --assets-dest ios-assets/
+
+      - name: Analyze bundle size
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            const androidSize = fs.statSync('android-bundle.js').size;
+            const iosSize = fs.statSync('ios-bundle.js').size;
+            
+            const androidSizeMB = (androidSize / (1024 * 1024)).toFixed(2);
+            const iosSizeMB = (iosSize / (1024 * 1024)).toFixed(2);
+            
+            const comment = `## 📦 Bundle Size Analysis
+            
+            | Platform | Bundle Size |
+            |----------|-------------|
+            | Android  | ${androidSizeMB} MB |
+            | iOS      | ${iosSizeMB} MB |
+            
+            ${androidSizeMB > 5 || iosSizeMB > 5 ? '⚠️ Bundle size is getting large. Consider code splitting or removing unused dependencies.' : '✅ Bundle size looks good!'}
+            `;
+            
+            if (context.eventName === 'pull_request') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+
+      - name: Upload bundle artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-native-bundles
+          path: |
+            android-bundle.js
+            ios-bundle.js
+            android-assets/
+            ios-assets/
+
+  security-scan:
+    name: 🔒 Security & Dependency Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high --json > npm-audit.json
+
+      - name: Upload npm audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-report
+          path: npm-audit.json
+
+      - name: Check for known vulnerabilities with Snyk
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=medium --file=package.json
+        continue-on-error: true
+
+      - name: Scan for secrets
+        uses: trufflesecurity/trufflehog@master
+        with:
+          path: ./
+          base: master
+          head: HEAD
