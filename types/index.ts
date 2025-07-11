@@ -146,9 +146,9 @@ export interface Recommandation {
   lastName: string;
   email: string;
   phone: string;
-  address: string;
+  address?: string;
   addressComplement?: string | null;
-  postalCode: number | undefined;
+  postalCode?: number | undefined;
   city: string;
   companyName: string | null;
   companyAddress?: string | null;
@@ -157,7 +157,7 @@ export interface Recommandation {
   companyCity: string | null;
   companyEmail: string | null;
   companyPhone: string | null;
-  companyJobDomain: string | null;
+  companyJobDomain?: string | null;
   description?: string | null;
   startDate?: (Date | string) | null;
   inProgressAt?: (Date | string) | null;
