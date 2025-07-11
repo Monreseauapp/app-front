@@ -2,10 +2,9 @@ import Navigation from "@/components/signup/Navigation";
 import { Colors } from "@/constants/Colors";
 import { initialCompany } from "@/constants/initial-types-value/initialCompany";
 import { initialUser } from "@/constants/initial-types-value/initialUser";
-import { AppContext } from "@/context/context";
 import { Company, SubscriptionType, User } from "@/types";
 import { useLocalSearchParams } from "expo-router";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -18,7 +17,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import styles, { webStyles } from "./form.styles";
+import { styles, webStyles } from "./form.styles";
 import Page1 from "./pages/Page1";
 import Page2 from "./pages/Page2";
 import Page3 from "./pages/Page3";
@@ -30,7 +29,6 @@ import Page7 from "./pages/Page7";
 const { width } = Dimensions.get("window");
 
 export default function FormSignUp() {
-  const { API_URL } = useContext(AppContext);
   const { type } = useLocalSearchParams<{ type: "company" | "guest" }>();
   const flatListRef = useRef<FlatList>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -200,7 +198,7 @@ export default function FormSignUp() {
             </Text>
           ) : (
             <Text style={styles.introText}>
-              Inscrivez vous dès maintenant et vivez l'expérience{" "}
+              Inscrivez vous dès maintenant et vivez l&apos;expérience{" "}
               <Text style={{ ...styles.span, color: Colors.violet }}>
                 Mon Réseau
               </Text>{" "}

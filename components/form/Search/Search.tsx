@@ -17,6 +17,13 @@ type InputProps = {
   zIndex?: number;
 };
 
+const filterList = (text: string, list: string[]) => {
+  if (!text || text.trim() === "") {
+    return list;
+  }
+  return list.filter((item) => item.toLowerCase().includes(text.toLowerCase()));
+};
+
 export default function Search({
   name,
   list,
@@ -37,20 +44,12 @@ export default function Search({
   const [isFocused, setIsFocused] = useState(false);
   const [filteredList, setFilteredList] = useState<string[]>(list);
 
-  const filterList = (text: string) => {
-    if (!text || text.trim() === "") {
-      return list;
-    }
-    return list.filter((item) =>
-      item.toLowerCase().includes(text.toLowerCase())
-    );
-  };
-
   useEffect(() => {
-    const filtered = filterList(value || "");
+    const filtered = filterList(value || "", list);
     setFilteredList(
       filtered.length > 0 ? filtered : ["Aucun résultat pour votre recherche."]
     );
+    //
   }, [value, list]);
 
   return (

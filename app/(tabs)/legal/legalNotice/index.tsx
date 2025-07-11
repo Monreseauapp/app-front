@@ -23,7 +23,7 @@ export default function LegalNotice() {
       <View
         style={Platform.OS === "web" ? webStyles.container : styles.container}
       >
-        <Text style={styles.title}>Validez les conditions d'accès.</Text>
+        <Text style={styles.title}>Validez les conditions d&apos;accès.</Text>
         <Text style={styles.subtitle}>Les mentions légales</Text>
         <ScrollView style={styles.noticeContainer}>
           <Text style={styles.noticeText}>
@@ -81,7 +81,7 @@ export default function LegalNotice() {
             height={25}
           />
           <Text style={styles.checkboxText}>
-            J'accepte les mentions légales
+            J&apos;accepte les mentions légales
           </Text>
         </View>
         <Link

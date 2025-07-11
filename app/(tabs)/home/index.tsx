@@ -15,7 +15,7 @@ import {
   Text,
   View,
 } from "react-native";
-import styles, { webStyles } from "./home.styles";
+import { styles, webStyles } from "./home.styles";
 
 export default function Home() {
   const { width } = Dimensions.get("window");

@@ -50,14 +50,15 @@ export default function ConditionScreen() {
         {params.type === "company" && (
           <>
             <Text style={styles.text}>
-              L'inscription sur <Text style={styles.span}>Mon Réseau</Text> se
-              fait en plusieurs étapes :
+              L&apos;inscription sur <Text style={styles.span}>Mon Réseau</Text>{" "}
+              se fait en plusieurs étapes :
             </Text>
             <View style={styles.listElem}>
               <Text style={styles.bullet}>{"\u2022"}</Text>
               <Text style={styles.text}>
-                Tout d'abord, un <Text style={styles.span}>formulaire </Text>
-                d'inscription à remplir dès maintenant,
+                Tout d&apos;abord, un{" "}
+                <Text style={styles.span}>formulaire </Text>
+                d&apos;inscription à remplir dès maintenant,
               </Text>
             </View>
             <View style={styles.listElem}>
@@ -65,7 +66,7 @@ export default function ConditionScreen() {
               <Text style={styles.text}>
                 Ensuite, ajoutez vos <Text style={styles.span}>documents </Text>
                 et <Text style={styles.span}>certifications</Text> au
-                questionnaire d'adhésion,
+                questionnaire d&apos;adhésion,
               </Text>
             </View>
             <View style={styles.listElem}>
@@ -78,7 +79,7 @@ export default function ConditionScreen() {
             <View style={styles.listElem}>
               <Text style={styles.bullet}>{"\u2022"}</Text>
               <Text style={styles.text}>
-                Inscrivez-vous, lisez et validez les contrats d'adhésion et{" "}
+                Inscrivez-vous, lisez et validez les contrats d&apos;adhésion et{" "}
                 <Text style={styles.span}>mentions légales</Text>,
               </Text>
             </View>
@@ -87,7 +88,7 @@ export default function ConditionScreen() {
         {params.type === "guest" && (
           <>
             <Text style={{ ...styles.text, marginTop: 16 }}>
-              Inscrivez-vous, lisez et validez les contrats d'adhésion et{" "}
+              Inscrivez-vous, lisez et validez les contrats d&apos;adhésion et{" "}
               <Text style={styles.span}>mentions légales</Text>,
             </Text>
           </>
@@ -101,7 +102,7 @@ export default function ConditionScreen() {
             },
           })}
         >
-          Et accédez à l'application pour exploiter tout son potentiel.
+          Et accédez à l&apos;application pour exploiter tout son potentiel.
         </Text>
         <Pressable
           onPress={() => {

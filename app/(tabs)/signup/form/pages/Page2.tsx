@@ -2,7 +2,7 @@ import Input from "@/components/form/Input";
 import JobDomainSelect from "@/components/JobDomainSelect";
 import { Company, User } from "@/types";
 import { Platform, View } from "react-native";
-import styles, { webStyles } from "./pages.styles";
+import { styles, webStyles } from "./pages.styles";
 
 interface Page2Props {
   type: "company" | "guest";

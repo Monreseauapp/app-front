@@ -4,7 +4,7 @@ import { Company, Project, Recommandation } from "@/types";
 import { useState } from "react";
 import PersonTypeSelector from "../PersonTypeSelector";
 import CompanyDetails from "./CompanyDetails";
-import styles from "./CompanyInformations.styles";
+import { styles } from "./CompanyInformations.styles";
 
 interface CompanyInformationsProps {
   type: "project" | "company" | "lead";

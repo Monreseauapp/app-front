@@ -56,7 +56,7 @@ export default function RelatedPeople({
             {recipient?.firstName} {recipient?.lastName}
           </Text>
         </Link>
-        <RightArrow width={40} height={40} color={Colors.white} />
+        <RightArrow width={40} height={40} color={arrowColor()} />
         <Link
           href={{
             pathname: "/profil/[id]",

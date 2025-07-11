@@ -29,7 +29,7 @@ export default function PersonTypeSelector({
         }}
       >
         {type === "company" ? "L'entreprise" : "La personne"} est membre de
-        l'application ?
+        l&apos;application ?
       </Text>
       <View
         style={{

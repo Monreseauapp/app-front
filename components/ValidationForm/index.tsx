@@ -23,7 +23,7 @@ export default function ValidationForm({
   return (
     <View style={styles.choiceContainer}>
       <Text style={{ ...styles.text, marginBottom: 4, color: Colors.black }}>
-        Vous n'avez toujours pas fait de choix !
+        Vous n&apos;avez toujours pas fait de choix !
       </Text>
       <Text style={[styles.text, styles.span, { color: Colors.black }]}>
         Souhaitez vous :

@@ -6,7 +6,7 @@ import WebsiteIcon from "@/assets/icons/website.svg";
 import { Colors } from "@/constants/Colors";
 import { Company, Review, User } from "@/types";
 import axios from "axios";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   Dimensions,
@@ -22,7 +22,6 @@ import { styles, webStyles } from "./id.styles";
 
 export default function Profil() {
   const { width } = Dimensions.get("window");
-  const router = useRouter();
   const { id, media } = useLocalSearchParams();
   const [user, setUser] = useState<(User & { company: Company }) | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);

@@ -26,7 +26,7 @@ export default function CompanyMembers() {
         });
     };
     fetchMembers();
-  }, [companyId]);
+  }, [companyId, API_URL]);
 
   const updateUser = async (userId: string) => {
     axios
@@ -45,7 +45,7 @@ export default function CompanyMembers() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Membres de l'entreprise</Text>
+      <Text style={styles.title}>Membres de l&apos;entreprise</Text>
       {members &&
         members.map((member) => (
           <View key={member.id} style={styles.member}>

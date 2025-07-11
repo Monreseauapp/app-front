@@ -1,11 +1,11 @@
 import AddressInputs from "@/components/AddressInputs";
 import Input from "@/components/form/Input";
 import { Colors } from "@/constants/Colors";
-import useFormValidation from "@/hooks/useFormValidation";
 import { User } from "@/types";
+import validateFormData from "@/utils/validateFormData";
 import { useRouter } from "expo-router";
 import { Platform, Pressable, Text, View } from "react-native";
-import styles, { webStyles } from "./pages.styles";
+import { styles, webStyles } from "./pages.styles";
 
 interface Page3Props {
   type: "company" | "guest";
@@ -28,6 +28,15 @@ export default function Page3({
   resetForm,
 }: Page3Props) {
   const router = useRouter();
+  const validateForm = () => {
+    const isValid = validateFormData(user);
+    setIsDataValid(isValid);
+    if (isValid) {
+      resetForm();
+      router.dismissAll();
+      router.push("/legal/legalNotice");
+    }
+  };
   return (
     <View
       style={{
@@ -67,18 +76,7 @@ export default function Page3({
       />
       {type === "guest" && (
         <View style={{ width: "100%", alignItems: "center" }}>
-          <Pressable
-            style={styles.button}
-            onPress={() => {
-              const isValid = useFormValidation(user);
-              setIsDataValid(isValid);
-              if (isValid) {
-                resetForm();
-                router.dismissAll();
-                router.push("/legal/legalNotice");
-              }
-            }}
-          >
+          <Pressable style={styles.button} onPress={validateForm}>
             <Text
               style={{
                 fontSize: 18,
