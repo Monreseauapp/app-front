@@ -2,7 +2,7 @@ import { Colors } from "@/constants/Colors";
 import { useState } from "react";
 import { Platform, Text, View } from "react-native";
 import CustomCheckbox from "../CustomCheckbox";
-import styles, { webStyles } from "./CheckboxList.styles";
+import { styles, webStyles } from "./CheckboxList.styles";
 
 interface InputProps {
   title: string;

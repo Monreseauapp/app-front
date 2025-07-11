@@ -1,9 +1,8 @@
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
 import { Platform, Text, View } from "react-native";
 import { styles, webStyles } from "./index.styles";
 
 export default function RecommendationChoice() {
-  const router = useRouter();
   return (
     <View style={styles.container}>
       <View>
@@ -44,7 +43,7 @@ export default function RecommendationChoice() {
               default: styles.buttonText,
             })}
           >
-            J'apporte un prospect
+            J&apos;apporte un prospect
           </Text>
         </Link>
         <Link

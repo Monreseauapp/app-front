@@ -2,7 +2,7 @@ import CheckBoxList from "@/components/form/CheckboxList";
 import Select from "@/components/form/Select";
 import { SubscriptionType } from "@/types";
 import { Platform, Text, View } from "react-native";
-import styles, { webStyles } from "./pages.styles";
+import { styles, webStyles } from "./pages.styles";
 
 interface Page5Props {
   subscriptionType: SubscriptionType | undefined;
@@ -41,6 +41,7 @@ export default function Page5({
         title="La raison de votre inscription (choix multiple)"
         choices={[
           <Text
+            key={"prospects"}
             style={Platform.select({
               web: webStyles.checkboxText,
               default: styles.checkboxText,
@@ -49,6 +50,7 @@ export default function Page5({
             Pour obtenir des <Text style={styles.span}>prospects</Text>
           </Text>,
           <Text
+            key={"visibility"}
             style={Platform.select({
               web: webStyles.checkboxText,
               default: styles.checkboxText,
@@ -57,6 +59,7 @@ export default function Page5({
             Pour gagner en <Text style={styles.span}>visibilité</Text>
           </Text>,
           <Text
+            key={"recommendations"}
             style={Platform.select({
               web: webStyles.checkboxText,
               default: styles.checkboxText,
@@ -65,6 +68,7 @@ export default function Page5({
             Recevoir des <Text style={styles.span}>recommandations</Text>
           </Text>,
           <Text
+            key={"network"}
             style={Platform.select({
               web: webStyles.checkboxText,
               default: styles.checkboxText,

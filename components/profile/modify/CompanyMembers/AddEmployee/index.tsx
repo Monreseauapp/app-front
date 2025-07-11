@@ -37,7 +37,7 @@ export default function AddEmployee({
         });
     };
     fetchUsers();
-  }, [members]);
+  }, [members, API_URL]);
 
   const updateUser = async (userId: string) => {
     axios

@@ -1,4 +1,4 @@
-export default function useFormValidation<T extends object>(data: T) {
+export default function validateFormData<T extends object>(data: T) {
   return Object.keys(data).every((key) => {
     console.log(
       `Validating key: ${key}, value: ${(data as any)[key]}`,

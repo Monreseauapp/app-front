@@ -21,7 +21,7 @@ export default function Recommendation({
   page,
   setUpdated,
 }: RecommendationProps) {
-  const { userId, companyId, API_URL } = useContext(AppContext);
+  const { companyId, API_URL } = useContext(AppContext);
   const isCompanyReception = companyId === company?.id;
   const [isRejected, setIsRejected] = useState<boolean | undefined>(undefined);
   const [rejectionReason, setRejectionReason] = useState<string>("");

@@ -72,7 +72,7 @@ export default function Profil() {
     if (reviews.length > 0) {
       fetchReviewers();
     }
-  }, [reviews]);
+  }, [reviews, API_URL]);
 
   return (
     <ScrollView

@@ -1,7 +1,7 @@
 import { RecommendationFormTitles } from "@/app/(tabs)/recommendation/form";
 import { AppContext } from "@/context/context";
-import useFormValidation from "@/hooks/useFormValidation";
 import { Project, Recommandation } from "@/types";
+import validateFormData from "@/utils/validateFormData";
 import axios from "axios";
 import { useRouter } from "expo-router";
 import { useContext } from "react";
@@ -28,6 +28,21 @@ export default function ValidateForm({
   const router = useRouter();
   const { API_URL } = useContext(AppContext);
 
+  const validateForm = () => {
+    const data = type === "project" ? project : recommandation;
+    const valid = validateFormData(data);
+    setIsDataValid(valid);
+    if (valid) {
+      if (type === "project") {
+        sendProjectData();
+      } else {
+        sendRecommendationData();
+      }
+      resetForm();
+      router.back();
+    }
+  };
+
   const sendRecommendationData = async () => {
     axios
       .post(`${API_URL}/recommandation`, {
@@ -52,20 +67,7 @@ export default function ValidateForm({
 
   return (
     <View style={{ alignSelf: "center" }}>
-      <Pressable
-        onPress={() => {
-          const data = type === "project" ? project : recommandation;
-          const valid = useFormValidation(data);
-          console.log(data, valid);
-          setIsDataValid(valid);
-          if (valid) {
-            type === "project" ? sendProjectData() : sendRecommendationData();
-            resetForm();
-            router.back();
-          }
-        }}
-        style={styles.validationButton}
-      >
+      <Pressable onPress={validateForm} style={styles.validationButton}>
         <Text style={styles.buttonText}>
           {titles.find((title) => title.label === type)?.sendText}
         </Text>

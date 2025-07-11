@@ -74,7 +74,7 @@ export default function MyRecommendations() {
     if (updated) {
       setUpdated(false);
     }
-  }, [companyId, updated]);
+  }, [companyId, updated, API_URL]);
 
   const fetchCompleteRecommendations = async (
     recommendations: Recommandation[]
@@ -140,6 +140,7 @@ export default function MyRecommendations() {
     if (recommandationsReceived.length > 0 || recommandationsSent.length > 0) {
       setCompleteRecommendations();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recommandationsReceived, recommandationsSent]);
 
   return (

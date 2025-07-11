@@ -1,13 +1,13 @@
 import CheckBoxList from "@/components/form/CheckboxList";
 import Input from "@/components/form/Input";
 import { AppContext } from "@/context/context";
-import useFormValidation from "@/hooks/useFormValidation";
 import { Company, SubscriptionType, User } from "@/types";
+import validateFormData from "@/utils/validateFormData";
 import axios from "axios";
 import { useRouter } from "expo-router";
 import { useContext } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
-import styles, { webStyles } from "./pages.styles";
+import { styles, webStyles } from "./pages.styles";
 
 interface Page7Props {
   user: User;
@@ -28,6 +28,17 @@ export default function Page7({
 }: Page7Props) {
   const { API_URL } = useContext(AppContext);
   const router = useRouter();
+
+  const validateForm = () => {
+    const isValid = validateFormData(user) && validateFormData(company);
+    setIsDataValid(isValid);
+    if (isValid) {
+      resetForm();
+      sendData(user, company);
+      router.dismissAll();
+      router.push("/signin/doubleAuth");
+    }
+  };
   const sendData = async (user: User, company: Company) => {
     const userId = await axios
       .post(`${API_URL}/users`, user)
@@ -41,7 +52,7 @@ export default function Page7({
       .catch((error) => {
         console.error("Error sending company data:", error.response);
       });
-    const userUpdate = await axios.patch(`${API_URL}/users/${userId}`, {
+    await axios.patch(`${API_URL}/users/${userId}`, {
       companyId: companyId,
     });
   };
@@ -62,24 +73,18 @@ export default function Page7({
       <CheckBoxList
         title="Quelles sont les assurances et certifications en votre possession ?"
         choices={[
-          <Text style={styles.checkboxText}>Responsabilité civile</Text>,
-          <Text style={styles.checkboxText}>Décenale</Text>,
-          <Text style={styles.checkboxText}>Autres</Text>,
+          <Text key="civil" style={styles.checkboxText}>
+            Responsabilité civile
+          </Text>,
+          <Text key="decennial" style={styles.checkboxText}>
+            Décenale
+          </Text>,
+          <Text key="others" style={styles.checkboxText}>
+            Autres
+          </Text>,
         ]}
       />
-      <Pressable
-        style={styles.validationButton}
-        onPress={() => {
-          const isValid = useFormValidation(user) && useFormValidation(company);
-          setIsDataValid(isValid);
-          if (isValid) {
-            resetForm();
-            sendData(user, company);
-            router.dismissAll();
-            // router.push("/signin/doubleAuth");
-          }
-        }}
-      >
+      <Pressable style={styles.validationButton} onPress={validateForm}>
         <Text style={styles.validationText}>Valider</Text>
       </Pressable>
     </View>
