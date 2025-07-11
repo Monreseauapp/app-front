@@ -118,8 +118,24 @@ export default function MyRecommendations() {
       const completeSent = await fetchCompleteRecommendations(
         recommandationsSent
       );
-      setCompleteReceived(completeReceived);
-      setCompleteSent(completeSent);
+      setCompleteReceived(
+        completeReceived.filter((rec, index) => {
+          return (
+            completeReceived.findIndex(
+              (r) => r.recommandation.id === rec.recommandation.id
+            ) !== index
+          );
+        })
+      );
+      setCompleteSent(
+        completeSent.filter((rec, index) => {
+          return (
+            completeReceived.findIndex(
+              (r) => r.recommandation.id === rec.recommandation.id
+            ) !== index
+          );
+        })
+      );
     };
     if (recommandationsReceived.length > 0 || recommandationsSent.length > 0) {
       setCompleteRecommendations();
@@ -168,7 +184,7 @@ export default function MyRecommendations() {
           >
             {(page === "sent" ? completeSent : completeReceived).map((rec) => (
               <Recommendation
-                key={rec.recommandation.id}
+                key={rec.recommandation.id + page}
                 {...rec}
                 page={page}
                 setUpdated={setUpdated}

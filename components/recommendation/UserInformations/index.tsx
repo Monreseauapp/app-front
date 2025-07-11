@@ -66,7 +66,7 @@ export default function UserInformations({
                     ).forEach((key) => {
                       if (key in user && key !== "companyId") {
                         const value = user[key as keyof User];
-                        if (value instanceof Date) return;
+                        if (value instanceof Date || !value) return;
                         handleChange(key, value === null ? undefined : value);
                       }
                     });
