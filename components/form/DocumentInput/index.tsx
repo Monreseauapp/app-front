@@ -2,7 +2,7 @@ import { AppContext } from "@/context/context";
 import axios from "axios";
 import * as DocumentPicker from "expo-document-picker";
 import { useContext } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Platform, Pressable, Text, View } from "react-native";
 import styles from "./DocumentInput.styles";
 
 type DocumentTypes =
@@ -33,9 +33,31 @@ export default function DocumentInput({
   textStyle,
 }: DocumentInputProps) {
   const { API_URL, userId } = useContext(AppContext);
-  const uploadFile = async (file: object) => {
+
+  function dataURLtoBlob(dataUrl: string) {
+    const arr = dataUrl.split(",");
+    const mime = arr[0].match(/:(.*?);/)?.[1] || "";
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+  }
+
+  const uploadFile = async (file: {
+    uri: string;
+    name: string;
+    type: string;
+  }) => {
     const formData = new FormData();
-    formData.append("file", file as any);
+    if (Platform.OS === "web" && file.uri.startsWith("data:")) {
+      const blob = dataURLtoBlob(file.uri);
+      formData.append("file", blob, file.name);
+    } else {
+      formData.append("file", file as any);
+    }
     formData.append("userId", userId as string);
     category && formData.append("category", category);
     description && formData.append("description", description);

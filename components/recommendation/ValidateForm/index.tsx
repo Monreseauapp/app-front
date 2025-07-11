@@ -55,13 +55,8 @@ export default function ValidateForm({
       <Pressable
         onPress={() => {
           const data = type === "project" ? project : recommandation;
-          let valid: boolean;
-          if ("addressComplement" in data) {
-            const { addressComplement, ...rest } = data;
-            valid = useFormValidation(rest);
-          } else {
-            valid = useFormValidation(data);
-          }
+          const valid = useFormValidation(data);
+          console.log(data, valid);
           setIsDataValid(valid);
           if (valid) {
             type === "project" ? sendProjectData() : sendRecommendationData();
