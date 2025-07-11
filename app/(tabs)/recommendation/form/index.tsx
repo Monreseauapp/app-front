@@ -157,7 +157,7 @@ export default function RecommendationForm() {
                 handleChange={handleChange}
                 isDataValid={isDataValid}
               />
-              {!project.isPublic && (
+              {(!project.isPublic || type === "company") && (
                 <CompanyInformations
                   type={type}
                   project={project}
