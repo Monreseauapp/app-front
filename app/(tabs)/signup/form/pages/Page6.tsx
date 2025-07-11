@@ -1,7 +1,7 @@
 import CheckBoxList from "@/components/form/CheckboxList";
 import Input from "@/components/form/Input";
 import { Platform, Text, View } from "react-native";
-import styles, { webStyles } from "./pages.styles";
+import { styles, webStyles } from "./pages.styles";
 
 export default function Page6({
   isDataValid = undefined,
@@ -27,9 +27,15 @@ export default function Page6({
       <CheckBoxList
         title="Quels sont vos clients cibles : (choix multiple)"
         choices={[
-          <Text style={styles.checkboxText}>Les particuliers</Text>,
-          <Text style={styles.checkboxText}>Les indépendants/TPE</Text>,
-          <Text style={styles.checkboxText}>Les PME et grands comptes</Text>,
+          <Text key="individuals" style={styles.checkboxText}>
+            Les particuliers
+          </Text>,
+          <Text key="vsb" style={styles.checkboxText}>
+            Les indépendants/TPE
+          </Text>,
+          <Text key="business" style={styles.checkboxText}>
+            Les PME et grands comptes
+          </Text>,
         ]}
       />
     </View>

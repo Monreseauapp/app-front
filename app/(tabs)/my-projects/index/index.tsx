@@ -59,7 +59,7 @@ export default function MyRecommendations() {
     if (updated) {
       setUpdated(false);
     }
-  }, [companyId, updated]);
+  }, [companyId, updated, API_URL]);
 
   const fetchCompleteProjects = async (projects: Project[]) => {
     const completeProjects: CompleteProject[] = await Promise.all(
@@ -96,6 +96,7 @@ export default function MyRecommendations() {
     if (projectsReceived.length > 0 || projectsSent.length > 0) {
       setCompleteRecommendations();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectsReceived, projectsSent]);
 
   return (

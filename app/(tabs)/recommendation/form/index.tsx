@@ -114,7 +114,7 @@ export default function RecommendationForm() {
       });
     };
     fetchUsers();
-  }, []);
+  }, [type, API_URL]);
 
   return (
     <KeyboardAvoidingView
@@ -159,7 +159,7 @@ export default function RecommendationForm() {
               />
               {(!project.isPublic ||
                 type === "company" ||
-                project.companyNumber == 1) && (
+                project.companyNumber === 1) && (
                 <CompanyInformations
                   type={type}
                   project={project}

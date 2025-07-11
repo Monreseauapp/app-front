@@ -1,14 +1,12 @@
 import { Colors } from "@/constants/Colors";
 import useNotificationFetch from "@/hooks/useNotificationFetch";
 import useNotificationTransform from "@/hooks/useNotificationTransform";
-import { useRouter } from "expo-router";
 import { Dimensions, Platform, ScrollView, Text, View } from "react-native";
 import { styles, webStyles } from "./notification.styles";
 
 // AJOUTER UNE DIFFERENCE ENTRE READ ET UNREAD
 
 export default function Notification() {
-  const router = useRouter();
   const MONTHS: Record<number, string> = {
     1: "janvier",
     2: "février",
@@ -55,7 +53,10 @@ export default function Notification() {
       >
         {notificationsByDate &&
           notificationsByDate.map(([date, notificationList], index) => (
-            <View style={styles.notificationContainer}>
+            <View
+              style={styles.notificationContainer}
+              key={date + index.toString()}
+            >
               <Text style={styles.notificationTitle}>
                 {formattedDate === date ? "Aujourd'hui" : date}
               </Text>

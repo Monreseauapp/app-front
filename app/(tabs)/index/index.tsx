@@ -25,7 +25,7 @@ export default function Index() {
       <Text
         style={Platform.select({ web: webStyles.title, default: styles.title })}
       >
-        Je m'inscris
+        Je m&apos;inscris
       </Text>
       <Text
         style={Platform.select({

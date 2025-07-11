@@ -84,7 +84,7 @@ export default function ModifyProfile() {
       };
       fetchCompanyData();
     }
-  }, [companyId, userId]);
+  }, [companyId, userId, API_URL]);
 
   const updateData = async () => {
     axios.patch(`${API_URL}/users/${userId}`, { ...user }).catch((error) => {

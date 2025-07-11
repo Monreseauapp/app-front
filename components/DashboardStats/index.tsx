@@ -1,5 +1,5 @@
 import { Colors } from "@/constants/Colors";
-import { Dimensions, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import styles from "./DashboardStats.styles";
 
 interface Stat {
@@ -13,7 +13,6 @@ interface DashboardStatsProps {
 }
 
 export default function DashboardStats({ title, stats }: DashboardStatsProps) {
-  const { width } = Dimensions.get("window");
   return (
     <View
       style={{

@@ -3,7 +3,7 @@ import Input from "@/components/form/Input";
 import { Colors } from "@/constants/Colors";
 import { Company, User } from "@/types";
 import { Platform, Text, View } from "react-native";
-import styles, { webStyles } from "./pages.styles";
+import { styles, webStyles } from "./pages.styles";
 
 interface Page4Props {
   company: Company;
@@ -41,7 +41,7 @@ export default function Page4({
           textAlign: "center",
         }}
       >
-        Informations professionnelles (adresse de l'entreprise)
+        Informations professionnelles (adresse de l&apos;entreprise)
       </Text>
       <AddressInputs
         data={company}
