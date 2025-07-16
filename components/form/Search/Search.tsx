@@ -97,7 +97,7 @@ export default function Search({
           }
         }}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setTimeout(() => setIsFocused(false), 75)}
+        onBlur={() => setTimeout(() => setIsFocused(false), 150)}
         placeholderTextColor={placeholderTextColor || Colors.violet}
         placeholder={placeholder}
         ref={inputRef}

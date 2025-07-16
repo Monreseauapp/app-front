@@ -1,4 +1,5 @@
 import Navigation from "@/components/signup/Navigation";
+import TwoFA from "@/components/signup/TwoFA";
 import { Colors } from "@/constants/Colors";
 import { initialCompany } from "@/constants/initial-types-value/initialCompany";
 import { initialUser } from "@/constants/initial-types-value/initialUser";
@@ -26,6 +27,13 @@ import Page5 from "./pages/Page5";
 import Page6 from "./pages/Page6";
 import Page7 from "./pages/Page7";
 
+export interface createUserResponse {
+  message: string;
+  id: string;
+  qrCode: Base64URLString;
+  secret: string;
+}
+
 const { width } = Dimensions.get("window");
 
 export default function FormSignUp() {
@@ -40,6 +48,9 @@ export default function FormSignUp() {
     SubscriptionType | undefined
   >(undefined);
   const [isDataValid, setIsDataValid] = useState<boolean | undefined>(
+    undefined
+  );
+  const [response, setResponse] = useState<createUserResponse | undefined>(
     undefined
   );
 
@@ -115,6 +126,7 @@ export default function FormSignUp() {
           isDataValid={isDataValid}
           resetForm={resetForm}
           setIsDataValid={setIsDataValid}
+          setResponse={setResponse}
         />
       ),
     },
@@ -154,6 +166,7 @@ export default function FormSignUp() {
           resetForm={resetForm}
           setIsDataValid={setIsDataValid}
           isDataValid={isDataValid}
+          setResponse={setResponse}
         />
       ),
     },
@@ -177,6 +190,9 @@ export default function FormSignUp() {
         <View
           style={Platform.OS === "web" ? webStyles.container : styles.container}
         >
+          {response && (
+            <TwoFA qrCode={response.qrCode} secret={response.secret} />
+          )}
           <Image
             source={require("@/assets/images/white-logo.png")}
             style={Platform.select({

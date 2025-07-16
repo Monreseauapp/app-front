@@ -4,9 +4,9 @@ import { AppContext } from "@/context/context";
 import { Company, SubscriptionType, User } from "@/types";
 import validateFormData from "@/utils/validateFormData";
 import axios from "axios";
-import { useRouter } from "expo-router";
 import { useContext } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
+import { createUserResponse } from "..";
 import { styles, webStyles } from "./pages.styles";
 
 interface Page7Props {
@@ -16,6 +16,7 @@ interface Page7Props {
   isDataValid: boolean | undefined;
   setIsDataValid: (isValid: boolean) => void;
   resetForm: () => void;
+  setResponse: (response: createUserResponse) => void;
 }
 
 export default function Page7({
@@ -25,9 +26,9 @@ export default function Page7({
   setIsDataValid,
   isDataValid = undefined,
   resetForm,
+  setResponse,
 }: Page7Props) {
   const { API_URL } = useContext(AppContext);
-  const router = useRouter();
 
   const validateForm = () => {
     const isValid = validateFormData(user) && validateFormData(company);
@@ -35,24 +36,23 @@ export default function Page7({
     if (isValid) {
       resetForm();
       sendData(user, company);
-      router.dismissAll();
-      router.push("/signin/doubleAuth");
     }
   };
   const sendData = async (user: User, company: Company) => {
-    const userId = await axios
+    const response = await axios
       .post(`${API_URL}/users`, user)
-      .then((response) => response.data.id)
+      .then((response) => response.data)
       .catch((error) => {
         console.error("Error sending user data:", error.response);
       });
+    setResponse(response);
     const companyId = await axios
-      .post(`${API_URL}/company`, { ...company, ownerId: userId })
+      .post(`${API_URL}/company`, { ...company, ownerId: response.id })
       .then((response) => response.data.id)
       .catch((error) => {
         console.error("Error sending company data:", error.response);
       });
-    await axios.patch(`${API_URL}/users/${userId}`, {
+    await axios.patch(`${API_URL}/users/${response.id}`, {
       companyId: companyId,
     });
   };

@@ -1,10 +1,13 @@
 import AddressInputs from "@/components/AddressInputs";
 import Input from "@/components/form/Input";
 import { Colors } from "@/constants/Colors";
+import { AppContext } from "@/context/context";
 import { User } from "@/types";
 import validateFormData from "@/utils/validateFormData";
-import { useRouter } from "expo-router";
+import axios from "axios";
+import { useContext } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
+import { createUserResponse } from "..";
 import { styles, webStyles } from "./pages.styles";
 
 interface Page3Props {
@@ -17,6 +20,7 @@ interface Page3Props {
   isDataValid: boolean | undefined;
   setIsDataValid: (isValid: boolean) => void;
   resetForm: () => void;
+  setResponse: (response: createUserResponse) => void;
 }
 
 export default function Page3({
@@ -26,17 +30,28 @@ export default function Page3({
   isDataValid = undefined,
   setIsDataValid,
   resetForm,
+  setResponse,
 }: Page3Props) {
-  const router = useRouter();
+  const { API_URL } = useContext(AppContext);
+
   const validateForm = () => {
     const isValid = validateFormData(user);
     setIsDataValid(isValid);
     if (isValid) {
       resetForm();
-      router.dismissAll();
-      router.push("/legal/legalNotice");
+      sendData();
     }
   };
+  const sendData = async () => {
+    const resp = await axios
+      .post(`${API_URL}/users`, user)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("Error sending user data:", error.response);
+      });
+    setResponse(resp);
+  };
+
   return (
     <View
       style={{
