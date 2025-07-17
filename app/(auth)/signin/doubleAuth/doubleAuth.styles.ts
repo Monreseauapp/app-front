@@ -50,14 +50,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: Colors.white,
   },
-  resend: {
-    color: Colors.white,
-    fontSize: 16,
-    fontWeight: "bold",
-    marginTop: -40,
-    textDecorationLine: "underline",
-    marginBottom: 40,
-  },
   validationButton: {
     backgroundColor: Colors.white,
     paddingHorizontal: 20,
@@ -69,6 +61,13 @@ const styles = StyleSheet.create({
     color: Colors.violet,
     fontWeight: "bold",
     fontSize: 25,
+  },
+  error: {
+    color: Colors.red,
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: -30,
+    marginBottom: 20,
   },
 });
 

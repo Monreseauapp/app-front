@@ -41,6 +41,7 @@ type InputProps = {
   value?: string;
   onChangeText?: (text: string) => void;
   valid?: boolean;
+  validationMessage?: string;
 };
 
 export default function Input({
@@ -57,6 +58,7 @@ export default function Input({
   value,
   onChangeText,
   valid = undefined,
+  validationMessage,
   ...rest
 }: InputProps & React.ComponentProps<typeof TextInput>) {
   const { width } = Dimensions.get("window");
@@ -94,7 +96,7 @@ export default function Input({
               default: styles.required,
             })}
           >
-            (ce champ est requis)
+            {validationMessage || "(ce champ est requis)"}
           </Text>
         )}
       </Text>

@@ -1,11 +1,15 @@
 import Input from "@/components/form/Input";
 import { Colors } from "@/constants/Colors";
-import { Link, useRouter } from "expo-router";
+import { AppContext } from "@/context/context";
+import axios from "axios";
+import { useRouter } from "expo-router";
+import { useContext, useState } from "react";
 import {
   Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   Text,
   TouchableWithoutFeedback,
   View,
@@ -13,7 +17,28 @@ import {
 import { styles, webStyles } from "./index.styles";
 
 export default function SignIn() {
+  const { API_URL } = useContext(AppContext);
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+
+  const login = () => {
+    setError(false);
+    const isConnected = axios
+      .post(`${API_URL}/auth/login`, {
+        email: email,
+        password: password,
+      })
+      .then((response) => response.data.authorized)
+      .catch((error) => {
+        console.error("Login failed:", error);
+        setError(true);
+        return false;
+      });
+    return isConnected;
+  };
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -56,6 +81,10 @@ export default function SignIn() {
                 name="Email"
                 placeholder="exemple@gmail.com"
                 type="email"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                valid={!error}
+                validationMessage="Vérifiez votre email."
               />
               <View
                 style={{
@@ -69,6 +98,10 @@ export default function SignIn() {
                   name="Mot de passe"
                   placeholder="********"
                   type="current-password"
+                  value={password}
+                  onChangeText={(text) => setPassword(text)}
+                  valid={!error}
+                  validationMessage="Vérifiez votre mot de passe."
                 />
                 <Text
                   onPress={() => {
@@ -84,11 +117,15 @@ export default function SignIn() {
                   Mot de passe oublié ????
                 </Text>
               </View>
-              <Link
-                href="/signin/doubleAuth"
-                asChild
-                onPress={() => {
-                  router.dismissAll();
+              <Pressable
+                onPress={async () => {
+                  if (await login()) {
+                    router.dismissAll();
+                    router.push({
+                      pathname: "/(auth)/signin/doubleAuth",
+                      params: { email },
+                    });
+                  }
                 }}
                 style={styles.connectionButton}
               >
@@ -100,7 +137,7 @@ export default function SignIn() {
                 >
                   Se connecter
                 </Text>
-              </Link>
+              </Pressable>
               <View style={styles.googleContainer}>
                 <Text
                   style={{

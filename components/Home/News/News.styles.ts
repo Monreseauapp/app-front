@@ -29,6 +29,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  noNotificationText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: Colors.black,
+    textAlign: "center",
+    marginTop: 20,
+  },
 });
 
 const webStyles = StyleSheet.create({
