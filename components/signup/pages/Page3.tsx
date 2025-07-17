@@ -98,7 +98,6 @@ export default function Page3({
       {type === "guest" && (
         <View style={{ width: "100%", alignItems: "center" }}>
           <Pressable style={styles.button} onPress={validateForm}>
-          <Pressable style={styles.button} onPress={validateForm}>
             <Text
               style={{
                 fontSize: 18,
