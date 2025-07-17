@@ -7,18 +7,19 @@ export default function AuthLayout() {
   const route = usePathname();
   const { userId } = useContext(AppContext);
   const isLoggedIn = !!userId;
+  const isAuthRoute = ["/signin", "/signup", "/legal", "/index"].some((path) =>
+    route.startsWith(path)
+  );
 
   useEffect(() => {
-    setTimeout(() => {
-      if (isLoggedIn && route) {
-        router.replace("/(tabs)/home");
-      }
-    }, 500);
+    if (isLoggedIn && userId !== undefined && isAuthRoute) {
+      router.replace("/home");
+    }
   }, [isLoggedIn, userId, route, router]);
 
   return (
     <Stack screenOptions={{ headerShown: false, gestureEnabled: true }}>
-      <Stack.Screen name="home/index" />
+      <Stack.Screen name="index/index" />
       <Stack.Screen name="signin/index/index" />
       <Stack.Screen name="signup/index/index" />
       <Stack.Screen name="legal/legalNotice/index" />

@@ -7,7 +7,7 @@ import validateFormData from "@/utils/validateFormData";
 import axios from "axios";
 import { useContext } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
-import { createUserResponse } from "..";
+import { createUserResponse } from "../../../app/(auth)/signup/form";
 import { styles, webStyles } from "./pages.styles";
 
 interface Page3Props {
@@ -44,7 +44,13 @@ export default function Page3({
   };
   const sendData = async () => {
     const resp = await axios
-      .post(`${API_URL}/users`, user)
+      .post(`${API_URL}/users`, {
+        ...user,
+        updatedAt: new Date(),
+        retentionDate: new Date(
+          new Date().setFullYear(new Date().getFullYear() + 3)
+        ).toISOString(),
+      })
       .then((response) => response.data)
       .catch((error) => {
         console.error("Error sending user data:", error.response);

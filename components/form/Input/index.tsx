@@ -107,8 +107,13 @@ export default function Input({
         keyboardType={keyboardType}
         multiline={multiline}
         onChange={(e) => {
+          const text = e.nativeEvent.text;
           if (onChangeText) {
-            onChangeText(e.nativeEvent.text);
+            if (keyboardType === "numeric" || keyboardType === "phone-pad") {
+              onChangeText(text.replace(/[^0-9+-]/g, ""));
+            } else {
+              onChangeText(text);
+            }
           }
         }}
         placeholderTextColor={placeholderTextColor || Colors.violet}

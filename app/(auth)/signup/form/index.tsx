@@ -18,14 +18,14 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import Page1 from "../../../../components/signup/pages/Page1";
+import Page2 from "../../../../components/signup/pages/Page2";
+import Page3 from "../../../../components/signup/pages/Page3";
+import Page4 from "../../../../components/signup/pages/Page4";
+import Page5 from "../../../../components/signup/pages/Page5";
+import Page6 from "../../../../components/signup/pages/Page6";
+import Page7 from "../../../../components/signup/pages/Page7";
 import { styles, webStyles } from "./form.styles";
-import Page1 from "./pages/Page1";
-import Page2 from "./pages/Page2";
-import Page3 from "./pages/Page3";
-import Page4 from "./pages/Page4";
-import Page5 from "./pages/Page5";
-import Page6 from "./pages/Page6";
-import Page7 from "./pages/Page7";
 
 export interface createUserResponse {
   message: string;
@@ -174,7 +174,14 @@ export default function FormSignUp() {
 
   const pages =
     type === "guest"
-      ? allPages.filter((page) => page.key !== "page2")
+      ? allPages.filter(
+          (page) =>
+            page.key !== "page2" &&
+            page.key !== "page4" &&
+            page.key !== "page5" &&
+            page.key !== "page6" &&
+            page.key !== "page7"
+        )
       : allPages;
 
   return (

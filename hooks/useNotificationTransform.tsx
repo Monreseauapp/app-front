@@ -44,8 +44,8 @@ export default function useNotificationTransform<T extends NotificationData>(
     ...(projectsInitiated || []),
     ...(projectsReceived || []),
   ].sort((a, b) => {
-    const dateA = new Date(a.updatedAt);
-    const dateB = new Date(b.updatedAt);
+    const dateA = new Date(a.updatedAt || a.createdAt || 0);
+    const dateB = new Date(b.updatedAt || b.createdAt || 0);
     return dateB.getTime() - dateA.getTime();
   });
 
@@ -82,7 +82,7 @@ export default function useNotificationTransform<T extends NotificationData>(
 
   const notificationsByDate: Record<string, string[]> = {};
   notifications.forEach((notification) => {
-    const date = new Date(notification.date);
+    const date = new Date(notification.date || 0);
     const formattedDate = `${date.getDate()} ${
       date.getMonth() + 1
     } ${date.getFullYear()}`;

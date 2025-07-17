@@ -3,7 +3,13 @@ import TabBar from "@/components/TabBar";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { BlurView } from "expo-blur";
-import { Tabs, useNavigation, usePathname, useRouter } from "expo-router";
+import {
+  RelativePathString,
+  Tabs,
+  useNavigation,
+  usePathname,
+  useRouter,
+} from "expo-router";
 import { useContext, useEffect } from "react";
 import {
   Dimensions,
@@ -25,13 +31,20 @@ export default function TabLayout() {
   const route = usePathname();
   const navigation = useNavigation();
   const history = navigation.getState()?.routes[0].state?.history;
+  const isTabsRoute = [
+    "/home",
+    "/profil",
+    "/my-recommendations",
+    "/my-projects",
+    "/recommendation",
+    "/profil",
+    "/notification",
+  ].some((path) => route.startsWith(path));
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!isLoggedIn && route) {
-        router.replace("/(auth)/home");
-      }
-    }, 500);
+    if (!isLoggedIn && userId !== undefined && isTabsRoute) {
+      router.replace("/" as unknown as RelativePathString);
+    }
   }, [isLoggedIn, userId, router, route]);
 
   const isTabBarInvisible = [
@@ -143,12 +156,6 @@ export default function TabLayout() {
           name="recommendation/index/index"
           options={{
             title: "Recommandations",
-          }}
-        />
-        <Tabs.Screen
-          name="legal/legalNotice/index"
-          options={{
-            title: "Mentions légales",
           }}
         />
         <Tabs.Screen

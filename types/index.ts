@@ -79,14 +79,14 @@ export interface User {
   city: string;
   country?: string;
   createdAt?: Date | string;
-  updatedAt: Date | string;
+  updatedAt?: Date | string;
   lastLogin?: (Date | string) | null;
   phone: string;
   password: string;
   domainId: string;
   companyId?: string | null;
   isAdmin?: boolean;
-  rententionDate: Date | string;
+  rententionDate?: Date | string;
   consentTerms?: boolean;
   consentMarketing?: boolean;
   allowRecommendationDataAccess?: boolean;
@@ -108,8 +108,8 @@ export interface Company {
   city: string;
   country?: string;
   createdAt?: Date | string;
-  updatedAt: Date | string;
-  lastLogin: Date | string;
+  updatedAt?: Date | string;
+  lastLogin?: Date | string;
   recommendationRate?: string | null;
   email: string;
   phone: string;
@@ -120,7 +120,7 @@ export interface Company {
   subscriptionId?: string | null;
   ownerId?: string;
   OpentoReco: boolean;
-  retentionDate: Date | string;
+  retentionDate?: Date | string;
 }
 
 export interface Subscription {
@@ -140,7 +140,7 @@ export interface Subscription {
 export interface Recommandation {
   id?: string;
   createdAt?: Date | string;
-  updatedAt: Date | string;
+  updatedAt?: Date | string;
   priority?: number;
   firstName: string;
   lastName: string;
@@ -176,7 +176,7 @@ export interface Recommandation {
 export interface Project {
   id?: string;
   createdAt?: Date | string;
-  updatedAt: Date | string;
+  updatedAt?: Date | string;
   name: string;
   description?: string | null;
   companyName?: string | null;

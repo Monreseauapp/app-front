@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { styles, webStyles } from "./home.styles";
+import { styles, webStyles } from "./index.styles";
 
 export default function Index() {
   const router = useRouter();

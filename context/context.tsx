@@ -6,7 +6,7 @@ export type AppContextType = {
   isMenuOpen: boolean;
   setIsMenuOpen: (isOpen: boolean) => void;
   API_URL?: string;
-  userId?: string;
+  userId?: string | null;
   token?: string | null;
   setToken: (token: string, expires: number) => void;
   companyId?: string;
@@ -17,7 +17,7 @@ const AppContext = createContext<AppContextType>({
   isMenuOpen: false,
   setIsMenuOpen: () => {},
   API_URL: process.env.EXPO_PUBLIC_API_URL,
-  userId: "user1",
+  userId: undefined,
   token: null,
   setToken: () => {},
   companyId: undefined,
@@ -28,7 +28,7 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 function Context({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [userId, setUserId] = useState<string | undefined>(undefined);
+  const [userId, setUserId] = useState<string | null | undefined>(undefined);
   const [companyId, setCompanyId] = useState<string | undefined>(undefined);
   const [token, setToken] = useState<string | null>(null);
 
@@ -40,16 +40,40 @@ function Context({ children }: { children: React.ReactNode }) {
         await AsyncStorage.removeItem("token");
         await AsyncStorage.removeItem("tokenExpires");
         setToken(null);
-        setUserId(undefined);
+        setUserId(null);
         return;
       }
       if (storedToken) {
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${storedToken}`;
-        const payload = JSON.parse(atob(storedToken.split(".")[1]));
-        const id = payload.id as string | undefined;
-        setUserId(id);
+        try {
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${storedToken}`;
+
+          const tokenParts = storedToken.split(".");
+          if (tokenParts.length !== 3) {
+            throw new Error("Invalid token format");
+          }
+          const payloadBase64 = tokenParts[1];
+          const payloadJson = atob(payloadBase64);
+          const payload = JSON.parse(payloadJson);
+          const id = payload.id as string | undefined;
+          if (id) {
+            axios
+              .patch(`${API_URL}/users/${id}`, {
+                lastLogin: new Date().toISOString(),
+              })
+              .catch((error) => {
+                console.error("Error updating last login:", error.response);
+              });
+            setUserId(id);
+            setToken(storedToken);
+          }
+        } catch (error) {
+          console.error("Error parsing token:", error);
+          setUserId(null);
+        }
+      } else {
+        setUserId(null);
       }
     };
     loadToken();
