@@ -1,7 +1,7 @@
 import LeftArrow from "@/assets/icons/left-arrow.svg";
 import RightArrow from "@/assets/icons/right-arrow.svg";
 import { Colors } from "@/constants/Colors";
-import React from "react";
+import React, { useEffect } from "react";
 import { Pressable } from "react-native";
 
 type NavigationProps = {
@@ -17,6 +17,26 @@ export default function Navigation({
   type,
   scrollToPage,
 }: NavigationProps) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName;
+      if (["INPUT", "TEXTAREA", "BUTTON", "SELECT"].includes(tag)) return;
+      e.preventDefault();
+      if (e.key === "ArrowLeft" || e.key === "Backspace") {
+        if (currentPage > 0) {
+          scrollToPage(currentPage - 1);
+        }
+      } else if (e.key === "ArrowRight" || e.key === " ") {
+        if (currentPage < pages.length - 1 && type === "company") {
+          scrollToPage(currentPage + 1);
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [currentPage]);
   return (
     <>
       {currentPage > 0 && (

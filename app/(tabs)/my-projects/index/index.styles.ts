@@ -9,6 +9,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 140,
   },
+  noProjects: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: Colors.black,
+    textAlign: "center",
+    marginTop: 20,
+    width: "80%",
+  },
 });
 
 export default styles;

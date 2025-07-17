@@ -20,7 +20,7 @@ export default function useNotificationFetch() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!token) return;
+    if (!token || !userId) return;
     setLoading(true);
     setError(null);
     const fetchRecommendations = async () => {

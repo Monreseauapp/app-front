@@ -6,7 +6,7 @@ import validateFormData from "@/utils/validateFormData";
 import axios from "axios";
 import { useContext } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
-import { createUserResponse } from "..";
+import { createUserResponse } from "../../../app/(auth)/signup/form";
 import { styles, webStyles } from "./pages.styles";
 
 interface Page7Props {
@@ -28,7 +28,7 @@ export default function Page7({
   resetForm,
   setResponse,
 }: Page7Props) {
-  const { API_URL } = useContext(AppContext);
+  const { API_URL, token } = useContext(AppContext);
 
   const validateForm = () => {
     const isValid = validateFormData(user) && validateFormData(company);
@@ -40,14 +40,27 @@ export default function Page7({
   };
   const sendData = async (user: User, company: Company) => {
     const response = await axios
-      .post(`${API_URL}/users`, user)
+      .post(`${API_URL}/users`, {
+        ...user,
+        updatedAt: new Date(),
+        rententionDate: new Date(
+          new Date().setFullYear(new Date().getFullYear() + 3)
+        ).toISOString(),
+      })
       .then((response) => response.data)
       .catch((error) => {
         console.error("Error sending user data:", error.response);
       });
     setResponse(response);
     const companyId = await axios
-      .post(`${API_URL}/company`, { ...company, ownerId: response.id })
+      .post(`${API_URL}/company`, {
+        ...company,
+        ownerId: response.id,
+        updatedAt: new Date(),
+        retentionDate: new Date(
+          new Date().setFullYear(new Date().getFullYear() + 3)
+        ).toISOString(),
+      })
       .then((response) => response.data.id)
       .catch((error) => {
         console.error("Error sending company data:", error.response);
