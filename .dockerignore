@@ -10,6 +10,7 @@ dist/
 android/app/build/
 ios/build/
 ios/Pods/
+web/
 
 # OS generated files
 .DS_Store
