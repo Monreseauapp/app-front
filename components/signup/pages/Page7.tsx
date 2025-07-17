@@ -107,7 +107,6 @@ export default function Page7({
         ]}
       />
       <Pressable style={styles.validationButton} onPress={validateForm}>
-      <Pressable style={styles.validationButton} onPress={validateForm}>
         <Text style={styles.validationText}>Valider</Text>
       </Pressable>
     </View>
