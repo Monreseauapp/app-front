@@ -4,7 +4,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 
 export default function useNotificationFetch() {
-  const { API_URL, userId, companyId } = useContext(AppContext);
+  const { API_URL, userId, companyId, token } = useContext(AppContext);
   const [recommendationsInitiated, setRecommendationsInitiated] = useState<
     Recommandation[]
   >([]);
@@ -20,18 +20,27 @@ export default function useNotificationFetch() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!token || !userId) return;
     setLoading(true);
     setError(null);
     const fetchRecommendations = async () => {
       const initiatedRecommendations = await axios
-        .get(`${API_URL}/recommandation/initiator/${userId}`)
+        .get(`${API_URL}/recommandation/initiator/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((res) => res.data)
         .catch((err) => {
           console.error("Error fetching initiated recommendations:", err);
           setError("Failed to fetch initiated recommendations.");
         });
       const receivedRecommendations = await axios
-        .get(`${API_URL}/recommandation/recipient/${userId}`)
+        .get(`${API_URL}/recommandation/recipient/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((res) => res.data)
         .catch((err) => {
           console.error("Error fetching received recommendations:", err);
@@ -39,7 +48,11 @@ export default function useNotificationFetch() {
         });
       if (companyId) {
         const companyReceivedRecommendations = await axios
-          .get(`${API_URL}/recommandation/company/${companyId}`)
+          .get(`${API_URL}/recommandation/company/${companyId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
           .then((res) => res.data)
           .catch((err) => {
             console.error("Error fetching company recommendations:", err);
@@ -52,7 +65,11 @@ export default function useNotificationFetch() {
     };
     const fetchProjects = async () => {
       const initiatedProjects = await axios
-        .get(`${API_URL}/project/user/${userId}`)
+        .get(`${API_URL}/project/user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((res) => res.data)
         .catch((err) => {
           console.error("Error fetching initiated projects:", err);
@@ -60,7 +77,11 @@ export default function useNotificationFetch() {
         });
       if (companyId) {
         const receivedProjects = await axios
-          .get(`${API_URL}/project/company/${companyId}`)
+          .get(`${API_URL}/project/company/${companyId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
           .then((res) => res.data)
           .catch((err) => {
             console.error("Error fetching received projects:", err);
@@ -73,7 +94,7 @@ export default function useNotificationFetch() {
     fetchRecommendations();
     fetchProjects();
     setLoading(false);
-  }, [userId, companyId, API_URL]);
+  }, [userId, companyId, API_URL, token]);
 
   return {
     recommendationsInitiated,

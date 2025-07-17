@@ -1,6 +1,6 @@
 import CustomCheckbox from "@/components/form/CustomCheckbox";
 import { Colors } from "@/constants/Colors";
-import { Link } from "expo-router";
+import { Link, RelativePathString } from "expo-router";
 import { useState } from "react";
 import { Image, Platform, ScrollView, Text, View } from "react-native";
 import { styles, webStyles } from "./legalNotice.styles";
@@ -85,7 +85,7 @@ export default function LegalNotice() {
           </Text>
         </View>
         <Link
-          href="/signin/doubleAuth"
+          href={"/signin" as unknown as RelativePathString}
           style={styles.validationButton}
           disabled={!agreedToTerms}
           dismissTo

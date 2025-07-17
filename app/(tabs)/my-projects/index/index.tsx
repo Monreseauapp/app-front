@@ -2,6 +2,7 @@ import InnerNavBar from "@/components/InnerNavBar";
 import ProjectView from "@/components/my-projects/Project";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
+import useProjectFetch from "@/hooks/useProjectFetch";
 import { Company, Project, User } from "@/types";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
@@ -16,50 +17,13 @@ export interface CompleteProject {
 
 export default function MyRecommendations() {
   const { API_URL, companyId } = useContext(AppContext);
-  const [projectsReceived, setProjectsReceived] = useState<Project[]>([]);
-  const [projectsSent, setProjectsSent] = useState<Project[]>([]);
+  const { projectsReceived, projectsSent } = useProjectFetch();
   const [completeReceived, setCompleteReceived] = useState<CompleteProject[]>(
     []
   );
   const [completeSent, setCompleteSent] = useState<CompleteProject[]>([]);
   const [page, setPage] = useState<string>("sent");
   const [updated, setUpdated] = useState<boolean>(false);
-
-  useEffect(() => {
-    const fetchProjectsReceived = async () => {
-      axios
-        .get(`${API_URL}/project/company/${companyId}`)
-        .then((response) => setProjectsReceived(response.data))
-        .catch((error) => {
-          console.error("Error fetching recommendations:", error.request);
-        });
-    };
-    const fetchProjectsSent = async () => {
-      const allUsers = await axios
-        .get(`${API_URL}/company/${companyId}/users`)
-        .then((response) => response.data.users)
-        .catch((error) => {
-          console.error("Error fetching users:", error.request);
-        });
-      const sent = await Promise.all(
-        allUsers.map(async (user: User) => {
-          return await axios
-            .get(`${API_URL}/project/user/${user.id}`)
-            .then((response) => response.data)
-            .catch((error) => {
-              console.error("Error fetching recommendations:", error.request);
-              return null;
-            });
-        })
-      );
-      setProjectsSent(sent.flat().filter((item) => item !== null));
-    };
-    fetchProjectsReceived();
-    fetchProjectsSent();
-    if (updated) {
-      setUpdated(false);
-    }
-  }, [companyId, updated, API_URL]);
 
   const fetchCompleteProjects = async (projects: Project[]) => {
     const completeProjects: CompleteProject[] = await Promise.all(
@@ -96,6 +60,7 @@ export default function MyRecommendations() {
     if (projectsReceived.length > 0 || projectsSent.length > 0) {
       setCompleteRecommendations();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectsReceived, projectsSent]);
 
@@ -134,14 +99,20 @@ export default function MyRecommendations() {
           gap: 20,
         }}
       >
-        {(page === "sent" ? completeSent : completeReceived).map((rec) => (
-          <ProjectView
-            key={page + rec.project.id}
-            {...rec}
-            page={page}
-            setUpdated={setUpdated}
-          />
-        ))}
+        {(page === "sent" ? completeSent : completeReceived).length > 0 ? (
+          (page === "sent" ? completeSent : completeReceived).map((proj) => (
+            <ProjectView
+              key={page + proj.project.id}
+              {...proj}
+              page={page}
+              setUpdated={setUpdated}
+            />
+          ))
+        ) : (
+          <Text style={styles.noProjects}>
+            Aucun projet {page === "sent" ? "envoyé" : "reçu"}.
+          </Text>
+        )}
       </ScrollView>
     </View>
   );

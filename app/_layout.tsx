@@ -15,8 +15,13 @@ export default function RootLayout() {
             animated={true}
             translucent
           />
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(tabs)" options={{ gestureEnabled: true }} />
+
+          <Stack
+            screenOptions={{ headerShown: false, gestureEnabled: true }}
+            initialRouteName="(auth)"
+          >
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="(auth)" />
             <Stack.Screen name="+not-found" />
           </Stack>
         </Context>

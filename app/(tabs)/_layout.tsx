@@ -3,8 +3,14 @@ import TabBar from "@/components/TabBar";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { BlurView } from "expo-blur";
-import { router, Tabs, useNavigation, usePathname } from "expo-router";
-import { useContext } from "react";
+import {
+  RelativePathString,
+  Tabs,
+  useNavigation,
+  usePathname,
+  useRouter,
+} from "expo-router";
+import { useContext, useEffect } from "react";
 import {
   Dimensions,
   Image,
@@ -19,10 +25,27 @@ import {
 const { width } = Dimensions.get("window");
 
 export default function TabLayout() {
-  const { isMenuOpen, setIsMenuOpen } = useContext(AppContext);
+  const { isMenuOpen, setIsMenuOpen, userId } = useContext(AppContext);
+  const isLoggedIn = !!userId;
+  const router = useRouter();
   const route = usePathname();
   const navigation = useNavigation();
   const history = navigation.getState()?.routes[0].state?.history;
+  const isTabsRoute = [
+    "/home",
+    "/profil",
+    "/my-recommendations",
+    "/my-projects",
+    "/recommendation",
+    "/profil",
+    "/notification",
+  ].some((path) => route.startsWith(path));
+
+  useEffect(() => {
+    if (!isLoggedIn && userId !== undefined && isTabsRoute) {
+      router.replace("/" as unknown as RelativePathString);
+    }
+  }, [isLoggedIn, userId, router, route]);
 
   const isTabBarInvisible = [
     // "/index",
@@ -106,12 +129,6 @@ export default function TabLayout() {
         }}
       >
         <Tabs.Screen
-          name="index/index"
-          options={{
-            title: "Index",
-          }}
-        />
-        <Tabs.Screen
           name="home/index"
           options={{
             title: "Tableau de bord",
@@ -142,12 +159,6 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="legal/legalNotice/index"
-          options={{
-            title: "Mentions légales",
-          }}
-        />
-        <Tabs.Screen
           name="profil/modify/index"
           options={{
             title: "Modifier mon profil",
@@ -163,12 +174,6 @@ export default function TabLayout() {
           name="demoSignature"
           options={{
             title: "Démo de signature",
-          }}
-        />
-        <Tabs.Screen
-          name="recommendation/form/index"
-          options={{
-            title: "Faire une recommandation",
           }}
         />
       </Tabs>

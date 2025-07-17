@@ -1,6 +1,8 @@
 import Input from "@/components/form/Input";
-import { Link } from "expo-router";
-import React, { useRef, useState } from "react";
+import { AppContext } from "@/context/context";
+import axios from "axios";
+import { useLocalSearchParams, useRouter } from "expo-router/build/hooks";
+import React, { useContext, useRef, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -15,9 +17,33 @@ import {
 import { styles, webStyles } from "./doubleAuth.styles";
 
 export default function DoubleAuth() {
+  const { API_URL, setToken } = useContext(AppContext);
+  const router = useRouter();
+  const { email } = useLocalSearchParams();
   const [code, setCode] = useState("");
+  const [error, setError] = useState(false);
   const inputRef = useRef<TextInput>(null);
-  const CODE_LENGTH = 4;
+  const CODE_LENGTH = 6;
+
+  const login = () => {
+    setError(false);
+    const isConnected = axios
+      .post(`${API_URL}/auth/2fa`, { email, passcode: code })
+      .then((response) => {
+        const token = response.data.access_token;
+        const expires = response.data.expires_in;
+        if (token) {
+          setToken(token, expires);
+        }
+        return true;
+      })
+      .catch((error) => {
+        console.error("2FA login failed:", error);
+        setError(true);
+        return false;
+      });
+    return isConnected;
+  };
 
   return (
     <KeyboardAvoidingView
@@ -61,7 +87,7 @@ export default function DoubleAuth() {
                 default: styles.subtitle,
               })}
             >
-              Merci de bien vouloir rentrer le code à 4 chiffres.
+              Merci de bien vouloir rentrer le code à {CODE_LENGTH} chiffres.
             </Text>
             <Pressable onPress={() => inputRef.current?.focus()}>
               <View style={{ flexDirection: "row", gap: 16, marginTop: 24 }}>
@@ -91,12 +117,20 @@ export default function DoubleAuth() {
                 setCode(text.replace(/[^0-9]/g, "").slice(0, CODE_LENGTH))
               }
             />
-            <Pressable>
-              <Text style={styles.resend}>Renvoyer le code</Text>
-            </Pressable>
-            <Link href="/home" style={styles.validationButton}>
+            <Text style={styles.error}>
+              {error && "Le code n'est pas valide."}
+            </Text>
+            <Pressable
+              onPress={async () => {
+                if (await login()) {
+                  router.dismissAll();
+                  router.push("/(tabs)/home");
+                }
+              }}
+              style={styles.validationButton}
+            >
               <Text style={styles.buttonText}>Valider</Text>
-            </Link>
+            </Pressable>
           </View>
         </View>
       </TouchableWithoutFeedback>

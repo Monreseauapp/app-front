@@ -1,10 +1,10 @@
+import { createUserResponse } from "@/app/(auth)/signup/form";
 import CheckBoxList from "@/components/form/CheckboxList";
 import Input from "@/components/form/Input";
 import { AppContext } from "@/context/context";
 import { Company, SubscriptionType, User } from "@/types";
 import validateFormData from "@/utils/validateFormData";
 import axios from "axios";
-import { useRouter } from "expo-router";
 import { useContext } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
 import { styles, webStyles } from "./pages.styles";
@@ -16,6 +16,7 @@ interface Page7Props {
   isDataValid: boolean | undefined;
   setIsDataValid: (isValid: boolean) => void;
   resetForm: () => void;
+  setResponse: (response: createUserResponse) => void;
 }
 
 export default function Page7({
@@ -25,9 +26,9 @@ export default function Page7({
   setIsDataValid,
   isDataValid = undefined,
   resetForm,
+  setResponse,
 }: Page7Props) {
-  const { API_URL } = useContext(AppContext);
-  const router = useRouter();
+  const { API_URL, token } = useContext(AppContext);
 
   const validateForm = () => {
     const isValid = validateFormData(user) && validateFormData(company);
@@ -35,24 +36,36 @@ export default function Page7({
     if (isValid) {
       resetForm();
       sendData(user, company);
-      router.dismissAll();
-      router.push("/signin/doubleAuth");
     }
   };
   const sendData = async (user: User, company: Company) => {
-    const userId = await axios
-      .post(`${API_URL}/users`, user)
-      .then((response) => response.data.id)
+    const response = await axios
+      .post(`${API_URL}/users`, {
+        ...user,
+        updatedAt: new Date(),
+        rententionDate: new Date(
+          new Date().setFullYear(new Date().getFullYear() + 3)
+        ).toISOString(),
+      })
+      .then((response) => response.data)
       .catch((error) => {
         console.error("Error sending user data:", error.response);
       });
+    setResponse(response);
     const companyId = await axios
-      .post(`${API_URL}/company`, { ...company, ownerId: userId })
+      .post(`${API_URL}/company`, {
+        ...company,
+        ownerId: response.id,
+        updatedAt: new Date(),
+        retentionDate: new Date(
+          new Date().setFullYear(new Date().getFullYear() + 3)
+        ).toISOString(),
+      })
       .then((response) => response.data.id)
       .catch((error) => {
         console.error("Error sending company data:", error.response);
       });
-    await axios.patch(`${API_URL}/users/${userId}`, {
+    await axios.patch(`${API_URL}/users/${response.id}`, {
       companyId: companyId,
     });
   };
@@ -82,8 +95,18 @@ export default function Page7({
           <Text key="others" style={styles.checkboxText}>
             Autres
           </Text>,
+          <Text key="civil" style={styles.checkboxText}>
+            Responsabilité civile
+          </Text>,
+          <Text key="decennial" style={styles.checkboxText}>
+            Décenale
+          </Text>,
+          <Text key="others" style={styles.checkboxText}>
+            Autres
+          </Text>,
         ]}
       />
+      <Pressable style={styles.validationButton} onPress={validateForm}>
       <Pressable style={styles.validationButton} onPress={validateForm}>
         <Text style={styles.validationText}>Valider</Text>
       </Pressable>

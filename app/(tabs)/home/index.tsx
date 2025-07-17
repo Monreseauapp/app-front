@@ -19,7 +19,7 @@ import { styles, webStyles } from "./home.styles";
 
 export default function Home() {
   const { width } = Dimensions.get("window");
-  const { userId, companyId } = useContext(AppContext);
+  const { API_URL, userId, companyId } = useContext(AppContext);
   const [user, setUser] = useState<User | null>(null);
   const MONTHS: Record<number, string> = {
     1: "janvier",
@@ -39,7 +39,7 @@ export default function Home() {
   useEffect(() => {
     const fetchUserData = async () => {
       axios
-        .get(`${process.env.EXPO_PUBLIC_API_URL}/users/${userId}`)
+        .get(`${API_URL}/users/${userId}`)
         .then((response) => {
           const userData = response.data;
           if (userData.createdAt) {
@@ -54,7 +54,7 @@ export default function Home() {
     if (userId) {
       fetchUserData();
     }
-  }, [userId, companyId]);
+  }, [userId, companyId, API_URL]);
 
   return (
     <ScrollView
@@ -115,7 +115,7 @@ export default function Home() {
                 <Image
                   source={
                     user?.photoUrl
-                      ? { uri: user.photoUrl }
+                      ? { uri: `${API_URL}/files/view/${user.photoUrl}` }
                       : require("@/assets/images/profilepicture.jpg")
                   }
                   style={styles.image}

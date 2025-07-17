@@ -4,10 +4,11 @@ import PhoneIcon from "@/assets/icons/phone.svg";
 import StarIcon from "@/assets/icons/star.svg";
 import WebsiteIcon from "@/assets/icons/website.svg";
 import { Colors } from "@/constants/Colors";
+import { AppContext } from "@/context/context";
 import { Company, Review, User } from "@/types";
 import axios from "axios";
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -21,6 +22,7 @@ import {
 import { styles, webStyles } from "./id.styles";
 
 export default function Profil() {
+  const { API_URL } = useContext(AppContext);
   const { width } = Dimensions.get("window");
   const { id, media } = useLocalSearchParams();
   const [user, setUser] = useState<(User & { company: Company }) | null>(null);
@@ -36,7 +38,7 @@ export default function Profil() {
     const fetchData = async () => {
       const fetchProfileData = async (id: string) => {
         const response = await axios
-          .get(`${process.env.EXPO_PUBLIC_API_URL}/users/${id}/company`)
+          .get(`${API_URL}/users/${id}/company`)
           .then((response) => {
             const userData = response.data;
             setUser(userData);
@@ -49,9 +51,7 @@ export default function Profil() {
       const fetchReviews = async () => {
         if (user?.companyId) {
           const response = await axios
-            .get(
-              `${process.env.EXPO_PUBLIC_API_URL}/review/company/${user?.companyId}`
-            )
+            .get(`${API_URL}/review/company/${user?.companyId}`)
             .then((response) => {
               const reviewsData = response.data;
               setReviews(reviewsData);
@@ -70,14 +70,12 @@ export default function Profil() {
       }
     };
     fetchData();
-  }, [id, user?.companyId]);
+  }, [id, user?.companyId, API_URL]);
 
   useEffect(() => {
     const fetchReviewersData = async () => {
       const userPromises = reviews.map((review) =>
-        axios.get<User>(
-          `${process.env.EXPO_PUBLIC_API_URL}/users/${review.userId}`
-        )
+        axios.get<User>(`${API_URL}/users/${review.userId}`)
       );
       const responses = await Promise.all(userPromises);
       setReviewers(responses.map((res) => res.data));
@@ -85,7 +83,7 @@ export default function Profil() {
     if (reviews.length > 0) {
       fetchReviewersData();
     }
-  }, [reviews]);
+  }, [reviews, API_URL]);
 
   return (
     <View
@@ -119,7 +117,7 @@ export default function Profil() {
               <Image
                 source={
                   user?.photoUrl
-                    ? { uri: user.photoUrl }
+                    ? { uri: `${API_URL}/files/view/${user.photoUrl}` }
                     : require("@/assets/images/profilepicture.jpg")
                 }
                 style={styles.profilePicture}

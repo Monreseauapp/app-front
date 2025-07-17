@@ -9,7 +9,7 @@ export default function TabBar({ state, descriptors, navigation }: any) {
   const { setIsMenuOpen, companyId } = useContext(AppContext);
   const invisibleRoutes: string[] = [
     // "index",
-    // "recommendation/form",
+    "recommendation/form",
     // "notification",
     // "legal",
     // "profil/modify",

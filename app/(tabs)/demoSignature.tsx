@@ -1,5 +1,13 @@
+import * as Contacts from "expo-contacts";
 import React, { useRef, useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import {
+  Image,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import SignatureCanvas from "react-native-signature-canvas";
 
 // PDF Lib for merging
@@ -20,6 +28,24 @@ const SignatureScreen = () => {
   const handleClear = () => {
     setSignature(null);
     console.log("Clear success!");
+  };
+
+  const getContacts = async () => {
+    if (Platform.OS !== "web") {
+      try {
+        const { status } = await Contacts.requestPermissionsAsync();
+        if (status === "granted") {
+          const contacts = await Contacts.presentContactPickerAsync();
+          console.log("Contacts:", contacts);
+        } else {
+          console.log("Permission denied");
+        }
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+      }
+    } else {
+      console.log("Contacts are not available on web platform.");
+    }
   };
 
   return (
@@ -46,6 +72,12 @@ const SignatureScreen = () => {
           />
         )}
       </View>
+      <Pressable
+        onPress={getContacts}
+        style={{ marginTop: 20, marginBottom: 50 }}
+      >
+        <Text>Contact from your phone</Text>
+      </Pressable>
     </View>
   );
 };

@@ -4,13 +4,13 @@ import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { Recommandation } from "@/types";
 import axios from "axios";
-import { Link } from "expo-router";
+import { Link, RelativePathString } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import { Dimensions, Platform, Text, View } from "react-native";
 import { styles, webStyles } from "./Dashboard.styles";
 
 export default function Dashboard() {
-  const { userId, companyId } = useContext(AppContext);
+  const { userId, companyId, token } = useContext(AppContext);
   const { width } = Dimensions.get("window");
   const [recommandationsSent, setRecommandationsSent] = useState<
     Recommandation[]
@@ -20,6 +20,7 @@ export default function Dashboard() {
   >([]);
 
   useEffect(() => {
+    if (!token || !userId) return;
     const fetchRecommandationsSent = async () => {
       axios
         .get(
@@ -153,7 +154,7 @@ export default function Dashboard() {
               padding: 15,
               borderRadius: 50,
             }}
-            href="/recommendation"
+            href={"/recommendation" as unknown as RelativePathString}
           >
             <PlusIcon width={50} height={50} color={Colors.white} />
           </Link>

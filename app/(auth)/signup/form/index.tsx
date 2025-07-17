@@ -1,4 +1,12 @@
 import Navigation from "@/components/signup/Navigation";
+import Page1 from "@/components/signup/pages/Page1";
+import Page2 from "@/components/signup/pages/Page2";
+import Page3 from "@/components/signup/pages/Page3";
+import Page4 from "@/components/signup/pages/Page4";
+import Page5 from "@/components/signup/pages/Page5";
+import Page6 from "@/components/signup/pages/Page6";
+import Page7 from "@/components/signup/pages/Page7";
+import TwoFA from "@/components/signup/TwoFA";
 import { Colors } from "@/constants/Colors";
 import { initialCompany } from "@/constants/initial-types-value/initialCompany";
 import { initialUser } from "@/constants/initial-types-value/initialUser";
@@ -18,13 +26,13 @@ import {
   View,
 } from "react-native";
 import { styles, webStyles } from "./form.styles";
-import Page1 from "./pages/Page1";
-import Page2 from "./pages/Page2";
-import Page3 from "./pages/Page3";
-import Page4 from "./pages/Page4";
-import Page5 from "./pages/Page5";
-import Page6 from "./pages/Page6";
-import Page7 from "./pages/Page7";
+
+export interface createUserResponse {
+  message: string;
+  id: string;
+  qrCode: Base64URLString;
+  secret: string;
+}
 
 const { width } = Dimensions.get("window");
 
@@ -40,6 +48,9 @@ export default function FormSignUp() {
     SubscriptionType | undefined
   >(undefined);
   const [isDataValid, setIsDataValid] = useState<boolean | undefined>(
+    undefined
+  );
+  const [response, setResponse] = useState<createUserResponse | undefined>(
     undefined
   );
 
@@ -115,6 +126,7 @@ export default function FormSignUp() {
           isDataValid={isDataValid}
           resetForm={resetForm}
           setIsDataValid={setIsDataValid}
+          setResponse={setResponse}
         />
       ),
     },
@@ -154,6 +166,7 @@ export default function FormSignUp() {
           resetForm={resetForm}
           setIsDataValid={setIsDataValid}
           isDataValid={isDataValid}
+          setResponse={setResponse}
         />
       ),
     },
@@ -161,7 +174,14 @@ export default function FormSignUp() {
 
   const pages =
     type === "guest"
-      ? allPages.filter((page) => page.key !== "page2")
+      ? allPages.filter(
+          (page) =>
+            page.key !== "page2" &&
+            page.key !== "page4" &&
+            page.key !== "page5" &&
+            page.key !== "page6" &&
+            page.key !== "page7"
+        )
       : allPages;
 
   return (
@@ -177,6 +197,9 @@ export default function FormSignUp() {
         <View
           style={Platform.OS === "web" ? webStyles.container : styles.container}
         >
+          {response && (
+            <TwoFA qrCode={response.qrCode} secret={response.secret} />
+          )}
           <Image
             source={require("@/assets/images/white-logo.png")}
             style={Platform.select({
@@ -198,7 +221,8 @@ export default function FormSignUp() {
             </Text>
           ) : (
             <Text style={styles.introText}>
-              Inscrivez vous dès maintenant et vivez l&apos;expérience{" "}
+              Inscrivez vous dès maintenant et vivez l&apos;expérience Inscrivez
+              vous dès maintenant et vivez l&apos;expérience{" "}
               <Text style={{ ...styles.span, color: Colors.violet }}>
                 Mon Réseau
               </Text>{" "}

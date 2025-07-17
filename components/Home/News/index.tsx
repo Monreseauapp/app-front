@@ -8,21 +8,21 @@ export default function News() {
 
   return (
     <>
-      {notifications.length > 0 && (
-        <View style={{ marginBottom: 50 }}>
-          <Text
-            style={[
-              Platform.select({
-                web: webStyles.title,
-                default: styles.title,
-              }),
-              { alignSelf: "center", marginTop: 10, marginBottom: 20 },
-            ]}
-          >
-            Mes 5 dernières actualités
-          </Text>
-          <View style={styles.notifications}>
-            {notifications.slice(0, 5).map((notification, index) => (
+      <View style={{ marginBottom: 50 }}>
+        <Text
+          style={[
+            Platform.select({
+              web: webStyles.title,
+              default: styles.title,
+            }),
+            { alignSelf: "center", marginTop: 10, marginBottom: 20 },
+          ]}
+        >
+          Mes 5 dernières actualités
+        </Text>
+        <View style={styles.notifications}>
+          {notifications.length > 0 ? (
+            notifications.slice(0, 5).map((notification, index) => (
               <View
                 style={
                   Platform.OS === "web"
@@ -35,10 +35,14 @@ export default function News() {
                   {notification.text}
                 </Text>
               </View>
-            ))}
-          </View>
+            ))
+          ) : (
+            <Text style={styles.noNotificationText}>
+              Vous n&apos;avez pas d&apos;actualités récentes.
+            </Text>
+          )}
         </View>
-      )}
+      </View>
     </>
   );
 }

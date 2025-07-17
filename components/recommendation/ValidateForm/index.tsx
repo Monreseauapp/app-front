@@ -48,6 +48,10 @@ export default function ValidateForm({
       .post(`${API_URL}/recommandation`, {
         ...recommandation,
         startDate: new Date(),
+        updatedAt: new Date(),
+        retentionDate: new Date(
+          new Date().setFullYear(new Date().getFullYear() + 3)
+        ).toISOString(),
       })
       .catch((error) => {
         console.error("Error sending recommendation:", error);
@@ -59,6 +63,10 @@ export default function ValidateForm({
       .post(`${API_URL}/project`, {
         ...project,
         startDate: new Date(),
+        updatedAt: new Date(),
+        retentionDate: new Date(
+          new Date().setFullYear(new Date().getFullYear() + 3)
+        ).toISOString(),
       })
       .catch((error) => {
         console.error("Error sending project:", error);
