@@ -1,3 +1,4 @@
+import { createUserResponse } from "@/app/(auth)/signup/form";
 import AddressInputs from "@/components/AddressInputs";
 import Input from "@/components/form/Input";
 import { Colors } from "@/constants/Colors";
@@ -7,7 +8,6 @@ import validateFormData from "@/utils/validateFormData";
 import axios from "axios";
 import { useContext } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
-import { createUserResponse } from "../../../app/(auth)/signup/form";
 import { styles, webStyles } from "./pages.styles";
 
 interface Page3Props {
@@ -97,6 +97,7 @@ export default function Page3({
       />
       {type === "guest" && (
         <View style={{ width: "100%", alignItems: "center" }}>
+          <Pressable style={styles.button} onPress={validateForm}>
           <Pressable style={styles.button} onPress={validateForm}>
             <Text
               style={{

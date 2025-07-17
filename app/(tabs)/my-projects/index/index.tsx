@@ -61,6 +61,7 @@ export default function MyRecommendations() {
       setCompleteRecommendations();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectsReceived, projectsSent]);
 
   return (

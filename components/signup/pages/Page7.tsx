@@ -1,3 +1,4 @@
+import { createUserResponse } from "@/app/(auth)/signup/form";
 import CheckBoxList from "@/components/form/CheckboxList";
 import Input from "@/components/form/Input";
 import { AppContext } from "@/context/context";
@@ -6,7 +7,6 @@ import validateFormData from "@/utils/validateFormData";
 import axios from "axios";
 import { useContext } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
-import { createUserResponse } from "../../../app/(auth)/signup/form";
 import { styles, webStyles } from "./pages.styles";
 
 interface Page7Props {
@@ -95,8 +95,18 @@ export default function Page7({
           <Text key="others" style={styles.checkboxText}>
             Autres
           </Text>,
+          <Text key="civil" style={styles.checkboxText}>
+            Responsabilité civile
+          </Text>,
+          <Text key="decennial" style={styles.checkboxText}>
+            Décenale
+          </Text>,
+          <Text key="others" style={styles.checkboxText}>
+            Autres
+          </Text>,
         ]}
       />
+      <Pressable style={styles.validationButton} onPress={validateForm}>
       <Pressable style={styles.validationButton} onPress={validateForm}>
         <Text style={styles.validationText}>Valider</Text>
       </Pressable>

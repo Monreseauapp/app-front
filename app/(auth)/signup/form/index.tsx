@@ -1,4 +1,11 @@
 import Navigation from "@/components/signup/Navigation";
+import Page1 from "@/components/signup/pages/Page1";
+import Page2 from "@/components/signup/pages/Page2";
+import Page3 from "@/components/signup/pages/Page3";
+import Page4 from "@/components/signup/pages/Page4";
+import Page5 from "@/components/signup/pages/Page5";
+import Page6 from "@/components/signup/pages/Page6";
+import Page7 from "@/components/signup/pages/Page7";
 import TwoFA from "@/components/signup/TwoFA";
 import { Colors } from "@/constants/Colors";
 import { initialCompany } from "@/constants/initial-types-value/initialCompany";
@@ -18,13 +25,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import Page1 from "../../../../components/signup/pages/Page1";
-import Page2 from "../../../../components/signup/pages/Page2";
-import Page3 from "../../../../components/signup/pages/Page3";
-import Page4 from "../../../../components/signup/pages/Page4";
-import Page5 from "../../../../components/signup/pages/Page5";
-import Page6 from "../../../../components/signup/pages/Page6";
-import Page7 from "../../../../components/signup/pages/Page7";
 import { styles, webStyles } from "./form.styles";
 
 export interface createUserResponse {
@@ -221,7 +221,8 @@ export default function FormSignUp() {
             </Text>
           ) : (
             <Text style={styles.introText}>
-              Inscrivez vous dès maintenant et vivez l&apos;expérience{" "}
+              Inscrivez vous dès maintenant et vivez l&apos;expérience Inscrivez
+              vous dès maintenant et vivez l&apos;expérience{" "}
               <Text style={{ ...styles.span, color: Colors.violet }}>
                 Mon Réseau
               </Text>{" "}

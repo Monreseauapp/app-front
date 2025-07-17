@@ -49,6 +49,7 @@ export default function Search({
     setFilteredList(
       filtered.length > 0 ? filtered : ["Aucun résultat pour votre recherche."]
     );
+    //
   }, [value, list]);
 
   return (
