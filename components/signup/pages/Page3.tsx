@@ -47,13 +47,13 @@ export default function Page3({
       .post(`${API_URL}/users`, {
         ...user,
         updatedAt: new Date(),
-        retentionDate: new Date(
+        rententionDate: new Date(
           new Date().setFullYear(new Date().getFullYear() + 3)
         ).toISOString(),
       })
       .then((response) => response.data)
       .catch((error) => {
-        console.error("Error sending user data:", error.response);
+        console.error("Error sending user data:", error.request);
       });
     setResponse(resp);
   };
