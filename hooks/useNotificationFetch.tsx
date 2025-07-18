@@ -28,6 +28,7 @@ export default function useNotificationFetch() {
         .get(`${API_URL}/recommandation/initiator/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            "x-api-key": process.env.API_KEY,
           },
         })
         .then((res) => res.data)
@@ -39,6 +40,7 @@ export default function useNotificationFetch() {
         .get(`${API_URL}/recommandation/recipient/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            "x-api-key": process.env.API_KEY,
           },
         })
         .then((res) => res.data)
@@ -51,6 +53,7 @@ export default function useNotificationFetch() {
           .get(`${API_URL}/recommandation/company/${companyId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
+              "x-api-key": process.env.API_KEY,
             },
           })
           .then((res) => res.data)
@@ -68,6 +71,7 @@ export default function useNotificationFetch() {
         .get(`${API_URL}/project/user/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            "x-api-key": process.env.API_KEY,
           },
         })
         .then((res) => res.data)
@@ -80,6 +84,7 @@ export default function useNotificationFetch() {
           .get(`${API_URL}/project/company/${companyId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
+              "x-api-key": process.env.API_KEY,
             },
           })
           .then((res) => res.data)

@@ -83,7 +83,7 @@ export interface User {
   lastLogin?: (Date | string) | null;
   phone: string;
   password: string;
-  domainId: string;
+  domainId?: string;
   companyId?: string | null;
   isAdmin?: boolean;
   rententionDate?: Date | string;

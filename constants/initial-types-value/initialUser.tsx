@@ -5,5 +5,4 @@ export const initialUser = {
   password: "",
   city: "",
   phone: "",
-  domainId: "",
 };

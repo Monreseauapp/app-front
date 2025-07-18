@@ -31,6 +31,7 @@ function Context({ children }: { children: React.ReactNode }) {
   const [userId, setUserId] = useState<string | null | undefined>(undefined);
   const [companyId, setCompanyId] = useState<string | undefined>(undefined);
   const [token, setToken] = useState<string | null>(null);
+  axios.defaults.headers.common["x-api-key"] = process.env.API_KEY;
 
   useEffect(() => {
     const loadToken = async () => {
@@ -48,7 +49,6 @@ function Context({ children }: { children: React.ReactNode }) {
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${storedToken}`;
-
           const tokenParts = storedToken.split(".");
           if (tokenParts.length !== 3) {
             throw new Error("Invalid token format");
