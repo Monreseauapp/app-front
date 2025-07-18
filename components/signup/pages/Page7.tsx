@@ -43,7 +43,7 @@ export default function Page7({
       .post(`${API_URL}/users`, {
         ...user,
         updatedAt: new Date(),
-        rententionDate: new Date(
+        retentionDate: new Date(
           new Date().setFullYear(new Date().getFullYear() + 3)
         ).toISOString(),
       })
