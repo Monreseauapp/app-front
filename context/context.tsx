@@ -25,13 +25,14 @@ const AppContext = createContext<AppContextType>({
 });
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
+const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
 
 function Context({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [userId, setUserId] = useState<string | null | undefined>(undefined);
   const [companyId, setCompanyId] = useState<string | undefined>(undefined);
   const [token, setToken] = useState<string | null>(null);
-  axios.defaults.headers.common["x-api-key"] = process.env.API_KEY;
+  axios.defaults.headers.common["x-api-key"] = API_KEY;
 
   useEffect(() => {
     const loadToken = async () => {
