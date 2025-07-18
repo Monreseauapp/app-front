@@ -3,6 +3,8 @@ import { Project, Recommandation } from "@/types";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 
+const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
+
 export default function useNotificationFetch() {
   const { API_URL, userId, companyId, token } = useContext(AppContext);
   const [recommendationsInitiated, setRecommendationsInitiated] = useState<
@@ -28,7 +30,7 @@ export default function useNotificationFetch() {
         .get(`${API_URL}/recommandation/initiator/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
-            "x-api-key": process.env.API_KEY,
+            "x-api-key": API_KEY,
           },
         })
         .then((res) => res.data)
@@ -40,7 +42,7 @@ export default function useNotificationFetch() {
         .get(`${API_URL}/recommandation/recipient/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
-            "x-api-key": process.env.API_KEY,
+            "x-api-key": API_KEY,
           },
         })
         .then((res) => res.data)
@@ -53,7 +55,7 @@ export default function useNotificationFetch() {
           .get(`${API_URL}/recommandation/company/${companyId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
-              "x-api-key": process.env.API_KEY,
+              "x-api-key": API_KEY,
             },
           })
           .then((res) => res.data)
@@ -71,7 +73,7 @@ export default function useNotificationFetch() {
         .get(`${API_URL}/project/user/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
-            "x-api-key": process.env.API_KEY,
+            "x-api-key": API_KEY,
           },
         })
         .then((res) => res.data)
@@ -84,7 +86,7 @@ export default function useNotificationFetch() {
           .get(`${API_URL}/project/company/${companyId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
-              "x-api-key": process.env.API_KEY,
+              "x-api-key": API_KEY,
             },
           })
           .then((res) => res.data)
