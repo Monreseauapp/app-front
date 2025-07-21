@@ -1,50 +1,84 @@
-# Welcome to your Expo app 👋
+# Mon Réseau (Front-end)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+You can find all the code of the app/web app "Mon Réseau" in this repo.
 
-## Get started
+The app is accessible [here](https://ns3093511.ip-54-36-122.eu/).
 
-1. Install dependencies
+![Logo](https://ns3093511.ip-54-36-122.eu/assets/assets/images/white-logo.969fe893298bfeee352c251c89759a1a.png)
 
-   ```bash
-   npm install
-   ```
+## Environment Variables
 
-2. Start the app
+To run this project, you will need to add the following **environment variables** to your .env file :
 
-   ```bash
-   npx expo start
-   ```
+**`EXPO_PUBLIC_API_URL`** (url to your back-end)
 
-In the output, you'll find options to open the app in a
+**`EXPO_PUBLIC_API_KEY`** (which needs to match the API_KEY of the back-end)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Run Locally
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Installation
 
-## Get a fresh project
-
-When you're ready, run:
+- Clone the project
 
 ```bash
-npm run reset-project
+  git clone https://github.com/Monreseauapp/app-front.git
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- Go to the project directory
 
-## Learn more
+```bash
+  cd app-front
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+- Install dependencies
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+  npm install
+```
 
-## Join the community
+### Start the app
 
-Join our community of developers creating universal apps.
+To start **web** only :
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+  npm run web
+```
+
+To start **android** only :
+
+```bash
+  npm run android
+```
+
+To start **iOS** only :
+
+```bash
+  npm run ios
+```
+
+To start all of them :
+
+```bash
+  npm run start
+```
+
+### Access the app
+
+**Web** : `localhost:8081` or `ip:8081`
+
+**Mobile** : If you have a running emulator, it should automatically launch the app on the emulator or follow these steps :
+
+I. Download the _[Expo Go](https://expo.dev/go)_ on your phone.
+
+II. Scan the qrcode that appears, in your console, when launching the app or enter the link, which should be : `exp://ip:8081`.
+
+## Tech Stack
+
+[**Client:**](https://github.com/Monreseauapp/app-front) React Native, Expo
+
+[**Server:**](https://github.com/Monreseauapp/app-back) Nest.JS
+
+## Authors
+
+- **[@Maxime-Labbe](https://github.com/Maxime-Labbe)**
+- **[@Zogeek](https://github.com/zogeek)**
