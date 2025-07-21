@@ -77,7 +77,7 @@ const webStyles = StyleSheet.create({
     marginTop: 20,
   },
   button: {
-    width: width >= 600 ? 350 : 300,
+    width: width >= 600 ? 300 : 250,
     backgroundColor: Colors.violet,
     padding: 10,
     borderRadius: 25,

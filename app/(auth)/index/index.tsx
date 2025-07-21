@@ -61,7 +61,7 @@ export default function Index() {
               default: styles.buttonText,
             })}
           >
-            Devenir membre (entreprise)
+            Je suis professionnel
           </Text>
         </Pressable>
         <Pressable
@@ -83,7 +83,7 @@ export default function Index() {
               default: styles.buttonText,
             })}
           >
-            Je découvre mon réseau
+            Je suis particulier
           </Text>
         </Pressable>
       </View>

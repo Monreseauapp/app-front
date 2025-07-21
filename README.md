@@ -4,7 +4,7 @@ You can find all the code of the app/web app "Mon Réseau" in this repo.
 
 The app is accessible [here](https://ns3093511.ip-54-36-122.eu/).
 
-![Logo](https://ns3093511.ip-54-36-122.eu/assets/assets/images/white-logo.969fe893298bfeee352c251c89759a1a.png)
+![Logo](./assets/images/white-logo.png)
 
 ## Environment Variables
 

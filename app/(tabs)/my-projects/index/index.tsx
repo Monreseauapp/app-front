@@ -17,13 +17,13 @@ export interface CompleteProject {
 
 export default function MyRecommendations() {
   const { API_URL, companyId } = useContext(AppContext);
-  const { projectsReceived, projectsSent } = useProjectFetch();
+  const [updated, setUpdated] = useState<boolean>(false);
+  const { projectsReceived, projectsSent } = useProjectFetch(updated);
   const [completeReceived, setCompleteReceived] = useState<CompleteProject[]>(
     []
   );
   const [completeSent, setCompleteSent] = useState<CompleteProject[]>([]);
   const [page, setPage] = useState<string>("sent");
-  const [updated, setUpdated] = useState<boolean>(false);
 
   const fetchCompleteProjects = async (projects: Project[]) => {
     const completeProjects: CompleteProject[] = await Promise.all(
@@ -60,7 +60,6 @@ export default function MyRecommendations() {
     if (projectsReceived.length > 0 || projectsSent.length > 0) {
       setCompleteRecommendations();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectsReceived, projectsSent]);
 

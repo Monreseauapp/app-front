@@ -15,14 +15,14 @@ interface Page4Props {
     field: keyof User,
     value: string | number | boolean | undefined
   ) => void;
-  isDataValid: boolean | undefined;
+  isDataValid: boolean | null;
 }
 
 export default function Page4({
   company,
   handleChangeCompany,
   handleChangeUser,
-  isDataValid = undefined,
+  isDataValid = null,
 }: Page4Props) {
   return (
     <View

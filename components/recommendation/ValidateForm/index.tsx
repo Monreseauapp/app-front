@@ -13,6 +13,7 @@ interface ValidateFormProps {
   titles: RecommendationFormTitles[];
   project: Project;
   recommandation: Recommandation;
+  isDataValid: boolean | null;
   setIsDataValid: (isValid: boolean) => void;
   resetForm: () => void;
 }
@@ -22,6 +23,7 @@ export default function ValidateForm({
   titles,
   project,
   recommandation,
+  isDataValid,
   setIsDataValid,
   resetForm,
 }: ValidateFormProps) {
@@ -75,6 +77,11 @@ export default function ValidateForm({
 
   return (
     <View style={{ alignSelf: "center" }}>
+      {isDataValid === false && (
+        <Text style={styles.errorText}>
+          Veuillez remplir tous les champs requis.
+        </Text>
+      )}
       <Pressable onPress={validateForm} style={styles.validationButton}>
         <Text style={styles.buttonText}>
           {titles.find((title) => title.label === type)?.sendText}

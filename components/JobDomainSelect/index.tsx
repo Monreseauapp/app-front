@@ -13,7 +13,7 @@ interface JobDomainSelectProps<T extends JobDomainData> {
   titleStyle?: object;
   handleChange: (key: string, value: string) => void;
   domainIdKey: string;
-  valid?: boolean;
+  valid?: boolean | null;
 }
 
 export default function JobDomainSelect<T extends JobDomainData>({
@@ -22,7 +22,7 @@ export default function JobDomainSelect<T extends JobDomainData>({
   titleStyle,
   handleChange,
   domainIdKey,
-  valid = undefined,
+  valid = null,
 }: JobDomainSelectProps<T>) {
   const { API_URL } = useContext(AppContext);
   const [jobDomains, setJobDomains] = useState<
@@ -47,10 +47,7 @@ export default function JobDomainSelect<T extends JobDomainData>({
   return (
     <Select
       title="Domaine d'activité"
-      choices={[
-        "Choisissez un domaine",
-        ...jobDomains.map((domain) => domain.domaine),
-      ]}
+      choices={jobDomains.map((domain) => domain.domaine)}
       selectStyle={style}
       titleStyle={titleStyle}
       selected={

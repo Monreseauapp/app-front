@@ -40,7 +40,7 @@ type InputProps = {
   inputRef?: React.RefObject<TextInput | null>;
   value?: string;
   onChangeText?: (text: string) => void;
-  valid?: boolean;
+  valid?: boolean | null;
   validationMessage?: string;
 };
 
@@ -89,6 +89,7 @@ export default function Input({
         ]}
       >
         {name}{" "}
+        <Text style={{ color: Colors.red }}>{valid !== undefined && "*"}</Text>
         {valid === false && !value && (
           <Text
             style={Platform.select({

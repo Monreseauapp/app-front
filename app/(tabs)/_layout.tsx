@@ -45,7 +45,7 @@ export default function TabLayout() {
     if (!isLoggedIn && userId !== undefined && isTabsRoute) {
       router.replace("/" as unknown as RelativePathString);
     }
-  }, [isLoggedIn, userId, router, route]);
+  }, [isLoggedIn, userId, router, route, isTabsRoute]);
 
   const isTabBarInvisible = [
     // "/index",

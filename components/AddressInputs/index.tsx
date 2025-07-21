@@ -18,7 +18,7 @@ interface AddressInputsProps<T extends AddressFields> {
     field: keyof T,
     value: string | number | boolean | undefined
   ) => void;
-  isDataValid?: boolean;
+  isDataValid?: boolean | null;
   titleColor?: string;
   inputColor?: string;
   placeholderColor?: string;
@@ -27,7 +27,7 @@ interface AddressInputsProps<T extends AddressFields> {
 export default function AddressInputs<T extends AddressFields>({
   data,
   handleChange,
-  isDataValid = undefined,
+  isDataValid = null,
   titleColor = Colors.black,
   inputColor = Colors.black,
   placeholderColor = Colors.grey,
