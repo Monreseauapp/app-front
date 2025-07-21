@@ -17,6 +17,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
   },
+  errorText: {
+    color: Colors.red,
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
 });
 
 export { styles };

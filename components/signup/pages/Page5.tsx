@@ -8,14 +8,14 @@ interface Page5Props {
   subscriptionType: SubscriptionType | undefined;
   setSubscriptionType: (value: SubscriptionType) => void;
   subscriptionTypesTranslation: Record<string, string>;
-  isDataValid: boolean | undefined;
+  isDataValid: boolean | null;
 }
 
 export default function Page5({
   subscriptionType,
   setSubscriptionType,
   subscriptionTypesTranslation,
-  isDataValid = undefined,
+  isDataValid = null,
 }: Page5Props) {
   return (
     <View

@@ -4,9 +4,9 @@ import { Platform, Text, View } from "react-native";
 import { styles, webStyles } from "./pages.styles";
 
 export default function Page6({
-  isDataValid = undefined,
+  isDataValid = null,
 }: {
-  isDataValid: boolean | undefined;
+  isDataValid: boolean | null;
 }) {
   return (
     <View

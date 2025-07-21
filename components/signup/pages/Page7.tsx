@@ -13,7 +13,7 @@ interface Page7Props {
   user: User;
   company: Company;
   subscriptionType?: SubscriptionType;
-  isDataValid: boolean | undefined;
+  isDataValid: boolean | null;
   setIsDataValid: (isValid: boolean) => void;
   resetForm: () => void;
   setResponse: (response: createUserResponse) => void;
@@ -24,11 +24,11 @@ export default function Page7({
   company,
   subscriptionType,
   setIsDataValid,
-  isDataValid = undefined,
+  isDataValid = null,
   resetForm,
   setResponse,
 }: Page7Props) {
-  const { API_URL, token } = useContext(AppContext);
+  const { API_URL } = useContext(AppContext);
 
   const validateForm = () => {
     const isValid = validateFormData(user) && validateFormData(company);
@@ -106,6 +106,11 @@ export default function Page7({
           </Text>,
         ]}
       />
+      {isDataValid === false && (
+        <Text style={styles.errorText}>
+          Veuillez remplir tous les champs requis.
+        </Text>
+      )}
       <Pressable style={styles.validationButton} onPress={validateForm}>
         <Text style={styles.validationText}>Valider</Text>
       </Pressable>

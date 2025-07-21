@@ -10,7 +10,7 @@ interface InputProps {
   selectStyle?: object;
   selected?: string;
   setSelected?: (value: string) => void;
-  valid?: boolean | undefined;
+  valid?: boolean | null;
 }
 
 export default function Select({
@@ -39,6 +39,7 @@ export default function Select({
         }}
       >
         {title}{" "}
+        {valid !== undefined && <Text style={{ color: Colors.red }}>*</Text>}
         {valid === false && !selected && (
           <Text
             style={{
@@ -61,18 +62,20 @@ export default function Select({
           ...selectStyle,
         }}
       >
-        {choices.map((choice, index) => (
-          <Picker.Item
-            key={index}
-            label={choice}
-            value={choice}
-            color={pickerTextColor || Colors.white}
-            style={{
-              fontSize: 18,
-              fontWeight: "bold",
-            }}
-          />
-        ))}
+        {["Sélectionnez une proposition...", ...choices].map(
+          (choice, index) => (
+            <Picker.Item
+              key={index}
+              label={choice}
+              value={choice}
+              color={pickerTextColor || Colors.white}
+              style={{
+                fontSize: 18,
+                fontWeight: "bold",
+              }}
+            />
+          )
+        )}
       </Picker>
     </View>
   );

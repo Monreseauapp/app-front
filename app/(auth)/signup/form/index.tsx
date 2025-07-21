@@ -47,9 +47,7 @@ export default function FormSignUp() {
   const [subscriptionType, setSubscriptionType] = useState<
     SubscriptionType | undefined
   >(undefined);
-  const [isDataValid, setIsDataValid] = useState<boolean | undefined>(
-    undefined
-  );
+  const [isDataValid, setIsDataValid] = useState<boolean | null>(null);
   const [response, setResponse] = useState<createUserResponse | undefined>(
     undefined
   );

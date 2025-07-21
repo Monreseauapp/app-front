@@ -49,6 +49,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
+  errorText: {
+    color: Colors.red,
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
 });
 
 const webStyles = StyleSheet.create({

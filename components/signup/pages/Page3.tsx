@@ -17,7 +17,7 @@ interface Page3Props {
     field: keyof User,
     value: string | number | boolean | undefined
   ) => void;
-  isDataValid: boolean | undefined;
+  isDataValid: boolean | null;
   setIsDataValid: (isValid: boolean) => void;
   resetForm: () => void;
   setResponse: (response: createUserResponse) => void;
@@ -27,7 +27,7 @@ export default function Page3({
   type,
   user,
   handleChangeUser,
-  isDataValid = undefined,
+  isDataValid = null,
   setIsDataValid,
   resetForm,
   setResponse,

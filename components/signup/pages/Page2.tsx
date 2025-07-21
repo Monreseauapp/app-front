@@ -16,7 +16,7 @@ interface Page2Props {
     field: keyof Company,
     value: string | number | boolean | undefined
   ) => void;
-  isDataValid: boolean | undefined;
+  isDataValid: boolean | null;
 }
 
 export default function Page2({
@@ -25,7 +25,7 @@ export default function Page2({
   company,
   handleChangeUser,
   handleChangeCompany,
-  isDataValid = undefined,
+  isDataValid = null,
 }: Page2Props) {
   return (
     <View

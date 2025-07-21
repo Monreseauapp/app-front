@@ -3,7 +3,7 @@ import { Recommandation } from "@/types";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 
-export default function useRecommendationFetch() {
+export default function useRecommendationFetch(updated?: boolean) {
   const { API_URL, userId, companyId, token } = useContext(AppContext);
   const [recommendationsInitiated, setRecommendationsInitiated] = useState<
     Recommandation[]
@@ -64,7 +64,7 @@ export default function useRecommendationFetch() {
     };
 
     fetchRecommendations();
-  }, [API_URL, userId, companyId, token]);
+  }, [API_URL, userId, companyId, token, updated]);
   return {
     recommendationsInitiated,
     recommendationsReceived,

@@ -3,7 +3,7 @@ import { Project, User } from "@/types";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 
-export default function useProjectFetch() {
+export default function useProjectFetch(updated?: boolean) {
   const { API_URL, companyId, userId, token } = useContext(AppContext);
   const [projectsReceived, setProjectsReceived] = useState<Project[]>([]);
   const [projectsSent, setProjectsSent] = useState<Project[]>([]);
@@ -60,7 +60,7 @@ export default function useProjectFetch() {
     fetchProjectsReceived();
     fetchProjectsSent();
     setIsLoading(false);
-  }, [companyId, API_URL]);
+  }, [companyId, API_URL, token, userId, updated]);
 
   return { projectsReceived, projectsSent, isLoading, error };
 }

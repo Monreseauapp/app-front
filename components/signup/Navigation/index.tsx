@@ -36,7 +36,7 @@ export default function Navigation({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [currentPage]);
+  }, [currentPage, pages.length, type, scrollToPage]);
   return (
     <>
       {currentPage > 0 && (

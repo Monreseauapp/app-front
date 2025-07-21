@@ -25,9 +25,10 @@ export interface CompleteRecommendation {
 }
 
 export default function MyRecommendations() {
-  const { API_URL, companyId } = useContext(AppContext);
+  const { API_URL } = useContext(AppContext);
+  const [updated, setUpdated] = useState<boolean>(false);
   const { recommendationsInitiated, recommendationsReceived } =
-    useRecommendationFetch();
+    useRecommendationFetch(updated);
   const [completeReceived, setCompleteReceived] = useState<
     CompleteRecommendation[]
   >([]);
@@ -35,7 +36,6 @@ export default function MyRecommendations() {
     []
   );
   const [page, setPage] = useState<string>("sent");
-  const [updated, setUpdated] = useState<boolean>(false);
 
   const fetchCompleteRecommendations = async (
     recommendations: Recommandation[]

@@ -15,7 +15,7 @@ export default function AuthLayout() {
     if (isLoggedIn && userId !== undefined && isAuthRoute) {
       router.replace("/home");
     }
-  }, [isLoggedIn, userId, route, router]);
+  }, [isLoggedIn, userId, route, router, isAuthRoute]);
 
   return (
     <Stack screenOptions={{ headerShown: false, gestureEnabled: true }}>

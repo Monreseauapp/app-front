@@ -12,14 +12,14 @@ interface Page1Props {
     value: string | number | boolean | undefined
   ) => void;
   scrollToPage: (index: number) => void;
-  isDataValid?: boolean | undefined;
+  isDataValid?: boolean | null;
 }
 
 export default function Page1({
   user,
   handleChangeUser,
   scrollToPage,
-  isDataValid = undefined,
+  isDataValid = null,
 }: Page1Props) {
   return (
     <View

@@ -36,7 +36,12 @@ export default function ConditionScreen() {
           justifyContent: "center",
         }}
       >
-        <Text style={styles.title}>
+        <Text
+          style={Platform.select({
+            web: webStyles.title,
+            default: styles.title,
+          })}
+        >
           PORTAIL {params.type === "company" ? "ENTREPRISES" : "VISITEURS"}
         </Text>
         <Text
