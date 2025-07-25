@@ -1,12 +1,63 @@
 import CustomCheckbox from "@/components/form/CustomCheckbox";
 import { Colors } from "@/constants/Colors";
-import { Link, RelativePathString } from "expo-router";
-import { useState } from "react";
-import { Image, Platform, ScrollView, Text, View } from "react-native";
+import { AppContext } from "@/context/context";
+import { Company } from "@/types";
+import axios from "axios";
+import {
+  RelativePathString,
+  useLocalSearchParams,
+  useRouter,
+} from "expo-router";
+import { useContext, useEffect, useState } from "react";
+import {
+  Image,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { styles, webStyles } from "./legalNotice.styles";
 
 export default function LegalNotice() {
+  const { API_URL, userId } = useContext(AppContext);
+  const { redirect, email } = useLocalSearchParams();
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [company, setCompany] = useState<Company | null>(null);
+
+  const handleSubmit = async () => {
+    if (email) {
+      const company = await axios
+        .get(`${API_URL}/company/email/${email}`)
+        .then((response) => response.data)
+        .catch(() => {
+          setError(
+            "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau."
+          );
+        });
+      setCompany(company);
+    }
+  };
+  useEffect(() => {
+    const updateUserConsent = async () => {
+      if (company) {
+        await axios
+          .patch(`${API_URL}/users/${email ? company?.ownerId : userId}`, {
+            consentTerms: true,
+          })
+          .then(() => {
+            return true;
+          })
+          .catch(() => {
+            return false;
+          });
+      }
+    };
+    updateUserConsent();
+  }, [company]);
+
   return (
     <View
       style={{
@@ -84,14 +135,27 @@ export default function LegalNotice() {
             J&apos;accepte les mentions légales
           </Text>
         </View>
-        <Link
-          href={"/signin" as unknown as RelativePathString}
+        {error && <Text style={styles.errorText}>{error}</Text>}
+        <Pressable
+          onPress={async () => {
+            await handleSubmit();
+            if (agreedToTerms) {
+              router.push(
+                redirect
+                  ? (redirect.toString() as RelativePathString)
+                  : ("/signin" as RelativePathString)
+              );
+            } else if (agreedToTerms) {
+              setError(
+                "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau."
+              );
+            }
+          }}
           style={styles.validationButton}
           disabled={!agreedToTerms}
-          dismissTo
         >
           <Text style={styles.buttonText}>Suivant</Text>
-        </Link>
+        </Pressable>
       </View>
     </View>
   );

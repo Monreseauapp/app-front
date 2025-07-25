@@ -1,21 +1,47 @@
 import { AppContext } from "@/context/context";
-import { Stack, usePathname, useRouter } from "expo-router";
-import { useContext, useEffect } from "react";
+import useFetchUserStatus from "@/hooks/useFetchUserStatus";
+import {
+  RelativePathString,
+  Stack,
+  useFocusEffect,
+  usePathname,
+  useRouter,
+} from "expo-router";
+import { useCallback, useContext } from "react";
 
 export default function AuthLayout() {
   const router = useRouter();
   const route = usePathname();
   const { userId } = useContext(AppContext);
+  const { isLoading, hasActiveSubscription, hasAgreedToTerms, refetch } =
+    useFetchUserStatus();
   const isLoggedIn = !!userId;
-  const isAuthRoute = ["/signin", "/signup", "/legal", "/index"].some((path) =>
-    route.startsWith(path)
-  );
+  const isAuthRoute = [
+    "/signin",
+    "/signup",
+    "/legal",
+    "/index",
+    "/payment",
+  ].some((path) => route.startsWith(path));
 
-  useEffect(() => {
-    if (isLoggedIn && userId !== undefined && isAuthRoute) {
-      router.replace("/home");
-    }
-  }, [isLoggedIn, userId, route, router, isAuthRoute]);
+  useFocusEffect(
+    useCallback(() => {
+      const checkRedirect = async () => {
+        await refetch();
+        if (
+          isLoggedIn &&
+          userId !== undefined &&
+          isAuthRoute &&
+          !isLoading &&
+          hasActiveSubscription &&
+          hasAgreedToTerms
+        ) {
+          router.replace("/home" as RelativePathString);
+        }
+      };
+      checkRedirect();
+    }, [isLoggedIn, userId, route, router, isAuthRoute])
+  );
 
   return (
     <Stack screenOptions={{ headerShown: false, gestureEnabled: true }}>

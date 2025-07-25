@@ -62,7 +62,7 @@ export default function FormSignUp() {
     setUser(initialUser);
     setCompany(initialCompany);
     setSubscriptionType(undefined);
-    setIsDataValid(false);
+    setIsDataValid(null);
   };
 
   const scrollToPage = (index: number) => {
@@ -196,7 +196,11 @@ export default function FormSignUp() {
           style={Platform.OS === "web" ? webStyles.container : styles.container}
         >
           {response && (
-            <TwoFA qrCode={response.qrCode} secret={response.secret} />
+            <TwoFA
+              qrCode={response.qrCode}
+              secret={response.secret}
+              email={company.email}
+            />
           )}
           <Image
             source={require("@/assets/images/white-logo.png")}

@@ -1,13 +1,15 @@
-import { useRouter } from "expo-router";
+import { RelativePathString, useRouter } from "expo-router";
 import { Image, Pressable, Text, View } from "react-native";
 import { styles } from "./TwoFA.styles";
 
 export default function TwoFA({
   qrCode,
   secret,
+  email,
 }: {
   qrCode: Base64URLString;
   secret: string;
+  email: string;
 }) {
   const router = useRouter();
   return (
@@ -32,7 +34,9 @@ export default function TwoFA({
           style={styles.button}
           onPress={() => {
             router.dismissAll();
-            router.push("/legal/legalNotice");
+            router.push(
+              `/payment/subscription?email=${email}` as RelativePathString
+            );
           }}
         >
           <Text style={styles.buttonText}>Continuer</Text>

@@ -2,7 +2,7 @@ import { createUserResponse } from "@/app/(auth)/signup/form";
 import CheckBoxList from "@/components/form/CheckboxList";
 import Input from "@/components/form/Input";
 import { AppContext } from "@/context/context";
-import { Company, SubscriptionType, User } from "@/types";
+import { Company, SubscriptionState, SubscriptionType, User } from "@/types";
 import validateFormData from "@/utils/validateFormData";
 import axios from "axios";
 import { useContext } from "react";
@@ -39,6 +39,10 @@ export default function Page7({
     }
   };
   const sendData = async (user: User, company: Company) => {
+    if (!subscriptionType) {
+      console.error("Subscription type is not selected.");
+      return;
+    }
     const response = await axios
       .post(`${API_URL}/users`, {
         ...user,
@@ -65,8 +69,23 @@ export default function Page7({
       .catch((error) => {
         console.error("Error sending company data:", error.response);
       });
+    const subscription = await axios
+      .post(`${API_URL}/subscription`, {
+        duration: 1,
+        type: subscriptionType,
+        state: SubscriptionState.SUSPENDED,
+        companyId: companyId,
+        updatedAt: new Date(),
+      })
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("Error creating subscription:", error.response);
+      });
     await axios.patch(`${API_URL}/users/${response.id}`, {
       companyId: companyId,
+    });
+    await axios.patch(`${API_URL}/company/${companyId}`, {
+      subscriptionId: subscription.id,
     });
   };
   return (

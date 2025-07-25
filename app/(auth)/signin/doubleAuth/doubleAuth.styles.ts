@@ -79,7 +79,7 @@ const webStyles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
   container: {
-    width: width >= 600 ? "50%" : "90%",
+    width: width >= 768 ? "60%" : "90%",
     alignItems: "center",
     justifyContent: "center",
     padding: 20,

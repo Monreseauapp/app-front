@@ -1,8 +1,9 @@
 import Input from "@/components/form/Input";
 import { AppContext } from "@/context/context";
 import axios from "axios";
+import { RelativePathString } from "expo-router";
 import { useLocalSearchParams, useRouter } from "expo-router/build/hooks";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -17,7 +18,7 @@ import {
 import { styles, webStyles } from "./doubleAuth.styles";
 
 export default function DoubleAuth() {
-  const { API_URL, setToken } = useContext(AppContext);
+  const { API_URL, setToken, token, userId } = useContext(AppContext);
   const router = useRouter();
   const { email } = useLocalSearchParams();
   const [code, setCode] = useState("");
@@ -44,6 +45,12 @@ export default function DoubleAuth() {
       });
     return isConnected;
   };
+
+  useEffect(() => {
+    if (token && userId) {
+      router.replace("/(tabs)/home" as unknown as RelativePathString);
+    }
+  }, [token, userId, router]);
 
   return (
     <KeyboardAvoidingView
@@ -120,15 +127,7 @@ export default function DoubleAuth() {
             <Text style={styles.error}>
               {error && "Le code n'est pas valide."}
             </Text>
-            <Pressable
-              onPress={async () => {
-                if (await login()) {
-                  router.dismissAll();
-                  router.push("/(tabs)/home");
-                }
-              }}
-              style={styles.validationButton}
-            >
+            <Pressable onPress={login} style={styles.validationButton}>
               <Text style={styles.buttonText}>Valider</Text>
             </Pressable>
           </View>
