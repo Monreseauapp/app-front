@@ -290,7 +290,7 @@ const webStyles = StyleSheet.create({
   },
   backIcon: {
     position: "absolute",
-    top: 30,
+    top: width > 600 ? 30 : 35,
     left: width >= 768 ? 110 : 30,
     zIndex: 10,
   },

@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   navbarButton: {
     padding: 10,
     backgroundColor: Colors.violet,
-    width: "55%",
+    width: "50%",
     height: "100%",
     alignItems: "center",
     justifyContent: "center",

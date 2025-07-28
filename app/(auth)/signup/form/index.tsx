@@ -20,6 +20,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StatusBar,
   Text,
   TouchableWithoutFeedback,
@@ -192,8 +193,13 @@ export default function FormSignUp() {
       <TouchableWithoutFeedback
         onPress={() => Platform.OS !== "web" && Keyboard.dismiss()}
       >
-        <View
+        <ScrollView
           style={Platform.OS === "web" ? webStyles.container : styles.container}
+          contentContainerStyle={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          keyboardShouldPersistTaps="handled"
         >
           {response && (
             <TwoFA
@@ -278,7 +284,7 @@ export default function FormSignUp() {
               scrollToPage={scrollToPage}
             />
           </View>
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

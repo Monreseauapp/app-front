@@ -38,8 +38,6 @@ const styles = StyleSheet.create({
 const webStyles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: Colors.white,
   },
   logo: {

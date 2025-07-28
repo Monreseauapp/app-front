@@ -137,23 +137,23 @@ export default function SubscriptionPage() {
             .catch(() => {
               setError("Essayer de recharger la page.");
             });
-          const user = await axios
-            .get(`${API_URL}/users/email/${email}`)
-            .then((response) => response.data)
-            .catch(() => {
-              setError("Essayer de recharger la page.");
-            });
-          if (user) {
-            await axios.patch(`${API_URL}/users/${user.id}`, {
-              stripeId: stripeCustomer.id,
-            });
-          } else {
-            setError(
-              "L'utilisateur n'existe pas. Veuillez vous inscrire avant de souscrire."
-            );
-          }
         } else {
           stripeCustomer = customer;
+        }
+        const company = await axios
+          .get(`${API_URL}/company/email/${email}`)
+          .then((response) => response.data)
+          .catch(() => {
+            setError("Essayer de recharger la page.");
+          });
+        if (company) {
+          await axios.patch(`${API_URL}/company/${company.id}`, {
+            stripeCustomerId: stripeCustomer.id,
+          });
+        } else {
+          setError(
+            "L'utilisateur n'existe pas. Veuillez vous inscrire avant de souscrire."
+          );
         }
         const stripeSubscription = await axios
           .post(`${API_URL}/stripe/create-subscription`, {

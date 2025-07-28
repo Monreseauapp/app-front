@@ -99,7 +99,13 @@ export default function DoubleAuth() {
             <Pressable onPress={() => inputRef.current?.focus()}>
               <View style={{ flexDirection: "row", gap: 16, marginTop: 24 }}>
                 {Array.from({ length: CODE_LENGTH }).map((_, i) => (
-                  <View key={i} style={styles.numberSquare}>
+                  <View
+                    key={i}
+                    style={Platform.select({
+                      web: webStyles.numberSquare,
+                      default: styles.numberSquare,
+                    })}
+                  >
                     <Text style={{ fontSize: 24, fontWeight: "bold" }}>
                       {code[i] || ""}
                     </Text>
