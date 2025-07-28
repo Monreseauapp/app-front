@@ -83,7 +83,15 @@ export default function TabLayout() {
       }
     };
     checkRedirect();
-  }, [isLoading, hasActiveSubscription, hasAgreedToTerms, router, userId]);
+  }, [
+    isLoading,
+    hasActiveSubscription,
+    hasAgreedToTerms,
+    router,
+    userId,
+    companyId,
+    API_URL,
+  ]);
 
   const isTabBarInvisible = [
     // "/index",

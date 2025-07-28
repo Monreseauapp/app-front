@@ -10,7 +10,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Pressable, ScrollView, Text } from "react-native";
 import { Customer } from "..";
-import styles from "./PaymentMethodElement.styles";
+import { styles } from "./PaymentMethodElement.styles";
 
 const stripePromise = loadStripe(
   "pk_test_51RnbRP2HJM330Lpvyil2tDcpP7YMZ0t1IuwdJ0VrPFo4GuZt8Tkic1g3mFXApMR10HmTLe3OiwxJmjxsxy2zTWsu00AGFRm7Kb"
@@ -99,11 +99,15 @@ export default function PaymentMethodElement({
       });
   };
 
-  useEffect(() => {
-    if (customer) {
-      fetchSetupIntent();
-    }
-  }, [customer, API_URL]);
+  useEffect(
+    () => {
+      if (customer) {
+        fetchSetupIntent();
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [customer, API_URL]
+  );
 
   if (!secret) {
     return <Text>Chargement...</Text>;

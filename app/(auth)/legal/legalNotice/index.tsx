@@ -56,7 +56,7 @@ export default function LegalNotice() {
       }
     };
     updateUserConsent();
-  }, [company]);
+  }, [company, API_URL, email, userId]);
 
   return (
     <View

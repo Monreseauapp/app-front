@@ -40,7 +40,16 @@ export default function AuthLayout() {
         }
       };
       checkRedirect();
-    }, [isLoggedIn, userId, route, router, isAuthRoute])
+    }, [
+      isLoggedIn,
+      userId,
+      router,
+      isAuthRoute,
+      hasActiveSubscription,
+      hasAgreedToTerms,
+      isLoading,
+      refetch,
+    ])
   );
 
   return (

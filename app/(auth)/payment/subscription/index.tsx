@@ -46,14 +46,6 @@ export default function SubscriptionPage() {
   );
   const redirectUrl = decodeURIComponent((redirect as string) || "");
 
-  if (!email && !success) {
-    return (
-      <View style={styles.main}>
-        <Text style={styles.title}>Email is required for subscription.</Text>
-      </View>
-    );
-  }
-
   useEffect(() => {
     const fetchSubscription = async () => {
       const company = await axios
@@ -81,101 +73,114 @@ export default function SubscriptionPage() {
       }
     };
     fetchSubscription();
-  }, [success, email]);
+  }, [success, email, API_URL]);
 
-  useEffect(() => {
-    const findCustomer = async () => {
-      const response = await axios.get(`${API_URL}/stripe/customer/${email}`);
-      return response.data;
-    };
-    const findSubscription = async (customerId: string) => {
-      const response = await axios.get(
-        `${API_URL}/stripe/subscription/customer/${customerId}`
-      );
-      return response.data;
-    };
-    const initializeStripe = async () => {
-      const customer = await findCustomer();
-      if (customer) {
-        const stripeSubscription = await findSubscription(customer.id);
-        if (
-          stripeSubscription &&
-          stripeSubscription.latest_invoice.status === "paid" &&
-          subscription
-        ) {
-          await axios.patch(`${API_URL}/subscription/${subscription.id}`, {
-            state: SubscriptionState.ACTIVE,
-            startDate: new Date(
-              stripeSubscription.start_date * 1000
-            ).toISOString(),
-            endDate: stripeSubscription.ended_at
-              ? new Date(stripeSubscription.ended_at * 1000).toISOString()
-              : null,
-          });
-          if (!pathname.includes("success")) {
-            router.push(`${pathname}&success=true` as RelativePathString);
-          }
-          return;
-        } else if (
-          stripeSubscription &&
-          stripeSubscription.latest_invoice.confirmation_secret.client_secret
-        ) {
-          setSecret(
+  useEffect(
+    () => {
+      const findCustomer = async () => {
+        const response = await axios.get(`${API_URL}/stripe/customer/${email}`);
+        return response.data;
+      };
+      const findSubscription = async (customerId: string) => {
+        const response = await axios.get(
+          `${API_URL}/stripe/subscription/customer/${customerId}`
+        );
+        return response.data;
+      };
+      const initializeStripe = async () => {
+        const customer = await findCustomer();
+        if (customer) {
+          const stripeSubscription = await findSubscription(customer.id);
+          if (
+            stripeSubscription &&
+            stripeSubscription.latest_invoice.status === "paid" &&
+            subscription
+          ) {
+            await axios.patch(`${API_URL}/subscription/${subscription.id}`, {
+              state: SubscriptionState.ACTIVE,
+              startDate: new Date(
+                stripeSubscription.start_date * 1000
+              ).toISOString(),
+              endDate: stripeSubscription.ended_at
+                ? new Date(stripeSubscription.ended_at * 1000).toISOString()
+                : null,
+            });
+            if (!pathname.includes("success")) {
+              router.push(`${pathname}&success=true` as RelativePathString);
+            }
+            return;
+          } else if (
+            stripeSubscription &&
             stripeSubscription.latest_invoice.confirmation_secret.client_secret
-          );
-          return;
+          ) {
+            setSecret(
+              stripeSubscription.latest_invoice.confirmation_secret
+                .client_secret
+            );
+            return;
+          }
         }
-      }
-      try {
-        let stripeCustomer;
-        if (!customer) {
-          stripeCustomer = await axios
-            .post(`${API_URL}/stripe/create-customer`, {
-              email,
+        try {
+          let stripeCustomer;
+          if (!customer) {
+            stripeCustomer = await axios
+              .post(`${API_URL}/stripe/create-customer`, {
+                email,
+              })
+              .then((response) => response.data)
+              .catch(() => {
+                setError("Essayer de recharger la page.");
+              });
+          } else {
+            stripeCustomer = customer;
+          }
+          const company = await axios
+            .get(`${API_URL}/company/email/${email}`)
+            .then((response) => response.data)
+            .catch(() => {
+              setError("Essayer de recharger la page.");
+            });
+          if (company) {
+            await axios.patch(`${API_URL}/company/${company.id}`, {
+              stripeCustomerId: stripeCustomer.id,
+            });
+          } else {
+            setError(
+              "L'utilisateur n'existe pas. Veuillez vous inscrire avant de souscrire."
+            );
+          }
+          const stripeSubscription = await axios
+            .post(`${API_URL}/stripe/create-subscription`, {
+              customerId: stripeCustomer.id,
+              lookupKey:
+                subscriptionTypesKey[subscription?.type as SubscriptionType],
             })
             .then((response) => response.data)
             .catch(() => {
               setError("Essayer de recharger la page.");
             });
-        } else {
-          stripeCustomer = customer;
-        }
-        const company = await axios
-          .get(`${API_URL}/company/email/${email}`)
-          .then((response) => response.data)
-          .catch(() => {
-            setError("Essayer de recharger la page.");
-          });
-        if (company) {
-          await axios.patch(`${API_URL}/company/${company.id}`, {
-            stripeCustomerId: stripeCustomer.id,
-          });
-        } else {
-          setError(
-            "L'utilisateur n'existe pas. Veuillez vous inscrire avant de souscrire."
+          setSecret(
+            stripeSubscription.latest_invoice.confirmation_secret.client_secret
           );
+        } catch {
+          setError("Essayer de recharger la page.");
         }
-        const stripeSubscription = await axios
-          .post(`${API_URL}/stripe/create-subscription`, {
-            customerId: stripeCustomer.id,
-            lookupKey:
-              subscriptionTypesKey[subscription?.type as SubscriptionType],
-          })
-          .then((response) => response.data)
-          .catch(() => {
-            setError("Essayer de recharger la page.");
-          });
-        setSecret(
-          stripeSubscription.latest_invoice.confirmation_secret.client_secret
-        );
-      } catch (error) {
-        setError("Essayer de recharger la page.");
+      };
+      if (subscription) {
+        initializeStripe();
       }
-    };
-    if (subscription) {
-      initializeStripe();
-    }
-  }, [subscription]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [subscription, email, API_URL, pathname, router]
+  );
+
+  if (!email && !success) {
+    return (
+      <View style={styles.main}>
+        <Text style={styles.title}>Email is required for subscription.</Text>
+      </View>
+    );
+  }
 
   if (error) {
     return (
@@ -218,8 +223,8 @@ export default function SubscriptionPage() {
               onPress={() => {
                 router.dismissAll();
                 router.push(
-                  redirect
-                    ? (redirect.toString() as RelativePathString)
+                  redirectUrl
+                    ? (redirectUrl.toString() as RelativePathString)
                     : (("/legal/legalNotice?email=" +
                         email) as RelativePathString)
                 );

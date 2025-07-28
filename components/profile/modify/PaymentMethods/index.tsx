@@ -88,9 +88,13 @@ export default function PaymentMethods() {
     }
   };
 
-  useEffect(() => {
-    fetchPaymentMethods();
-  }, [API_URL, companyId]);
+  useEffect(
+    () => {
+      fetchPaymentMethods();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [API_URL, companyId]
+  );
 
   return (
     <View style={styles.container}>
