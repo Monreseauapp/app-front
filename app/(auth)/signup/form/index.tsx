@@ -162,7 +162,6 @@ export default function FormSignUp() {
           user={user}
           company={company}
           subscriptionType={subscriptionType}
-          resetForm={resetForm}
           setIsDataValid={setIsDataValid}
           isDataValid={isDataValid}
           setResponse={setResponse}
@@ -206,6 +205,7 @@ export default function FormSignUp() {
               qrCode={response.qrCode}
               secret={response.secret}
               email={company.email}
+              formReset={resetForm}
             />
           )}
           <Image

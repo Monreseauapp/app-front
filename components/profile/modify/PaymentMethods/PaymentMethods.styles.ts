@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   methodContainer: {
-    flexDirection: width > 600 ? "row" : "column",
+    flexDirection: width > 800 ? "row" : "column",
     alignItems: "center",
     justifyContent: "space-between",
     padding: 10,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   default: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: width > 600 ? 0 : -10,
+    marginTop: width > 800 ? 0 : -10,
     marginBottom: 10,
   },
   defaultText: {
@@ -66,17 +66,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   actionsContainer: {
-    flexDirection: width > 600 ? "row" : "column",
+    flexDirection: width > 800 ? "row" : "column",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: width > 600 ? 0 : -20,
+    marginTop: width > 800 ? 0 : -20,
   },
   actionButton: {
-    width: width > 600 ? 200 : 150,
+    width: width > 800 ? undefined : 150,
     padding: 5,
     borderRadius: 5,
     marginBottom: 5,
-    backgroundColor: Colors.violet,
+    backgroundColor: width > 800 ? undefined : Colors.violet,
   },
   actionButtonText: {
     color: Colors.white,
