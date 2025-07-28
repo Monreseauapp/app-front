@@ -70,9 +70,7 @@ export default function RecommendationForm() {
   const [users, setUsers] = useState<User[]>([]);
   const [companyName, setCompanyName] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
-  const [isDataValid, setIsDataValid] = useState<boolean | undefined>(
-    undefined
-  );
+  const [isDataValid, setIsDataValid] = useState<boolean | null>(null);
 
   const resetForm = () => {
     setRecommandation(initialRecommendation);
@@ -82,7 +80,7 @@ export default function RecommendationForm() {
     });
     setCompanyName("");
     setUserName("");
-    setIsDataValid(undefined);
+    setIsDataValid(null);
     setStarId(0);
   };
 
@@ -197,6 +195,7 @@ export default function RecommendationForm() {
               titles={titles}
               project={project}
               recommandation={recommandation}
+              isDataValid={isDataValid}
               setIsDataValid={setIsDataValid}
               resetForm={resetForm}
             />

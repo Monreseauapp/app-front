@@ -12,14 +12,14 @@ interface CompanyNumberProps {
     key: keyof Project,
     value: string | number | boolean | undefined
   ) => void;
-  isDataValid?: boolean;
+  isDataValid?: boolean | null;
 }
 
 export default function CompanyNumber({
   type,
   project,
   handleChange,
-  isDataValid = undefined,
+  isDataValid = null,
 }: CompanyNumberProps) {
   return (
     <>

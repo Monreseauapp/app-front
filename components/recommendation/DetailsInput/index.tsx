@@ -8,7 +8,7 @@ interface DetailsInputProps {
   recommandation: Recommandation;
   project: Project;
   handleChange: (key: keyof Recommandation | keyof Project, value: any) => void;
-  isDataValid?: boolean;
+  isDataValid?: boolean | null;
 }
 
 export default function DetailsInput({

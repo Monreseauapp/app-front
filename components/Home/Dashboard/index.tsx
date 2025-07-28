@@ -62,7 +62,7 @@ export default function Dashboard() {
     fetchRecommandationsSent();
     fetchRecommandationsReceived();
     fetchRecommandationsReceivedCompany();
-  }, [userId, companyId]);
+  }, [userId, companyId, token]);
 
   return (
     <View

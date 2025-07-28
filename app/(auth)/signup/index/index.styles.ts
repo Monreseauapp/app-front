@@ -6,8 +6,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
     padding: 24,
     backgroundColor: Colors.violet,
   },
@@ -59,6 +57,14 @@ const webStyles = StyleSheet.create({
     position: width >= 600 ? "absolute" : "relative",
     top: width >= 600 ? 70 : 25,
     marginBottom: width >= 600 ? 60 : 0,
+  },
+  title: {
+    fontSize: width > 768 ? 30 : 24,
+    fontWeight: "bold",
+    backgroundColor: Colors.white,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    color: Colors.violet,
   },
   subtitle: {
     fontSize: 25,

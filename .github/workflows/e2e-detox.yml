@@ -2,9 +2,9 @@ name: E2E Tests with Detox
 
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
   schedule:
-    - cron: '0 2 * * *' # Run nightly at 2 AM
+    - cron: "0 2 * * *" # Run nightly at 2 AM
   workflow_dispatch: # Allow manual trigger
 
 jobs:
@@ -19,14 +19,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
-          cache: 'npm'
+          node-version: "18.x"
+          cache: "npm"
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: "17"
+          distribution: "temurin"
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -51,7 +51,7 @@ jobs:
         run: npm ci
 
       - name: Install Detox CLI
-        run: npm i -g @wix/detox-cli
+        run: npm i -g detox-cli
 
       - name: Build Detox
         run: npx detox build --configuration android.emu.debug
@@ -84,13 +84,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
-          cache: 'npm'
+          node-version: "18.x"
+          cache: "npm"
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
+          ruby-version: "3.2"
           bundler-cache: true
 
       - name: Select Xcode version

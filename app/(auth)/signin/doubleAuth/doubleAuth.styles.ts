@@ -79,7 +79,7 @@ const webStyles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
   container: {
-    width: width >= 600 ? "50%" : "90%",
+    width: width >= 768 ? "60%" : "90%",
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
@@ -108,8 +108,8 @@ const webStyles = StyleSheet.create({
     textAlign: "center",
   },
   numberSquare: {
-    width: 55,
-    height: 65,
+    width: width > 600 ? 55 : 45,
+    height: width > 600 ? 65 : 55,
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",

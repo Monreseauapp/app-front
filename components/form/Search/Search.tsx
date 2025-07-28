@@ -13,7 +13,7 @@ type InputProps = {
   inputRef?: React.RefObject<TextInput | null>;
   value?: string;
   onChangeText?: (text: string) => void;
-  valid?: boolean;
+  valid?: boolean | null;
   zIndex?: number;
 };
 
@@ -73,6 +73,7 @@ export default function Search({
         }}
       >
         {name}{" "}
+        {valid !== undefined && <Text style={{ color: Colors.red }}>*</Text>}
         {valid === false && !value && (
           <Text
             style={{

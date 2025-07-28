@@ -19,7 +19,7 @@ interface UserInformationsProps {
     key: keyof Recommandation | keyof Project,
     value: string | number | boolean | undefined
   ) => void;
-  isDataValid: boolean | undefined;
+  isDataValid: boolean | null;
 }
 
 export default function UserInformations({

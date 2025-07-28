@@ -7,7 +7,7 @@ import styles from "./PersonalInformations.styles";
 interface PersonalInformationsProps {
   recommandation: Recommandation;
   handleChange: (field: keyof Recommandation, value: string) => void;
-  isDataValid?: boolean;
+  isDataValid?: boolean | null;
 }
 
 export default function PersonalInformations({

@@ -74,16 +74,20 @@ jobs:
             }
 
             // Update labels
-            const existingLabels = pr.labels.filter(label => 
-              !label.name.startsWith('size:') && !label.name.startsWith('risk:'));
-            const newLabels = [...existingLabels.map(l => l.name), sizeLabel, riskLevel];
+            try {
+              const existingLabels = pr.labels.filter(label => 
+                !label.name.startsWith('size:') && !label.name.startsWith('risk:'));
+              const newLabels = [...existingLabels.map(l => l.name), sizeLabel, riskLevel];
 
-            await github.rest.issues.setLabels({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: pr.number,
-              labels: newLabels
-            });
+              await github.rest.issues.setLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                labels: newLabels
+              });
+            } catch (error) {
+              console.log('Failed to set labels:', error.message);
+            }
 
             // Create detailed comment
             const riskFactors = [];
@@ -140,8 +144,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
-          cache: 'npm'
+          node-version: "18.x"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -151,7 +155,7 @@ jobs:
 
       - name: Run complexity analysis
         run: |
-          npx plato -r -d complexity-report "src/**/*.ts"
+          npx plato -r -d complexity-report "app/**/*.ts"
           echo "Complexity analysis completed"
 
       - name: Upload complexity report

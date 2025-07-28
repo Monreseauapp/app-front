@@ -79,7 +79,7 @@ export default function SignIn() {
               </Text>
               <Input
                 name="Email"
-                placeholder="exemple@gmail.com"
+                placeholder=""
                 type="email"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
@@ -96,7 +96,7 @@ export default function SignIn() {
               >
                 <Input
                   name="Mot de passe"
-                  placeholder="********"
+                  placeholder=""
                   type="current-password"
                   value={password}
                   onChangeText={(text) => setPassword(text)}

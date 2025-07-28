@@ -125,11 +125,12 @@ export interface Company {
 
 export interface Subscription {
   id?: string;
-  startDate: Date | string;
+  stripeId?: string | null;
+  startDate?: Date | string;
   duration: number;
   type: SubscriptionType;
   state: SubscriptionState;
-  endDate: Date | string;
+  endDate?: Date | string;
   cancelledDate?: (Date | string) | null;
   retentionDate?: (Date | string) | null;
   createdAt?: Date | string;

@@ -7,6 +7,7 @@ import {
   Image,
   Platform,
   Pressable,
+  ScrollView,
   StatusBar,
   Text,
   View,
@@ -22,7 +23,10 @@ export default function ConditionScreen() {
   const params = useLocalSearchParams<paramsType>();
   const { width } = Dimensions.get("window");
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ alignItems: "center", justifyContent: "center" }}
+    >
       <StatusBar barStyle="light-content" />
       <Image
         source={require("@/assets/images/blue-logo.png")}
@@ -36,7 +40,12 @@ export default function ConditionScreen() {
           justifyContent: "center",
         }}
       >
-        <Text style={styles.title}>
+        <Text
+          style={Platform.select({
+            web: webStyles.title,
+            default: styles.title,
+          })}
+        >
           PORTAIL {params.type === "company" ? "ENTREPRISES" : "VISITEURS"}
         </Text>
         <Text
@@ -130,6 +139,6 @@ export default function ConditionScreen() {
           </Text>
         </Pressable>
       </View>
-    </View>
+    </ScrollView>
   );
 }
