@@ -6,10 +6,12 @@ export default function TwoFA({
   qrCode,
   secret,
   email,
+  formReset,
 }: {
   qrCode: Base64URLString;
   secret: string;
   email: string;
+  formReset: () => void;
 }) {
   const router = useRouter();
   return (
@@ -34,9 +36,16 @@ export default function TwoFA({
           style={styles.button}
           onPress={() => {
             router.dismissAll();
-            router.push(
-              `/payment/subscription?email=${email}` as RelativePathString
-            );
+            formReset();
+            if (email) {
+              router.push(
+                `/payment/subscription?email=${email}` as RelativePathString
+              );
+            } else {
+              router.push(
+                "/legal/legalNotice?redirect=/home" as RelativePathString
+              );
+            }
           }}
         >
           <Text style={styles.buttonText}>Continuer</Text>

@@ -15,7 +15,6 @@ interface Page7Props {
   subscriptionType?: SubscriptionType;
   isDataValid: boolean | null;
   setIsDataValid: (isValid: boolean) => void;
-  resetForm: () => void;
   setResponse: (response: createUserResponse) => void;
 }
 
@@ -25,7 +24,6 @@ export default function Page7({
   subscriptionType,
   setIsDataValid,
   isDataValid = null,
-  resetForm,
   setResponse,
 }: Page7Props) {
   const { API_URL } = useContext(AppContext);
@@ -34,7 +32,6 @@ export default function Page7({
     const isValid = validateFormData(user) && validateFormData(company);
     setIsDataValid(isValid);
     if (isValid) {
-      resetForm();
       sendData(user, company);
     }
   };
@@ -105,15 +102,6 @@ export default function Page7({
       <CheckBoxList
         title="Quelles sont les assurances et certifications en votre possession ?"
         choices={[
-          <Text key="civil" style={styles.checkboxText}>
-            Responsabilité civile
-          </Text>,
-          <Text key="decennial" style={styles.checkboxText}>
-            Décenale
-          </Text>,
-          <Text key="others" style={styles.checkboxText}>
-            Autres
-          </Text>,
           <Text key="civil" style={styles.checkboxText}>
             Responsabilité civile
           </Text>,

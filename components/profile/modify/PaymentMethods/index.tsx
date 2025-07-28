@@ -135,7 +135,7 @@ export default function PaymentMethods() {
                   onPress={() => changeDefaultPaymentMethod(method.id)}
                   style={styles.actionButton}
                 >
-                  {width > 600 ? (
+                  {width > 800 ? (
                     <StarIcon
                       style={{
                         width: 50,
@@ -154,7 +154,7 @@ export default function PaymentMethods() {
                   onPress={() => handleDeletePaymentMethod(method.id)}
                   style={styles.actionButton}
                 >
-                  {width > 600 ? (
+                  {width > 800 ? (
                     <CrossIcon
                       style={{
                         width: 45,
