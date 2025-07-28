@@ -80,6 +80,12 @@ export default function TabLayout() {
             `/legal/legalNotice?redirect=/home&email=${company.email}` as RelativePathString
           );
         }
+      } else if (!isLoading && userId && hasAgreedToTerms != null) {
+        if (!hasAgreedToTerms) {
+          router.replace(
+            `/legal/legalNotice?redirect=/home` as RelativePathString
+          );
+        }
       }
     };
     checkRedirect();
