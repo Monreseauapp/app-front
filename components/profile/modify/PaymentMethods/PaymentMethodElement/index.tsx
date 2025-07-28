@@ -13,7 +13,7 @@ import { Customer } from "..";
 import { styles } from "./PaymentMethodElement.styles";
 
 const stripePromise = loadStripe(
-  "pk_test_51RnbRP2HJM330Lpvyil2tDcpP7YMZ0t1IuwdJ0VrPFo4GuZt8Tkic1g3mFXApMR10HmTLe3OiwxJmjxsxy2zTWsu00AGFRm7Kb"
+  process.env.EXPO_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY || ""
 );
 
 interface PaymentMethodElementProps {

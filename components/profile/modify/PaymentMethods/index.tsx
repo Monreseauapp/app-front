@@ -137,7 +137,6 @@ export default function PaymentMethods() {
                 >
                   {width > 600 ? (
                     <StarIcon
-                      onPress={() => {}}
                       style={{
                         width: 50,
                         height: 50,
