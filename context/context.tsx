@@ -42,14 +42,13 @@ function Context({ children }: { children: React.ReactNode }) {
         await AsyncStorage.removeItem("token");
         await AsyncStorage.removeItem("tokenExpires");
         setToken(null);
-        setUserId(null);
+        setUserId(undefined);
         return;
       }
       if (storedToken) {
         try {
-          axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${storedToken}`;
+          axios.defaults.headers.common["Authorization"] =
+            `Bearer ${storedToken}`;
           const tokenParts = storedToken.split(".");
           if (tokenParts.length !== 3) {
             throw new Error("Invalid token format");

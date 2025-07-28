@@ -5,6 +5,7 @@ import InnerNavBar from "@/components/InnerNavBar";
 import CompanyMembers from "@/components/profile/modify/CompanyMembers";
 import JobInformations from "@/components/profile/modify/JobInformations";
 import LinksInputs from "@/components/profile/modify/LinksInputs";
+import PaymentMethods from "@/components/profile/modify/PaymentMethods";
 import PersonalInformations from "@/components/profile/modify/PersonalInformations";
 import { Colors } from "@/constants/Colors";
 import { initialCompany } from "@/constants/initial-types-value/initialCompany";
@@ -123,8 +124,6 @@ export default function ModifyProfile() {
               style={{
                 position: "absolute",
                 top: Platform.OS === "web" ? 30 : 65,
-                left: "50%",
-                transform: [{ translateX: "-55%" }],
               }}
             />
           )}
@@ -234,6 +233,7 @@ export default function ModifyProfile() {
                     titleStyle={styles.inputTitle}
                   />
                   <CompanyMembers />
+                  <PaymentMethods />
                 </>
               )}
               <Pressable

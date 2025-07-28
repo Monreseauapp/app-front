@@ -20,6 +20,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StatusBar,
   Text,
   TouchableWithoutFeedback,
@@ -62,7 +63,7 @@ export default function FormSignUp() {
     setUser(initialUser);
     setCompany(initialCompany);
     setSubscriptionType(undefined);
-    setIsDataValid(false);
+    setIsDataValid(null);
   };
 
   const scrollToPage = (index: number) => {
@@ -192,11 +193,20 @@ export default function FormSignUp() {
       <TouchableWithoutFeedback
         onPress={() => Platform.OS !== "web" && Keyboard.dismiss()}
       >
-        <View
+        <ScrollView
           style={Platform.OS === "web" ? webStyles.container : styles.container}
+          contentContainerStyle={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          keyboardShouldPersistTaps="handled"
         >
           {response && (
-            <TwoFA qrCode={response.qrCode} secret={response.secret} />
+            <TwoFA
+              qrCode={response.qrCode}
+              secret={response.secret}
+              email={company.email}
+            />
           )}
           <Image
             source={require("@/assets/images/white-logo.png")}
@@ -274,7 +284,7 @@ export default function FormSignUp() {
               scrollToPage={scrollToPage}
             />
           </View>
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

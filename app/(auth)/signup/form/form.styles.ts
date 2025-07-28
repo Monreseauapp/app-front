@@ -38,8 +38,6 @@ const styles = StyleSheet.create({
 const webStyles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: Colors.white,
   },
   logo: {
@@ -54,7 +52,7 @@ const webStyles = StyleSheet.create({
     width: "70%",
   },
   formContainer: {
-    width: width >= 600 ? "55%" : "90%",
+    width: width >= 768 ? "55%" : "90%",
     paddingHorizontal: 0,
     paddingVertical: 10,
     paddingBottom: width < 600 ? 50 : 0,

@@ -1,7 +1,7 @@
 import Input from "@/components/form/Input";
 import { Colors } from "@/constants/Colors";
 import { User } from "@/types";
-import { Link } from "expo-router";
+import { Link, RelativePathString } from "expo-router";
 import { Platform, Pressable, Text, View } from "react-native";
 import { styles, webStyles } from "./pages.styles";
 
@@ -85,7 +85,7 @@ export default function Page1({
       <Pressable onPress={() => scrollToPage(1)}>
         <Text style={styles.button}>Suivant</Text>
       </Pressable>
-      <Link href={{ pathname: "/signin" }} asChild>
+      <Link href={{ pathname: "/signin" as RelativePathString }} asChild>
         <Text
           style={{
             color: Colors.white,

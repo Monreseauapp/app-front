@@ -2,6 +2,9 @@ import BackIcon from "@/assets/icons/back.svg";
 import TabBar from "@/components/TabBar";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
+import useFetchUserStatus from "@/hooks/useFetchUserStatus";
+import { Company } from "@/types";
+import axios from "axios";
 import { BlurView } from "expo-blur";
 import {
   RelativePathString,
@@ -25,7 +28,10 @@ import {
 const { width } = Dimensions.get("window");
 
 export default function TabLayout() {
-  const { isMenuOpen, setIsMenuOpen, userId } = useContext(AppContext);
+  const { isMenuOpen, setIsMenuOpen, userId, companyId, API_URL } =
+    useContext(AppContext);
+  const { hasActiveSubscription, hasAgreedToTerms, isLoading } =
+    useFetchUserStatus();
   const isLoggedIn = !!userId;
   const router = useRouter();
   const route = usePathname();
@@ -46,6 +52,46 @@ export default function TabLayout() {
       router.replace("/" as unknown as RelativePathString);
     }
   }, [isLoggedIn, userId, router, route, isTabsRoute]);
+
+  useEffect(() => {
+    const fetchCompany = async () => {
+      return await axios
+        .get(`${API_URL}/company/${companyId}`)
+        .then((response) => {
+          const company: Company = response.data;
+          return company;
+        });
+    };
+    const checkRedirect = async () => {
+      if (
+        !isLoading &&
+        userId &&
+        companyId &&
+        hasActiveSubscription !== null &&
+        hasAgreedToTerms !== null
+      ) {
+        const company: Company = await fetchCompany();
+        if (!hasActiveSubscription) {
+          router.replace(
+            `/payment/subscription?email=${company.email}&redirect=${hasAgreedToTerms ? "/home" : encodeURIComponent(`/legal/legalNotice?email=${company.email}&redirect=/home`)}` as RelativePathString
+          );
+        } else if (!hasAgreedToTerms) {
+          router.replace(
+            `/legal/legalNotice?redirect=/home&email=${company.email}` as RelativePathString
+          );
+        }
+      }
+    };
+    checkRedirect();
+  }, [
+    isLoading,
+    hasActiveSubscription,
+    hasAgreedToTerms,
+    router,
+    userId,
+    companyId,
+    API_URL,
+  ]);
 
   const isTabBarInvisible = [
     // "/index",
@@ -252,7 +298,7 @@ const webStyles = StyleSheet.create({
   },
   backIcon: {
     position: "absolute",
-    top: 30,
+    top: width > 600 ? 30 : 35,
     left: width >= 768 ? 110 : 30,
     zIndex: 10,
   },
