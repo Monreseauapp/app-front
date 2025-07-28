@@ -136,7 +136,6 @@ export default function PaymentMethods() {
                   style={styles.actionButton}
                 >
                   {width > 800 ? (
-
                     <StarIcon
                       style={{
                         width: 50,
