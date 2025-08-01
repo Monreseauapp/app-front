@@ -60,7 +60,7 @@ export default function TabBar({ state, descriptors, navigation }: any) {
         const isFocused = state.index === index;
 
         const onPress = () => {
-          setIsMenuOpen(false);
+          setIsMenuOpen && setIsMenuOpen(false);
           const event = navigation.emit({
             type: "tabPress",
             target: route.key,
