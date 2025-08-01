@@ -21,8 +21,8 @@ export default function SignIn() {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.\/?]{8,}$/;
   const { API_URL } = useContext(AppContext);
   const router = useRouter();
-  const [email, setEmail] = useState("test@test.com");
-  const [password, setPassword] = useState("Test123/");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string>("");
   const login = () => {
     setError("");

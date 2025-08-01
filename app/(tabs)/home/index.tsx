@@ -67,6 +67,7 @@ export default function Home() {
       }}
     >
       <Link
+        testID="notification-link"
         href="/notification"
         style={Platform.select({
           web: webStyles.notification,
