@@ -35,7 +35,9 @@ export default function SignIn() {
         localStorage.setItem("temp_token", response.data.temp_token);
         localStorage.setItem(
           "expires_in",
-          String(Date.now() + parseInt(String(response.data.expires_in)) * 1000)
+          String(
+            Date.now() + parseInt(String(response.data.expires_in)) * 1000,
+          ),
         );
         return true;
       })
@@ -115,7 +117,7 @@ export default function SignIn() {
                 <Text
                   onPress={() => {
                     alert(
-                      "Mot de passe oublié ? Veuillez suivre les instructions pour réinitialiser votre mot de passe."
+                      "Mot de passe oublié ? Veuillez suivre les instructions pour réinitialiser votre mot de passe.",
                     );
                   }}
                   style={Platform.select({
