@@ -16,7 +16,6 @@ import {
   View,
 } from "react-native";
 import { styles, webStyles } from "./home.styles";
-
 export default function Home() {
   const { width } = Dimensions.get("window");
   const { API_URL, userId, companyId } = useContext(AppContext);
@@ -35,7 +34,6 @@ export default function Home() {
     11: "novembre",
     12: "décembre",
   };
-
   useEffect(() => {
     const fetchUserData = async () => {
       axios
@@ -55,7 +53,6 @@ export default function Home() {
       fetchUserData();
     }
   }, [userId, companyId, API_URL]);
-
   return (
     <ScrollView
       style={{
@@ -116,7 +113,7 @@ export default function Home() {
                   source={
                     user?.photoUrl
                       ? { uri: `${API_URL}/files/view/${user.photoUrl}` }
-                      : require("@/assets/images/profilepicture.jpg")
+                      : require("@/assets/images/default-user.jpg")
                   }
                   style={styles.image}
                 />

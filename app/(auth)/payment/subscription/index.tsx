@@ -24,11 +24,9 @@ import {
   View,
 } from "react-native";
 import { styles, webStyles } from "./subscription.styles";
-
 const stripePromise = loadStripe(
-  "pk_test_51RnbRP2HJM330Lpvyil2tDcpP7YMZ0t1IuwdJ0VrPFo4GuZt8Tkic1g3mFXApMR10HmTLe3OiwxJmjxsxy2zTWsu00AGFRm7Kb"
+  process.env.EXPO_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY || ""
 );
-
 export default function SubscriptionPage() {
   const { email, success, redirect } = useLocalSearchParams();
   const pathname = window.location.href;
@@ -45,7 +43,6 @@ export default function SubscriptionPage() {
     undefined
   );
   const redirectUrl = decodeURIComponent((redirect as string) || "");
-
   useEffect(() => {
     const fetchSubscription = async () => {
       const company = await axios
@@ -74,7 +71,6 @@ export default function SubscriptionPage() {
     };
     fetchSubscription();
   }, [success, email, API_URL]);
-
   useEffect(
     () => {
       const findCustomer = async () => {
@@ -173,7 +169,6 @@ export default function SubscriptionPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [subscription, email, API_URL, pathname, router]
   );
-
   if (!email && !success) {
     return (
       <View style={styles.main}>
@@ -181,7 +176,6 @@ export default function SubscriptionPage() {
       </View>
     );
   }
-
   if (error) {
     return (
       <View style={styles.main}>
@@ -189,7 +183,6 @@ export default function SubscriptionPage() {
       </View>
     );
   }
-
   if (!secret && !success) {
     return (
       <View style={styles.main}>
@@ -197,7 +190,6 @@ export default function SubscriptionPage() {
       </View>
     );
   }
-
   return (
     <View style={styles.main}>
       <Image
@@ -241,7 +233,6 @@ export default function SubscriptionPage() {
     </View>
   );
 }
-
 function SubscriptionForm({
   pathname,
   subscription,
@@ -254,11 +245,9 @@ function SubscriptionForm({
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const handleSubmit = async (event: GestureResponderEvent) => {
     event.preventDefault();
     if (!stripe || !elements) return;
-
     setLoading(true);
     const { error } = await stripe.confirmPayment({
       elements,
@@ -266,7 +255,6 @@ function SubscriptionForm({
         return_url: `${pathname}&success=true`,
       },
     });
-
     setLoading(false);
     if (error) {
       setError(error.message || "Payment failed.");
@@ -277,7 +265,6 @@ function SubscriptionForm({
       });
     }
   };
-
   return (
     <ScrollView style={styles.container}>
       <PaymentElement />

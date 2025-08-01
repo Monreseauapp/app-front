@@ -1,4 +1,6 @@
 import { Colors } from "@/constants/Colors";
+import { useState } from "react";
+
 import { Dimensions, Platform, Text, TextInput, View } from "react-native";
 import { styles, webStyles } from "./Input.styles";
 
@@ -38,10 +40,13 @@ type InputProps = {
   inputStyle?: object;
   autoFocus?: boolean;
   inputRef?: React.RefObject<TextInput | null>;
+  limit?: number;
   value?: string;
   onChangeText?: (text: string) => void;
   valid?: boolean | null;
   validationMessage?: string;
+  isDataCorrect?: boolean;
+  incorrectMessage?: string;
 };
 
 export default function Input({
@@ -55,13 +60,17 @@ export default function Input({
   inputStyle = {},
   autoFocus = false,
   inputRef,
+  limit,
   value,
   onChangeText,
   valid = undefined,
   validationMessage,
+  isDataCorrect = true,
+  incorrectMessage,
   ...rest
 }: InputProps & React.ComponentProps<typeof TextInput>) {
   const { width } = Dimensions.get("window");
+  const [isFocused, setIsFocused] = useState(false);
   let keyboardType: "default" | "email-address" | "numeric" | "phone-pad" =
     "default";
   if (type === "email") {
@@ -76,10 +85,6 @@ export default function Input({
   ) {
     keyboardType = "numeric";
   }
-  const { placeholderTextColor }: any = inputStyle || {};
-  if (placeholderTextColor) {
-    inputStyle = { ...inputStyle, placeholderTextColor };
-  }
   return (
     <View style={{ width: `${100 / sameLine}%`, marginBottom: 20 }}>
       <Text
@@ -89,8 +94,10 @@ export default function Input({
         ]}
       >
         {name}{" "}
-        <Text style={{ color: Colors.red }}>{valid !== undefined && "*"}</Text>
-        {valid === false && !value && (
+        {valid !== undefined ? (
+          <Text style={{ color: Colors.red }}>*</Text>
+        ) : null}
+        {valid === false && !value ? (
           <Text
             style={Platform.select({
               web: webStyles.required,
@@ -99,7 +106,17 @@ export default function Input({
           >
             {validationMessage || "(ce champ est requis)"}
           </Text>
-        )}
+        ) : null}
+        {isDataCorrect === false ? (
+          <Text
+            style={Platform.select({
+              web: webStyles.required,
+              default: styles.required,
+            })}
+          >
+            {incorrectMessage || "(ce champ est incorrect)"}
+          </Text>
+        ) : null}
       </Text>
 
       <TextInput
@@ -108,7 +125,7 @@ export default function Input({
         keyboardType={keyboardType}
         multiline={multiline}
         onChange={(e) => {
-          const text = e.nativeEvent.text;
+          const text = e.nativeEvent.text.slice(0, limit || 255);
           if (onChangeText) {
             if (keyboardType === "numeric" || keyboardType === "phone-pad") {
               onChangeText(text.replace(/[^0-9+-]/g, ""));
@@ -117,7 +134,9 @@ export default function Input({
             }
           }
         }}
-        placeholderTextColor={placeholderTextColor || Colors.violet}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        placeholderTextColor={Colors.grey}
         placeholder={placeholder}
         ref={inputRef}
         secureTextEntry={type.includes("password")}
@@ -127,6 +146,7 @@ export default function Input({
             width: sameLine > 1 ? "95%" : "100%",
             height: multiline ? 100 : width >= 600 ? 50 : 40,
             borderRadius: multiline ? 25 : 50,
+            outline: isFocused && "auto",
             ...inputStyle,
           },
           default: {

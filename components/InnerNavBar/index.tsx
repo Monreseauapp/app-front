@@ -1,4 +1,5 @@
 import { Platform, Pressable, Text, View } from "react-native";
+
 import { styles, webStyles } from "./InnerNavBar.styles";
 
 interface NavbarProps {

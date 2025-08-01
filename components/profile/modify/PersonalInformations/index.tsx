@@ -1,6 +1,5 @@
 import AddressInputs from "@/components/AddressInputs";
 import Input from "@/components/form/Input";
-import { Colors } from "@/constants/Colors";
 import { Company, User } from "@/types";
 import { Platform } from "react-native";
 import styles from "./PersonalInformations.styles";
@@ -32,10 +31,7 @@ export default function PersonalInformations({
         onChangeText={(text) =>
           handleChange(isCompanyPage ? "company" : "user", "email", text)
         }
-        inputStyle={{
-          ...styles.input,
-          placeholderTextColor: Colors.grey,
-        }}
+        inputStyle={styles.input}
         titleStyle={styles.inputTitle}
       />
       <Input
@@ -46,10 +42,7 @@ export default function PersonalInformations({
         onChangeText={(text) =>
           handleChange(isCompanyPage ? "company" : "user", "phone", text)
         }
-        inputStyle={{
-          ...styles.input,
-          placeholderTextColor: Colors.grey,
-        }}
+        inputStyle={styles.input}
         titleStyle={styles.inputTitle}
       />
       <AddressInputs
@@ -71,10 +64,7 @@ export default function PersonalInformations({
           onChangeText={(text) =>
             handleChange(isCompanyPage ? "company" : "user", "password", text)
           }
-          inputStyle={{
-            ...styles.input,
-            placeholderTextColor: Colors.grey,
-          }}
+          inputStyle={styles.input}
           titleStyle={styles.inputTitle}
         />
       )}

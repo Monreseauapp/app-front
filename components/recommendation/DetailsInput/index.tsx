@@ -1,4 +1,3 @@
-import { Colors } from "@/constants/Colors";
 import { Project, Recommandation } from "@/types";
 import Input from "../../form/Input";
 import styles from "./DetailsInput.styles";
@@ -27,10 +26,7 @@ export default function DetailsInput({
           type="off"
           multiline={true}
           titleStyle={styles.inputTitle}
-          inputStyle={{
-            ...styles.input,
-            placeholderTextColor: Colors.grey,
-          }}
+          inputStyle={styles.input}
           value={recommandation.description || ""}
           onChangeText={(text) => handleChange("description", text)}
           valid={isDataValid}
@@ -42,10 +38,7 @@ export default function DetailsInput({
           type="off"
           multiline={true}
           titleStyle={styles.inputTitle}
-          inputStyle={{
-            ...styles.input,
-            placeholderTextColor: Colors.grey,
-          }}
+          inputStyle={styles.input}
           value={
             (type === "project"
               ? project.description

@@ -1,5 +1,5 @@
 import * as Contacts from "expo-contacts";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   Image,
   Platform,
@@ -9,27 +9,21 @@ import {
   View,
 } from "react-native";
 import SignatureCanvas from "react-native-signature-canvas";
-
 // PDF Lib for merging
-
 const SignatureScreen = () => {
   const [signature, setSignature] = useState(null);
   const ref = useRef<any>(null);
-
   const handleSignature = (signature: any) => {
     ref.current.readSignature();
     setSignature(signature);
   };
-
   const handleEmpty = () => {
     console.log("Empty");
   };
-
   const handleClear = () => {
     setSignature(null);
     console.log("Clear success!");
   };
-
   const getContacts = async () => {
     if (Platform.OS !== "web") {
       try {
@@ -47,7 +41,6 @@ const SignatureScreen = () => {
       console.log("Contacts are not available on web platform.");
     }
   };
-
   return (
     <View style={styles.container}>
       <SignatureCanvas
@@ -81,7 +74,6 @@ const SignatureScreen = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -103,5 +95,4 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
 });
-
 export default SignatureScreen;

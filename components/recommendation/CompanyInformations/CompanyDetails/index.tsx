@@ -26,7 +26,7 @@ export default function CompanyDetails({
         placeholder="Google"
         type="organization"
         titleStyle={styles.inputTitle}
-        inputStyle={{ ...styles.input, placeholderTextColor: Colors.grey }}
+        inputStyle={styles.input}
         value={data.companyName || ""}
         onChangeText={(text) => handleChange("companyName", text)}
         valid={isDataValid}
@@ -36,7 +36,7 @@ export default function CompanyDetails({
         placeholder="+33 6 12 34 56 78"
         type="tel"
         titleStyle={styles.inputTitle}
-        inputStyle={{ ...styles.input, placeholderTextColor: Colors.grey }}
+        inputStyle={styles.input}
         value={data.companyPhone || ""}
         onChangeText={(text) => handleChange("companyPhone", text)}
         valid={isDataValid}
@@ -46,7 +46,7 @@ export default function CompanyDetails({
         placeholder="exemple@gmail.com"
         type="email"
         titleStyle={styles.inputTitle}
-        inputStyle={{ ...styles.input, placeholderTextColor: Colors.grey }}
+        inputStyle={styles.input}
         value={data.companyEmail || ""}
         onChangeText={(text) => handleChange("companyEmail", text)}
         valid={isDataValid}
@@ -74,10 +74,7 @@ export default function CompanyDetails({
           type="address-line1"
           sameLine={2}
           titleStyle={{ color: Colors.black }}
-          inputStyle={{
-            ...styles.input,
-            placeholderTextColor: Colors.grey,
-          }}
+          inputStyle={styles.input}
           value={data.companyAddress || ""}
           onChangeText={(text) => handleChange("companyAddress", text)}
         />
@@ -89,7 +86,6 @@ export default function CompanyDetails({
           titleStyle={{ color: Colors.black }}
           inputStyle={{
             ...styles.input,
-            placeholderTextColor: Colors.grey,
             alignSelf: "flex-end",
           }}
           value={data.companyAddressComplement ?? ""}
@@ -105,7 +101,6 @@ export default function CompanyDetails({
           titleStyle={{ color: Colors.black }}
           inputStyle={{
             ...styles.input,
-            placeholderTextColor: Colors.grey,
           }}
           value={data.companyCity || ""}
           onChangeText={(text) => handleChange("companyCity", text)}
@@ -119,7 +114,6 @@ export default function CompanyDetails({
           titleStyle={{ color: Colors.black }}
           inputStyle={{
             ...styles.input,
-            placeholderTextColor: Colors.grey,
             alignSelf: "flex-end",
           }}
           value={data.companyPostalCode?.toString()}

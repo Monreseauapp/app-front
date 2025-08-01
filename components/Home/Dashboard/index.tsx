@@ -6,6 +6,7 @@ import { Recommandation } from "@/types";
 import axios from "axios";
 import { Link, RelativePathString } from "expo-router";
 import { useContext, useEffect, useState } from "react";
+
 import { Dimensions, Platform, Text, View } from "react-native";
 import { styles, webStyles } from "./Dashboard.styles";
 

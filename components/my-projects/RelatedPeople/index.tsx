@@ -4,6 +4,7 @@ import { AppContext } from "@/context/context";
 import { Company, User } from "@/types";
 import { Link } from "expo-router";
 import { useContext } from "react";
+
 import { Text, View } from "react-native";
 import styles from "./RelatedPeople.styles";
 

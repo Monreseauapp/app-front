@@ -6,8 +6,6 @@ const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
     backgroundColor: Colors.white,
   },
   logo: {
@@ -52,13 +50,14 @@ const webStyles = StyleSheet.create({
     width: "70%",
   },
   formContainer: {
-    width: width >= 768 ? "55%" : "90%",
+    width: width >= 800 ? "55%" : "90%",
     paddingHorizontal: 0,
-    paddingVertical: 10,
-    paddingBottom: width < 600 ? 50 : 0,
+    paddingTop: 10,
+    paddingBottom: width >= 600 ? 0 : 50,
     backgroundColor: Colors.violet,
     borderRadius: 30,
     alignItems: "center",
+    marginBottom: 50,
   },
 });
 

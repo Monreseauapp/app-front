@@ -2,8 +2,7 @@ import InnerNavBar from "@/components/InnerNavBar";
 import Recommendation from "@/components/my-recommendations/Recommendation";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
-import useRecommendationFetch from "@/hooks/useRecommendationFetch";
-import { Company, Recommandation, User } from "@/types";
+import { Recommandation } from "@/types";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -17,18 +16,28 @@ import {
 } from "react-native";
 import styles from "./index.styles";
 
-export interface CompleteRecommendation {
-  recommandation: Recommandation;
-  initiator?: User;
-  recipient?: User;
-  company?: Company;
+export interface CompleteRecommendation extends Recommandation {
+  initiator: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  recipient: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  company: {
+    id: string;
+    name: string;
+    email: string;
+  };
 }
 
 export default function MyRecommendations() {
-  const { API_URL } = useContext(AppContext);
-  const [updated, setUpdated] = useState<boolean>(false);
-  const { recommendationsInitiated, recommendationsReceived } =
-    useRecommendationFetch(updated);
+  const { API_URL, userId } = useContext(AppContext);
   const [completeReceived, setCompleteReceived] = useState<
     CompleteRecommendation[]
   >([]);
@@ -36,76 +45,15 @@ export default function MyRecommendations() {
     []
   );
   const [page, setPage] = useState<string>("sent");
-
-  const fetchCompleteRecommendations = async (
-    recommendations: Recommandation[]
-  ) => {
-    const completeRecommendation: CompleteRecommendation[] = await Promise.all(
-      recommendations.map(async (reco) => {
-        const initiator = await axios
-          .get(`${API_URL}/users/${reco.initiatorId}`)
-          .then((response) => response.data)
-          .catch((error) => {
-            console.error("Error fetching user data", error.request);
-          });
-        const recipient = await axios
-          .get(`${API_URL}/users/${reco.recipientId}`)
-          .then((response) => response.data)
-          .catch((error) => {
-            console.error("Error fetching user data", error.request);
-          });
-        const company = await axios
-          .get(`${API_URL}/company/${reco.companyId}`)
-          .then((response) => response.data)
-          .catch((error) => {
-            console.error("Error fetching user data", error.request);
-          });
-        return {
-          recommandation: reco,
-          initiator: initiator,
-          recipient: reco.recipientId ? recipient : null,
-          company: company,
-        };
-      })
-    );
-    return completeRecommendation;
-  };
+  const currentList = page === "sent" ? completeSent : completeReceived;
 
   useEffect(() => {
-    const setCompleteRecommendations = async () => {
-      const completeReceived = await fetchCompleteRecommendations(
-        recommendationsReceived
-      );
-      const completeSent = await fetchCompleteRecommendations(
-        recommendationsInitiated
-      );
-      setCompleteReceived(
-        completeReceived.filter((rec, index) => {
-          return (
-            completeReceived.findIndex(
-              (r) => r.recommandation.id === rec.recommandation.id
-            ) !== index
-          );
-        })
-      );
-      setCompleteSent(
-        completeSent.filter((rec, index) => {
-          return (
-            completeReceived.findIndex(
-              (r) => r.recommandation.id === rec.recommandation.id
-            ) !== index
-          );
-        })
-      );
-    };
-    if (
-      recommendationsReceived.length > 0 ||
-      recommendationsInitiated.length > 0
-    ) {
-      setCompleteRecommendations();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recommendationsReceived, recommendationsInitiated]);
+    axios.get(`${API_URL}/recommandation/user/${userId}`).then((response) => {
+      const resp = response.data;
+      setCompleteReceived(resp.received);
+      setCompleteSent(resp.sent);
+    });
+  }, [API_URL, userId]);
 
   return (
     <View
@@ -147,13 +95,12 @@ export default function MyRecommendations() {
               gap: 20,
             }}
           >
-            {(page === "sent" ? completeSent : completeReceived).length > 0 ? (
-              (page === "sent" ? completeSent : completeReceived).map((rec) => (
+            {currentList && currentList.length > 0 ? (
+              currentList.map((rec) => (
                 <Recommendation
-                  key={rec.recommandation.id + page}
-                  {...rec}
+                  key={rec.id + page}
+                  recommandation={rec}
                   page={page}
-                  setUpdated={setUpdated}
                 />
               ))
             ) : (

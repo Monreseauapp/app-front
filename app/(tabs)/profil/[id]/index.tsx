@@ -20,7 +20,6 @@ import {
   View,
 } from "react-native";
 import { styles, webStyles } from "./id.styles";
-
 export default function Profil() {
   const { API_URL } = useContext(AppContext);
   const { width } = Dimensions.get("window");
@@ -33,7 +32,6 @@ export default function Profil() {
       company.linkedin || company.phone || company.email || company.website
     );
   };
-
   useEffect(() => {
     const fetchData = async () => {
       const fetchProfileData = async (id: string) => {
@@ -71,7 +69,6 @@ export default function Profil() {
     };
     fetchData();
   }, [id, user?.companyId, API_URL]);
-
   useEffect(() => {
     const fetchReviewersData = async () => {
       const userPromises = reviews.map((review) =>
@@ -84,7 +81,6 @@ export default function Profil() {
       fetchReviewersData();
     }
   }, [reviews, API_URL]);
-
   return (
     <View
       style={{
@@ -118,7 +114,7 @@ export default function Profil() {
                 source={
                   user?.photoUrl
                     ? { uri: `${API_URL}/files/view/${user.photoUrl}` }
-                    : require("@/assets/images/profilepicture.jpg")
+                    : require("@/assets/images/default-user.jpg")
                 }
                 style={styles.profilePicture}
               />
@@ -178,117 +174,121 @@ export default function Profil() {
               </View>
             )}
           </View>
-          <View
-            style={
-              Platform.OS === "web"
-                ? {
-                    width: width >= 768 ? "70%" : "100%",
-                    alignItems: "center",
-                  }
-                : { width: "100%", alignItems: "center" }
-            }
-          >
+          {user?.company?.description && reviews.length > 0 && (
             <View
-              style={{
-                alignItems: "flex-start",
-                marginBottom: 20,
-                width: "90%",
-              }}
+              style={
+                Platform.OS === "web"
+                  ? {
+                      width: width >= 768 ? "70%" : "100%",
+                      alignItems: "center",
+                    }
+                  : { width: "100%", alignItems: "center" }
+              }
             >
-              {user?.company?.description && (
-                <>
-                  <Text style={styles.miniTitle}>Description</Text>
-                  <Text style={styles.description}>
-                    {user.company.description}
-                  </Text>
-                </>
-              )}
-            </View>
-            {reviews.length > 0 && (
-              <View style={{ alignItems: "flex-start", width: "90%" }}>
-                <View style={{ width: "100%" }}>
-                  <Text style={{ ...styles.miniTitle, marginBottom: 10 }}>
-                    Mes avis ({reviews.length})
-                  </Text>
+              <View
+                style={{
+                  alignItems: "flex-start",
+                  marginBottom: 20,
+                  width: "90%",
+                }}
+              >
+                {user?.company?.description && (
+                  <>
+                    <Text style={styles.miniTitle}>Description</Text>
+                    <Text style={styles.description}>
+                      {user.company.description}
+                    </Text>
+                  </>
+                )}
+              </View>
+              {reviews.length > 0 && (
+                <View style={{ alignItems: "flex-start", width: "90%" }}>
                   <View style={{ width: "100%" }}>
-                    {reviews.map((review) => (
-                      <View key={review.id} style={styles.review}>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            alignItems: "flex-start",
-                          }}
-                        >
-                          <Text style={styles.reviewer}>
-                            {(() => {
-                              const reviewer = reviewers.find(
-                                (user) => user.id === review.userId
-                              );
-                              return reviewer
-                                ? `${reviewer.firstName} ${reviewer.lastName}`
-                                : "Utilisateur inconnu";
-                            })()}
+                    <Text style={{ ...styles.miniTitle, marginBottom: 10 }}>
+                      Mes avis ({reviews.length})
+                    </Text>
+                    <View style={{ width: "100%" }}>
+                      {reviews.map((review) => (
+                        <View key={review.id} style={styles.review}>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              alignItems: "flex-start",
+                            }}
+                          >
+                            <Text style={styles.reviewer}>
+                              {(() => {
+                                const reviewer = reviewers.find(
+                                  (user) => user.id === review.userId
+                                );
+                                return reviewer
+                                  ? `${reviewer.firstName} ${reviewer.lastName}`
+                                  : "Utilisateur inconnu";
+                              })()}
+                            </Text>
+                            {[...Array(5)].map((_, i) => (
+                              <StarIcon
+                                key={i}
+                                color={
+                                  i < (review.rating || 0)
+                                    ? Colors.white
+                                    : Colors.black
+                                }
+                                width={20}
+                                height={20}
+                                style={{ marginRight: 2 }}
+                              />
+                            ))}
+                          </View>
+                          <Text style={styles.reviewText}>
+                            {review.comment}
                           </Text>
-                          {[...Array(5)].map((_, i) => (
-                            <StarIcon
-                              key={i}
-                              color={
-                                i < (review.rating || 0)
-                                  ? Colors.white
-                                  : Colors.black
-                              }
-                              width={20}
-                              height={20}
-                              style={{ marginRight: 2 }}
-                            />
-                          ))}
                         </View>
-                        <Text style={styles.reviewText}>{review.comment}</Text>
-                      </View>
-                    ))}
+                      ))}
+                    </View>
                   </View>
-                </View>
-                <View
-                  style={{
-                    alignItems: "flex-start",
-                    marginTop: 20,
-                    width: "100%",
-                    marginBottom: 80,
-                  }}
-                >
-                  <Text style={styles.miniTitle}>Ma note</Text>
                   <View
                     style={{
+                      alignItems: "flex-start",
+                      marginTop: 20,
                       width: "100%",
-                      flexDirection: "row",
-                      marginTop: 15,
-                      alignItems: "center",
-                      justifyContent: "center",
+                      marginBottom: 80,
                     }}
                   >
-                    {[...Array(5)].map((_, i) => (
-                      <StarIcon
-                        key={i}
-                        color={
-                          i <
-                          reviews.reduce(
-                            (acc, review) => acc + (review.rating || 0),
-                            0
-                          ) /
-                            reviews.length
-                            ? Colors.violet
-                            : Colors.black
-                        }
-                        width={40}
-                        height={40}
-                        style={{ marginRight: 5 }}
-                      />
-                    ))}
+                    <Text style={styles.miniTitle}>Ma note</Text>
+                    <View
+                      style={{
+                        width: "100%",
+                        flexDirection: "row",
+                        marginTop: 15,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {[...Array(5)].map((_, i) => (
+                        <StarIcon
+                          key={i}
+                          color={
+                            i <
+                            reviews.reduce(
+                              (acc, review) => acc + (review.rating || 0),
+                              0
+                            ) /
+                              reviews.length
+                              ? Colors.violet
+                              : Colors.black
+                          }
+                          width={40}
+                          height={40}
+                          style={{ marginRight: 5 }}
+                        />
+                      ))}
+                    </View>
                   </View>
                 </View>
-              </View>
-            )}
-          </View>
+              )}
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>

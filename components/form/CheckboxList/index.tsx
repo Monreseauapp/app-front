@@ -1,15 +1,25 @@
 import { Colors } from "@/constants/Colors";
 import { useState } from "react";
+
 import { Platform, Text, View } from "react-native";
 import CustomCheckbox from "../CustomCheckbox";
 import { styles, webStyles } from "./CheckboxList.styles";
 
-interface InputProps {
+interface InputProps<T> {
   title: string;
   choices: React.ReactNode[];
+  data: T;
+  field: keyof T;
+  onChange?: (value: string) => void;
 }
 
-export default function CheckBoxList({ title, choices }: InputProps) {
+export default function CheckboxList<T>({
+  title,
+  choices,
+  data,
+  field,
+  onChange,
+}: InputProps<T>) {
   const [checked, setChecked] = useState<boolean[]>(
     Array(choices.length).fill(false)
   );
@@ -36,6 +46,13 @@ export default function CheckBoxList({ title, choices }: InputProps) {
               const newChecked = [...checked];
               newChecked[index] = value;
               setChecked(newChecked);
+              onChange &&
+                onChange(
+                  (data[field] ? data[field] + ";" : "") +
+                    (typeof choice === "object" && choice && "key" in choice
+                      ? choice.key
+                      : "")
+                );
             }}
           />
           {choice}

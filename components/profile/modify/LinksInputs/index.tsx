@@ -1,5 +1,4 @@
 import Input from "@/components/form/Input";
-import { Colors } from "@/constants/Colors";
 import { Company, User } from "@/types";
 import styles from "./LinksInputs.styles";
 
@@ -30,10 +29,7 @@ export default function LinksInputs({
             type="off"
             value={user.youtube ?? ""}
             onChangeText={(text) => handleChange("user", "youtube", text)}
-            inputStyle={{
-              ...styles.input,
-              placeholderTextColor: Colors.grey,
-            }}
+            inputStyle={styles.input}
             titleStyle={styles.inputTitle}
           />
           <Input
@@ -42,10 +38,7 @@ export default function LinksInputs({
             type="off"
             value={user.instagram ?? ""}
             onChangeText={(text) => handleChange("user", "instagram", text)}
-            inputStyle={{
-              ...styles.input,
-              placeholderTextColor: Colors.grey,
-            }}
+            inputStyle={styles.input}
             titleStyle={styles.inputTitle}
           />
         </>
@@ -59,10 +52,7 @@ export default function LinksInputs({
         onChangeText={(text) =>
           handleChange(isCompanyPage ? "company" : "user", "linkedin", text)
         }
-        inputStyle={{
-          ...styles.input,
-          placeholderTextColor: Colors.grey,
-        }}
+        inputStyle={styles.input}
         titleStyle={styles.inputTitle}
       />
       <Input
@@ -73,10 +63,7 @@ export default function LinksInputs({
         onChangeText={(text) =>
           handleChange(isCompanyPage ? "company" : "user", "website", text)
         }
-        inputStyle={{
-          ...styles.input,
-          placeholderTextColor: Colors.grey,
-        }}
+        inputStyle={styles.input}
         titleStyle={styles.inputTitle}
       />
     </>

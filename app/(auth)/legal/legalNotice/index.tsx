@@ -8,7 +8,7 @@ import {
   useLocalSearchParams,
   useRouter,
 } from "expo-router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import {
   Image,
   Platform,
@@ -18,7 +18,6 @@ import {
   View,
 } from "react-native";
 import { styles, webStyles } from "./legalNotice.styles";
-
 export default function LegalNotice() {
   const { API_URL, userId } = useContext(AppContext);
   const { redirect, email } = useLocalSearchParams();
@@ -26,7 +25,18 @@ export default function LegalNotice() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
-
+  const updateUserConsent = async () => {
+    await axios
+      .patch(`${API_URL}/users/${email ? company?.ownerId : userId}`, {
+        consentTerms: true,
+      })
+      .then(() => {
+        return true;
+      })
+      .catch(() => {
+        return false;
+      });
+  };
   const handleSubmit = async () => {
     if (email) {
       const company = await axios
@@ -39,25 +49,8 @@ export default function LegalNotice() {
         });
       setCompany(company);
     }
-  };
-  useEffect(() => {
-    const updateUserConsent = async () => {
-      if (company) {
-        await axios
-          .patch(`${API_URL}/users/${email ? company?.ownerId : userId}`, {
-            consentTerms: true,
-          })
-          .then(() => {
-            return true;
-          })
-          .catch(() => {
-            return false;
-          });
-      }
-    };
     updateUserConsent();
-  }, [company, API_URL, email, userId]);
-
+  };
   return (
     <View
       style={{
