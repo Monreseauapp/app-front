@@ -10,6 +10,7 @@ export default function PriorityStars({
   starId: number;
   setStarId: (value: number) => void;
 }) {
+  console.log(starId);
   return (
     <View
       style={{
@@ -33,11 +34,11 @@ export default function PriorityStars({
           <Pressable
             key={i}
             onPress={() => {
-              setStarId(i);
+              setStarId(i + 1);
             }}
           >
             <StarIcon
-              color={i <= starId ? Colors.violet : Colors.black}
+              color={i < starId ? Colors.violet : Colors.black}
               width={40}
               height={40}
               style={{ marginRight: 5 }}

@@ -2,6 +2,7 @@ import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { Text } from "@react-navigation/elements";
 import { useContext } from "react";
+
 import { Platform, TouchableOpacity, View } from "react-native";
 import { styles, webStyles } from "./TabBar.styles";
 
@@ -53,13 +54,13 @@ export default function TabBar({ state, descriptors, navigation }: any) {
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
             : options.title !== undefined
-            ? options.title
-            : route.name;
+              ? options.title
+              : route.name;
 
         const isFocused = state.index === index;
 
         const onPress = () => {
-          setIsMenuOpen(false);
+          setIsMenuOpen && setIsMenuOpen(false);
           const event = navigation.emit({
             type: "tabPress",
             target: route.key,

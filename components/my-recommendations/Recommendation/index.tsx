@@ -8,21 +8,18 @@ import ValidationForm from "../../ValidationForm";
 import RelatedPeople from "../RelatedPeople";
 import { styles, webStyles } from "./Recommendation.styles";
 
-interface RecommendationProps extends CompleteRecommendation {
+interface RecommendationProps {
+  recommandation: CompleteRecommendation;
   page: string;
-  setUpdated: (value: boolean) => void;
 }
 
 export default function Recommendation({
   recommandation,
-  recipient,
-  initiator,
-  company,
   page,
-  setUpdated,
 }: RecommendationProps) {
+  const { recipient, company, initiator } = recommandation;
   const { companyId, API_URL } = useContext(AppContext);
-  const isCompanyReception = companyId === company?.id;
+  const isCompanyReception = companyId === recommandation.company?.id;
   const [isRejected, setIsRejected] = useState<boolean | undefined>(undefined);
   const [rejectionReason, setRejectionReason] = useState<string>("");
   const stateTranslation = {
@@ -90,7 +87,7 @@ export default function Recommendation({
                   </Text>
                 </Pressable>
               )}
-              {(isCompanyReception ? recipient : company)?.phone && (
+              {/* {(isCompanyReception ? recipient : company)?.phone && (
                 <Pressable
                   onPress={() =>
                     Linking.openURL(
@@ -103,7 +100,7 @@ export default function Recommendation({
                     {(isCompanyReception ? recipient : company)?.phone}
                   </Text>
                 </Pressable>
-              )}
+              )} */}
             </View>
           </View>
         )}
@@ -138,7 +135,6 @@ export default function Recommendation({
             rejectionReason={rejectionReason}
             setRejectionReason={setRejectionReason}
             update={updateRecommendation}
-            setUpdated={setUpdated}
           />
         )}
     </View>

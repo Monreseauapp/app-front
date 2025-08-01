@@ -1,8 +1,8 @@
 export const initialUser = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  city: "",
-  phone: "",
+  firstName: "test",
+  lastName: "test",
+  email: "test@test.com",
+  password: "Test123/",
+  city: "Tourcoing",
+  phone: "+3311101010",
 };

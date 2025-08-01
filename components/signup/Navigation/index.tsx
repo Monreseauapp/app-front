@@ -1,8 +1,8 @@
 import LeftArrow from "@/assets/icons/left-arrow.svg";
 import RightArrow from "@/assets/icons/right-arrow.svg";
 import { Colors } from "@/constants/Colors";
-import React, { useEffect } from "react";
-import { Pressable } from "react-native";
+import { useEffect } from "react";
+import { Platform, Pressable, View } from "react-native";
 
 type NavigationProps = {
   currentPage: number;
@@ -32,13 +32,15 @@ export default function Navigation({
         }
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [currentPage, pages.length, type, scrollToPage]);
+    if (Platform.OS === "web") {
+      window.addEventListener("keydown", handleKeyDown);
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    }
+  });
   return (
-    <>
+    <View style={{ position: "relative", width: "100%", marginTop: 5 }}>
       {currentPage > 0 && (
         <>
           <Pressable
@@ -70,6 +72,6 @@ export default function Navigation({
           )}
         </>
       )}
-    </>
+    </View>
   );
 }

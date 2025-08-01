@@ -119,6 +119,7 @@ const webStyles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     flexDirection: width >= 768 ? "row" : "column",
+    justifyContent: "center",
   },
 });
 

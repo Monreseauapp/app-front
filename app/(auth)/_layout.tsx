@@ -8,11 +8,10 @@ import {
   useRouter,
 } from "expo-router";
 import { useCallback, useContext } from "react";
-
 export default function AuthLayout() {
   const router = useRouter();
   const route = usePathname();
-  const { userId } = useContext(AppContext);
+  const { userId, companyId } = useContext(AppContext);
   const { isLoading, hasActiveSubscription, hasAgreedToTerms, refetch } =
     useFetchUserStatus();
   const isLoggedIn = !!userId;
@@ -23,7 +22,6 @@ export default function AuthLayout() {
     "/index",
     "/payment",
   ].some((path) => route.startsWith(path));
-
   useFocusEffect(
     useCallback(() => {
       const checkRedirect = async () => {
@@ -31,9 +29,20 @@ export default function AuthLayout() {
         if (
           isLoggedIn &&
           userId !== undefined &&
+          companyId !== undefined &&
           isAuthRoute &&
           !isLoading &&
           hasActiveSubscription &&
+          hasAgreedToTerms
+        ) {
+          router.replace("/home" as RelativePathString);
+        } else if (
+          isLoggedIn &&
+          userId !== undefined &&
+          !companyId &&
+          isAuthRoute &&
+          !isLoading &&
+          hasActiveSubscription === null &&
           hasAgreedToTerms
         ) {
           router.replace("/home" as RelativePathString);
@@ -43,15 +52,15 @@ export default function AuthLayout() {
     }, [
       isLoggedIn,
       userId,
+      companyId,
       router,
       isAuthRoute,
       hasActiveSubscription,
       hasAgreedToTerms,
       isLoading,
       refetch,
-    ])
+    ]),
   );
-
   return (
     <Stack screenOptions={{ headerShown: false, gestureEnabled: true }}>
       <Stack.Screen name="index/index" />

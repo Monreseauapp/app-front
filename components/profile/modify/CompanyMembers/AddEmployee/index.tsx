@@ -1,5 +1,4 @@
 import Search from "@/components/form/Search/Search";
-import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { User } from "@/types";
 import axios from "axios";
@@ -67,7 +66,6 @@ export default function AddEmployee({
         value={currentUser}
         onChangeText={setCurrentUser}
         titleStyle={styles.titleSearch}
-        inputStyle={{ placeholderTextColor: Colors.white }}
       />
       <Pressable
         style={styles.addButton}

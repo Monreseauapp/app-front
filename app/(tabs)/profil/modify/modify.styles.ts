@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 
 const webStyles = StyleSheet.create({
   inputsContainer: {
-    width: width >= 768 ? "50%" : "90%",
+    width: width >= 800 ? "50%" : "90%",
     flexDirection: "column",
     alignSelf: "center",
   },

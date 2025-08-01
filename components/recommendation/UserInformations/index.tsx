@@ -52,7 +52,6 @@ export default function UserInformations({
                 inputStyle={{
                   ...styles.input,
                   color: Colors.white,
-                  placeholderTextColor: Colors.white,
                 }}
                 value={userName}
                 onChangeText={(text) => {
@@ -97,10 +96,7 @@ export default function UserInformations({
           placeholder="Développement d'une application mobile"
           type="off"
           titleStyle={styles.inputTitle}
-          inputStyle={{
-            ...styles.input,
-            placeholderTextColor: Colors.grey,
-          }}
+          inputStyle={styles.input}
           value={project.name}
           onChangeText={(text) => handleChange("name", text || "")}
           valid={isDataValid}

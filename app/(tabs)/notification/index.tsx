@@ -3,9 +3,7 @@ import useNotificationFetch from "@/hooks/useNotificationFetch";
 import useNotificationTransform from "@/hooks/useNotificationTransform";
 import { Dimensions, Platform, ScrollView, Text, View } from "react-native";
 import { styles, webStyles } from "./notification.styles";
-
 // AJOUTER UNE DIFFERENCE ENTRE READ ET UNREAD
-
 export default function Notification() {
   const MONTHS: Record<number, string> = {
     1: "janvier",
@@ -22,7 +20,7 @@ export default function Notification() {
     12: "décembre",
   };
   const { notificationsByDate } = useNotificationTransform(
-    useNotificationFetch()
+    useNotificationFetch(),
   );
   const date = new Date();
   const formattedDate = `${date.getDate()} ${

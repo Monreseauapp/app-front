@@ -49,7 +49,6 @@ export default function CompanyInformations({
               inputStyle={{
                 ...styles.input,
                 color: Colors.white,
-                placeholderTextColor: Colors.white,
               }}
               value={companyName}
               onChangeText={(text) => {

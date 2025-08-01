@@ -1,4 +1,3 @@
-import { Colors } from "@/constants/Colors";
 import { Recommandation } from "@/types";
 import { Platform, View } from "react-native";
 import Input from "../../../form/Input";
@@ -30,10 +29,7 @@ export default function PersonalInformations({
           type={Platform.OS === "android" ? "name-family" : "family-name"}
           sameLine={2}
           titleStyle={styles.inputTitle}
-          inputStyle={{
-            ...styles.input,
-            placeholderTextColor: Colors.grey,
-          }}
+          inputStyle={styles.input}
           value={recommandation.firstName}
           onChangeText={(text: string) => handleChange("firstName", text)}
           valid={isDataValid}
@@ -46,7 +42,6 @@ export default function PersonalInformations({
           titleStyle={styles.inputTitle}
           inputStyle={{
             ...styles.input,
-            placeholderTextColor: Colors.grey,
             alignSelf: "flex-end",
           }}
           value={recommandation.lastName}
@@ -59,10 +54,7 @@ export default function PersonalInformations({
         placeholder="+33 6 12 34 56 78"
         type={Platform.OS === "android" ? "tel-national" : "tel"}
         titleStyle={styles.inputTitle}
-        inputStyle={{
-          ...styles.input,
-          placeholderTextColor: Colors.grey,
-        }}
+        inputStyle={styles.input}
         value={recommandation.phone}
         onChangeText={(text: string) => handleChange("phone", text)}
         valid={isDataValid}
@@ -72,10 +64,7 @@ export default function PersonalInformations({
         placeholder="exemple@gmail.com"
         type="email"
         titleStyle={styles.inputTitle}
-        inputStyle={{
-          ...styles.input,
-          placeholderTextColor: Colors.grey,
-        }}
+        inputStyle={styles.input}
         value={recommandation.email}
         onChangeText={(text: string) => handleChange("email", text)}
         valid={isDataValid}

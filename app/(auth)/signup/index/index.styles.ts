@@ -54,9 +54,6 @@ const webStyles = StyleSheet.create({
   logo: {
     width: width >= 1024 ? 480 : width >= 600 ? 320 : 240,
     height: width >= 1024 ? 150 : width >= 600 ? 100 : 75,
-    position: width >= 600 ? "absolute" : "relative",
-    top: width >= 600 ? 70 : 25,
-    marginBottom: width >= 600 ? 60 : 0,
   },
   title: {
     fontSize: width > 768 ? 30 : 24,

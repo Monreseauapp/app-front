@@ -2,20 +2,20 @@ import Navigation from "@/components/signup/Navigation";
 import Page1 from "@/components/signup/pages/Page1";
 import Page2 from "@/components/signup/pages/Page2";
 import Page3 from "@/components/signup/pages/Page3";
-import Page4 from "@/components/signup/pages/Page4";
-import Page5 from "@/components/signup/pages/Page5";
-import Page6 from "@/components/signup/pages/Page6";
-import Page7 from "@/components/signup/pages/Page7";
 import TwoFA from "@/components/signup/TwoFA";
 import { Colors } from "@/constants/Colors";
 import { initialCompany } from "@/constants/initial-types-value/initialCompany";
+import { initialCompanyProfil } from "@/constants/initial-types-value/initialCompanyProfil";
 import { initialUser } from "@/constants/initial-types-value/initialUser";
-import { Company, SubscriptionType, User } from "@/types";
-import { useLocalSearchParams } from "expo-router";
-import { useRef, useState } from "react";
+import { Company, CompanyProfile, SubscriptionType, User } from "@/types";
+import {
+  RelativePathString,
+  useLocalSearchParams,
+  useRouter,
+} from "expo-router";
+import { useEffect, useState } from "react";
 import {
   Dimensions,
-  FlatList,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -27,69 +27,66 @@ import {
   View,
 } from "react-native";
 import { styles, webStyles } from "./form.styles";
-
 export interface createUserResponse {
   message: string;
   id: string;
   qrCode: Base64URLString;
   secret: string;
 }
-
 const { width } = Dimensions.get("window");
-
 export default function FormSignUp() {
   const { type } = useLocalSearchParams<{ type: "company" | "guest" }>();
-  const flatListRef = useRef<FlatList>(null);
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
   const [user, setUser] = useState<User>(initialUser);
-
   const [company, setCompany] = useState<Company>(initialCompany);
-
+  const [companyProfile, setCompanyProfile] =
+    useState<CompanyProfile>(initialCompanyProfil);
   const [subscriptionType, setSubscriptionType] = useState<
     SubscriptionType | undefined
   >(undefined);
   const [isDataValid, setIsDataValid] = useState<boolean | null>(null);
   const [response, setResponse] = useState<createUserResponse | undefined>(
-    undefined
+    undefined,
   );
-
+  const [mounted, setMounted] = useState(false);
+  const [pageHeight, setPageHeight] = useState<number | undefined>(undefined);
   const subscriptionTypesTranslation: Record<string, SubscriptionType> = {
     "Indépendant (0 salariés)": SubscriptionType.Indep,
     "TPE (entre 1 et 19 salariés)": SubscriptionType.VSB,
     "PME (entre 20 et 49 salariés)": SubscriptionType.SMB,
   };
-
   const resetForm = () => {
     setUser(initialUser);
     setCompany(initialCompany);
+    setCompanyProfile(initialCompanyProfil);
     setSubscriptionType(undefined);
     setIsDataValid(null);
   };
-
   const scrollToPage = (index: number) => {
-    if (flatListRef.current) {
-      flatListRef.current.scrollToIndex({
-        index,
-        animated: true,
-      });
-      setCurrentPage(index);
-    }
+    setCurrentPage(index);
   };
-
   const handleChangeUser = (key: keyof User, value: any) => {
     setUser((prevUser) => ({
       ...prevUser,
       [key]: value,
     }));
   };
-
   const handleChangeCompany = (key: keyof Company, value: any) => {
     setCompany((prevCompany) => ({
       ...prevCompany,
       [key]: value,
     }));
   };
-
+  const handleChangeCompanyProfile = (
+    key: keyof CompanyProfile,
+    value: any,
+  ) => {
+    setCompanyProfile((prevProfile) => ({
+      ...prevProfile,
+      [key]: value,
+    }));
+  };
   const allPages = [
     {
       key: "page1",
@@ -97,6 +94,7 @@ export default function FormSignUp() {
         <Page1
           user={user}
           handleChangeUser={handleChangeUser}
+          handleChangeCompany={handleChangeCompany}
           scrollToPage={scrollToPage}
           isDataValid={isDataValid}
         />
@@ -109,8 +107,14 @@ export default function FormSignUp() {
           type={type}
           user={user}
           company={company}
+          subscriptionType={subscriptionType}
+          subscriptionTypesTranslation={subscriptionTypesTranslation}
           handleChangeUser={handleChangeUser}
           handleChangeCompany={handleChangeCompany}
+          resetForm={resetForm}
+          setResponse={setResponse}
+          setIsDataValid={setIsDataValid}
+          setSubscriptionType={setSubscriptionType}
           isDataValid={isDataValid}
         />
       ),
@@ -121,67 +125,25 @@ export default function FormSignUp() {
         <Page3
           type={type}
           user={user}
-          handleChangeUser={handleChangeUser}
-          isDataValid={isDataValid}
-          resetForm={resetForm}
-          setIsDataValid={setIsDataValid}
-          setResponse={setResponse}
-        />
-      ),
-    },
-    {
-      key: "page4",
-      content: (index: number) => (
-        <Page4
-          company={company}
-          handleChangeCompany={handleChangeCompany}
-          handleChangeUser={handleChangeUser}
-          isDataValid={isDataValid}
-        />
-      ),
-    },
-    {
-      key: "page5",
-      content: (index: number) => (
-        <Page5
-          subscriptionType={subscriptionType}
-          setSubscriptionType={setSubscriptionType}
-          subscriptionTypesTranslation={subscriptionTypesTranslation}
-          isDataValid={isDataValid}
-        />
-      ),
-    },
-    {
-      key: "page6",
-      content: (index: number) => <Page6 isDataValid={isDataValid} />,
-    },
-    {
-      key: "page7",
-      content: (index: number) => (
-        <Page7
-          user={user}
+          companyProfile={companyProfile}
           company={company}
           subscriptionType={subscriptionType}
-          setIsDataValid={setIsDataValid}
+          handleChangeCompanyProfile={handleChangeCompanyProfile}
           isDataValid={isDataValid}
+          setIsDataValid={setIsDataValid}
           setResponse={setResponse}
         />
       ),
     },
   ];
-
-  const pages =
-    type === "guest"
-      ? allPages.filter(
-          (page) =>
-            page.key !== "page2" &&
-            page.key !== "page4" &&
-            page.key !== "page5" &&
-            page.key !== "page6" &&
-            page.key !== "page7"
-        )
-      : allPages;
-
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  useEffect(() => {
+    if (mounted && (!type || (type !== "company" && type !== "guest"))) {
+      router.replace("/" as RelativePathString);
+    }
+  }, [mounted, router, type]);
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -202,6 +164,7 @@ export default function FormSignUp() {
         >
           {response && (
             <TwoFA
+              type={type}
               qrCode={response.qrCode}
               secret={response.secret}
               email={company.email}
@@ -238,48 +201,31 @@ export default function FormSignUp() {
             </Text>
           )}
           <View
-            style={
+            style={[
               Platform.OS === "web"
                 ? webStyles.formContainer
-                : styles.formContainer
-            }
+                : styles.formContainer,
+              {
+                height: pageHeight,
+              },
+            ]}
           >
-            <FlatList
-              ref={flatListRef}
-              horizontal
-              snapToInterval={width}
-              decelerationRate="fast"
-              showsHorizontalScrollIndicator={false}
-              data={pages}
-              keyExtractor={(item) => item.key}
-              renderItem={({ item, index }) => (
-                <View
-                  style={{
-                    flex: Platform.OS === "web" ? 1 : undefined,
-                    width:
-                      Platform.OS === "web"
-                        ? width * (width >= 600 ? 0.55 : 0.9)
-                        : width,
-                  }}
-                >
-                  {item.content(index)}
-                </View>
-              )}
-              contentContainerStyle={{
-                alignItems: "center",
+            <View
+              onLayout={(event) =>
+                setPageHeight(event.nativeEvent.layout.height)
+              }
+              style={{
                 width:
                   Platform.OS === "web"
-                    ? width * (width >= 600 ? 0.55 : 0.9)
-                    : undefined,
+                    ? width * (width >= 800 ? 0.55 : 0.9)
+                    : width,
               }}
-              scrollEnabled={false}
-              initialScrollIndex={currentPage}
-              extraData={currentPage}
-            />
-
+            >
+              {allPages[currentPage].content(currentPage)}
+            </View>
             <Navigation
               currentPage={currentPage}
-              pages={pages}
+              pages={allPages}
               type={type}
               scrollToPage={scrollToPage}
             />

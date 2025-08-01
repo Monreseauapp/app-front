@@ -2,8 +2,8 @@ import Input from "@/components/form/Input";
 import { AppContext } from "@/context/context";
 import axios from "axios";
 import { RelativePathString } from "expo-router";
-import { useLocalSearchParams, useRouter } from "expo-router/build/hooks";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { useRouter } from "expo-router/build/hooks";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -16,25 +16,27 @@ import {
   View,
 } from "react-native";
 import { styles, webStyles } from "./doubleAuth.styles";
-
 export default function DoubleAuth() {
   const { API_URL, setToken, token, userId } = useContext(AppContext);
   const router = useRouter();
-  const { email } = useLocalSearchParams();
+  const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [error, setError] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const inputRef = useRef<TextInput>(null);
   const CODE_LENGTH = 6;
-
   const login = () => {
     setError(false);
+    const tempToken = localStorage.getItem("temp_token");
     const isConnected = axios
-      .post(`${API_URL}/auth/2fa`, { email, passcode: code })
+      .post(`${API_URL}/auth/2fa`, { email, passcode: code, tempToken })
       .then((response) => {
         const token = response.data.access_token;
         const expires = response.data.expires_in;
         if (token) {
-          setToken(token, expires);
+          setToken && setToken(token, expires);
+          localStorage.removeItem("temp_token");
+          localStorage.removeItem("expires_in");
         }
         return true;
       })
@@ -45,13 +47,41 @@ export default function DoubleAuth() {
       });
     return isConnected;
   };
-
   useEffect(() => {
-    if (token && userId) {
+    setMounted(true);
+  }, []);
+  useEffect(() => {
+    if (!mounted) return;
+    const tempToken = localStorage.getItem("temp_token");
+    const expiresIn = localStorage.getItem("expires_in");
+    if (!tempToken || Date.now() > parseInt(expiresIn || "0")) {
+      localStorage.removeItem("temp_token");
+      localStorage.removeItem("expires_in");
+      router.replace("/signin" as RelativePathString);
+      return;
+    }
+    axios
+      .post(`${API_URL}/auth/verify-temp-token`, { token: tempToken })
+      .then((response) => {
+        setEmail(response.data.email);
+        if (!response.data.authorized) {
+          localStorage.removeItem("temp_token");
+          localStorage.removeItem("expires_in");
+          router.replace("/signin" as RelativePathString);
+        }
+      })
+      .catch((error) => {
+        console.error("2FA login with temp token failed:", error);
+        localStorage.removeItem("temp_token");
+        localStorage.removeItem("expires_in");
+        router.replace("/signin" as RelativePathString);
+      });
+  }, [API_URL, mounted, router]);
+  useEffect(() => {
+    if (mounted && token && userId) {
       router.replace("/(tabs)/home" as unknown as RelativePathString);
     }
-  }, [token, userId, router]);
-
+  }, [mounted, token, userId, router]);
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}

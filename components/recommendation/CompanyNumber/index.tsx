@@ -48,7 +48,6 @@ export default function CompanyNumber({
               inputStyle={{
                 ...styles.input,
                 color: Colors.black,
-                placeholderTextColor: Colors.white,
               }}
               value={project.companyNumber?.toString()}
               onChangeText={(text) =>
