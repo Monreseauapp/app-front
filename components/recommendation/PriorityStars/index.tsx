@@ -10,6 +10,7 @@ export default function PriorityStars({
   starId: number;
   setStarId: (value: number) => void;
 }) {
+  console.log(starId);
   return (
     <View
       style={{

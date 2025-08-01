@@ -23,7 +23,7 @@ export default function MyRecommendations() {
   const [completeSent, setCompleteSent] = useState<CompleteProject[]>([]);
   const [page, setPage] = useState<string>("sent");
   const currentList = page === "sent" ? completeSent : completeReceived;
-
+  
   const fetchCompleteProjects = async (projects: Project[]) => {
     const completeProjects: CompleteProject[] = await Promise.all(
       projects.map(async (proj) => {
