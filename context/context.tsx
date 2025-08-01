@@ -51,7 +51,6 @@ function Context({ children }: { children: React.ReactNode }) {
         axios
           .post(`${API_URL}/auth/verify-token`, { token: storedToken })
           .then((response) => {
-            console.log("Token verified:", response.data);
             setUserId(response.data.id);
             setCompanyId(response.data.companyId);
             setToken(storedToken);

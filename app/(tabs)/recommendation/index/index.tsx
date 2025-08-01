@@ -19,6 +19,7 @@ export default function RecommendationChoice() {
             default: styles.button,
           })}
           href="/recommendation/form?type=company"
+          testID="recommendation-company-button"
         >
           <Text
             style={Platform.select({
@@ -35,6 +36,7 @@ export default function RecommendationChoice() {
             default: styles.button,
           })}
           href="/recommendation/form?type=lead"
+          testID="recommendation-lead-button"
         >
           <Text
             style={Platform.select({
@@ -51,6 +53,7 @@ export default function RecommendationChoice() {
             default: styles.button,
           })}
           href="/recommendation/form?type=project"
+          testID="recommendation-project-button"
         >
           <Text
             style={Platform.select({
