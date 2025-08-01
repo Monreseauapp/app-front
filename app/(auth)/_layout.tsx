@@ -59,7 +59,7 @@ export default function AuthLayout() {
       hasAgreedToTerms,
       isLoading,
       refetch,
-    ])
+    ]),
   );
   return (
     <Stack screenOptions={{ headerShown: false, gestureEnabled: true }}>

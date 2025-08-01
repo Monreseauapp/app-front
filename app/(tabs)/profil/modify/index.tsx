@@ -35,7 +35,7 @@ export default function ModifyProfile() {
   const handleChange = (
     type: "user" | "company",
     key: keyof User | keyof Company,
-    value: string | number | boolean | undefined
+    value: string | number | boolean | undefined,
   ) => {
     if (key !== "addressComplement") {
       if (type === "company") {
@@ -169,7 +169,7 @@ export default function ModifyProfile() {
                         isCompanyPage
                           ? "OpentoReco"
                           : "allowRecommendationDataAccess",
-                        value
+                        value,
                       )
                     }
                     width={35}
@@ -196,7 +196,7 @@ export default function ModifyProfile() {
                     handleChange(
                       isCompanyPage ? "company" : "user",
                       field,
-                      value
+                      value,
                     )
                   }
                 />

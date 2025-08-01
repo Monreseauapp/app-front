@@ -47,7 +47,7 @@ export default function FormSignUp() {
   >(undefined);
   const [isDataValid, setIsDataValid] = useState<boolean | null>(null);
   const [response, setResponse] = useState<createUserResponse | undefined>(
-    undefined
+    undefined,
   );
   const [mounted, setMounted] = useState(false);
   const [pageHeight, setPageHeight] = useState<number | undefined>(undefined);
@@ -80,7 +80,7 @@ export default function FormSignUp() {
   };
   const handleChangeCompanyProfile = (
     key: keyof CompanyProfile,
-    value: any
+    value: any,
   ) => {
     setCompanyProfile((prevProfile) => ({
       ...prevProfile,

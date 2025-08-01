@@ -25,7 +25,7 @@ import {
 } from "react-native";
 import { styles, webStyles } from "./subscription.styles";
 const stripePromise = loadStripe(
-  process.env.EXPO_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY || ""
+  process.env.EXPO_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY || "",
 );
 export default function SubscriptionPage() {
   const { email, success, redirect } = useLocalSearchParams();
@@ -40,7 +40,7 @@ export default function SubscriptionPage() {
     [SubscriptionType.SMB]: "monthly_pme",
   };
   const [subscription, setSubscription] = useState<Subscription | undefined>(
-    undefined
+    undefined,
   );
   const redirectUrl = decodeURIComponent((redirect as string) || "");
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function SubscriptionPage() {
         .then((response) => response.data)
         .catch(() => {
           setError(
-            "L'utilisateur n'existe pas. Veuillez vous inscrire avant de souscrire."
+            "L'utilisateur n'existe pas. Veuillez vous inscrire avant de souscrire.",
           );
         });
       if (company && company.subscriptionId) {
@@ -59,13 +59,13 @@ export default function SubscriptionPage() {
           .then((response) => response.data)
           .catch(() => {
             setError(
-              "L'utilisateur n'existe pas. Veuillez vous inscrire avant de souscrire."
+              "L'utilisateur n'existe pas. Veuillez vous inscrire avant de souscrire.",
             );
           });
         setSubscription(subscriptionData);
       } else {
         setError(
-          "L'utilisateur n'existe pas. Veuillez vous inscrire avant de souscrire."
+          "L'utilisateur n'existe pas. Veuillez vous inscrire avant de souscrire.",
         );
       }
     };
@@ -79,7 +79,7 @@ export default function SubscriptionPage() {
       };
       const findSubscription = async (customerId: string) => {
         const response = await axios.get(
-          `${API_URL}/stripe/subscription/customer/${customerId}`
+          `${API_URL}/stripe/subscription/customer/${customerId}`,
         );
         return response.data;
       };
@@ -95,7 +95,7 @@ export default function SubscriptionPage() {
             await axios.patch(`${API_URL}/subscription/${subscription.id}`, {
               state: SubscriptionState.ACTIVE,
               startDate: new Date(
-                stripeSubscription.start_date * 1000
+                stripeSubscription.start_date * 1000,
               ).toISOString(),
               endDate: stripeSubscription.ended_at
                 ? new Date(stripeSubscription.ended_at * 1000).toISOString()
@@ -111,7 +111,7 @@ export default function SubscriptionPage() {
           ) {
             setSecret(
               stripeSubscription.latest_invoice.confirmation_secret
-                .client_secret
+                .client_secret,
             );
             return;
           }
@@ -142,7 +142,7 @@ export default function SubscriptionPage() {
             });
           } else {
             setError(
-              "L'utilisateur n'existe pas. Veuillez vous inscrire avant de souscrire."
+              "L'utilisateur n'existe pas. Veuillez vous inscrire avant de souscrire.",
             );
           }
           const stripeSubscription = await axios
@@ -156,7 +156,7 @@ export default function SubscriptionPage() {
               setError("Essayer de recharger la page.");
             });
           setSecret(
-            stripeSubscription.latest_invoice.confirmation_secret.client_secret
+            stripeSubscription.latest_invoice.confirmation_secret.client_secret,
           );
         } catch {
           setError("Essayer de recharger la page.");
@@ -167,7 +167,7 @@ export default function SubscriptionPage() {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [subscription, email, API_URL, pathname, router]
+    [subscription, email, API_URL, pathname, router],
   );
   if (!email && !success) {
     return (
@@ -218,7 +218,7 @@ export default function SubscriptionPage() {
                   redirectUrl
                     ? (redirectUrl.toString() as RelativePathString)
                     : (("/legal/legalNotice?email=" +
-                        email) as RelativePathString)
+                        email) as RelativePathString),
                 );
               }}
               style={styles.button}

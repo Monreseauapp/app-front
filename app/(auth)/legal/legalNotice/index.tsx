@@ -44,7 +44,7 @@ export default function LegalNotice() {
         .then((response) => response.data)
         .catch(() => {
           setError(
-            "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau."
+            "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau.",
           );
         });
       setCompany(company);
@@ -136,11 +136,11 @@ export default function LegalNotice() {
               router.push(
                 redirect
                   ? (redirect.toString() as RelativePathString)
-                  : ("/signin" as RelativePathString)
+                  : ("/signin" as RelativePathString),
               );
             } else if (agreedToTerms) {
               setError(
-                "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau."
+                "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau.",
               );
             }
           }}

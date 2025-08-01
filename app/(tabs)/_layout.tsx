@@ -69,17 +69,17 @@ export default function TabLayout() {
         const company: Company = await fetchCompany();
         if (!hasActiveSubscription) {
           router.replace(
-            `/payment/subscription?email=${company.email}&redirect=${hasAgreedToTerms ? "/home" : encodeURIComponent(`/legal/legalNotice?email=${company.email}&redirect=/home`)}` as RelativePathString
+            `/payment/subscription?email=${company.email}&redirect=${hasAgreedToTerms ? "/home" : encodeURIComponent(`/legal/legalNotice?email=${company.email}&redirect=/home`)}` as RelativePathString,
           );
         } else if (!hasAgreedToTerms) {
           router.replace(
-            `/legal/legalNotice?redirect=/home&email=${company.email}` as RelativePathString
+            `/legal/legalNotice?redirect=/home&email=${company.email}` as RelativePathString,
           );
         }
       } else if (!isLoading && userId && hasAgreedToTerms !== null) {
         if (!hasAgreedToTerms) {
           router.replace(
-            `/legal/legalNotice?redirect=/home` as RelativePathString
+            `/legal/legalNotice?redirect=/home` as RelativePathString,
           );
         }
       }

@@ -18,7 +18,7 @@ export default function MyRecommendations() {
   const [updated, setUpdated] = useState<boolean>(false);
   const { projectsReceived, projectsSent } = useProjectFetch(updated);
   const [completeReceived, setCompleteReceived] = useState<CompleteProject[]>(
-    []
+    [],
   );
   const [completeSent, setCompleteSent] = useState<CompleteProject[]>([]);
   const [page, setPage] = useState<string>("sent");
@@ -42,7 +42,7 @@ export default function MyRecommendations() {
           initiator: initiator,
           company: company,
         };
-      })
+      }),
     );
     return completeProjects;
   };

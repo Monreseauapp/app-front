@@ -20,7 +20,7 @@ export default function Notification() {
     12: "décembre",
   };
   const { notificationsByDate } = useNotificationTransform(
-    useNotificationFetch()
+    useNotificationFetch(),
   );
   const date = new Date();
   const formattedDate = `${date.getDate()} ${
