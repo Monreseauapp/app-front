@@ -21,8 +21,8 @@ export default function SignIn() {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.\/?]{8,}$/;
   const { API_URL } = useContext(AppContext);
   const router = useRouter();
-  const [email, setEmail] = useState("test@test.com");
-  const [password, setPassword] = useState("Test123/");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string>("");
   const login = () => {
     setError("");
@@ -35,9 +35,7 @@ export default function SignIn() {
         localStorage.setItem("temp_token", response.data.temp_token);
         localStorage.setItem(
           "expires_in",
-          String(
-            Date.now() + parseInt(String(response.data.expires_in)) * 1000,
-          ),
+          String(Date.now() + parseInt(String(response.data.expires_in)) * 1000)
         );
         return true;
       })
@@ -117,7 +115,7 @@ export default function SignIn() {
                 <Text
                   onPress={() => {
                     alert(
-                      "Mot de passe oublié ? Veuillez suivre les instructions pour réinitialiser votre mot de passe.",
+                      "Mot de passe oublié ? Veuillez suivre les instructions pour réinitialiser votre mot de passe."
                     );
                   }}
                   style={Platform.select({

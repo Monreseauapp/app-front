@@ -87,7 +87,7 @@ export default function RecommendationForm() {
   };
   const handleChange = (
     key: keyof Recommandation | keyof Project,
-    value: any,
+    value: any
   ) => {
     if (type === "project") {
       setProject((prev) => ({ ...prev, [key]: value }));

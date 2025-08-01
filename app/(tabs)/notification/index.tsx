@@ -4,7 +4,7 @@ import useNotificationTransform from "@/hooks/useNotificationTransform";
 import { Dimensions, Platform, ScrollView, Text, View } from "react-native";
 import { styles, webStyles } from "./notification.styles";
 // AJOUTER UNE DIFFERENCE ENTRE READ ET UNREAD
-export default function Notification() {
+export default function NotificationPage() {
   const MONTHS: Record<number, string> = {
     1: "janvier",
     2: "février",
@@ -20,7 +20,7 @@ export default function Notification() {
     12: "décembre",
   };
   const { notificationsByDate } = useNotificationTransform(
-    useNotificationFetch(),
+    useNotificationFetch()
   );
   const date = new Date();
   const formattedDate = `${date.getDate()} ${
@@ -54,6 +54,7 @@ export default function Notification() {
             <View
               style={styles.notificationContainer}
               key={date + index.toString()}
+              testID="notification-date-container"
             >
               <Text style={styles.notificationTitle}>
                 {formattedDate === date ? "Aujourd'hui" : date}
@@ -69,7 +70,10 @@ export default function Notification() {
                           : styles.notification
                       }
                     >
-                      <Text style={styles.notificationText}>
+                      <Text
+                        style={styles.notificationText}
+                        testID="notification-item"
+                      >
                         {notification}
                       </Text>
                     </View>

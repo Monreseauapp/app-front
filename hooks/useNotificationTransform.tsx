@@ -61,7 +61,11 @@ export default function useNotificationTransform<T extends NotificationData>(
         item.createdAt === item.updatedAt
           ? "Vous avez reçu une recommandation."
           : "Une recommandation que vous avez reçue a été mise à jour !";
-    } else if ("companyId" in item && item.companyId === companyId) {
+    } else if (
+      "RecoStateCompany" in item &&
+      "companyId" in item &&
+      item.companyId === companyId
+    ) {
       text =
         item.createdAt === item.updatedAt
           ? "Votre entreprise a reçu une recommandation."
@@ -71,7 +75,11 @@ export default function useNotificationTransform<T extends NotificationData>(
         item.createdAt === item.updatedAt
           ? "Vous avez initié un projet."
           : "Un projet que vous avez initié a été mis à jour !";
-    } else if ("companyId" in item && item.companyId === companyId) {
+    } else if (
+      "isPublic" in item &&
+      "companyId" in item &&
+      item.companyId === companyId
+    ) {
       text =
         item.createdAt === item.updatedAt
           ? "Votre entreprise a reçu un projet."

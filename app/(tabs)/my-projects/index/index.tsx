@@ -18,10 +18,12 @@ export default function MyRecommendations() {
   const [updated, setUpdated] = useState<boolean>(false);
   const { projectsReceived, projectsSent } = useProjectFetch(updated);
   const [completeReceived, setCompleteReceived] = useState<CompleteProject[]>(
-    [],
+    []
   );
   const [completeSent, setCompleteSent] = useState<CompleteProject[]>([]);
   const [page, setPage] = useState<string>("sent");
+  const currentList = page === "sent" ? completeSent : completeReceived;
+
   const fetchCompleteProjects = async (projects: Project[]) => {
     const completeProjects: CompleteProject[] = await Promise.all(
       projects.map(async (proj) => {
@@ -42,7 +44,7 @@ export default function MyRecommendations() {
           initiator: initiator,
           company: company,
         };
-      }),
+      })
     );
     return completeProjects;
   };
@@ -93,8 +95,8 @@ export default function MyRecommendations() {
           gap: 20,
         }}
       >
-        {(page === "sent" ? completeSent : completeReceived).length > 0 ? (
-          (page === "sent" ? completeSent : completeReceived).map((proj) => (
+        {currentList && currentList.length > 0 ? (
+          currentList.map((proj) => (
             <ProjectView
               key={page + proj.project.id}
               {...proj}
