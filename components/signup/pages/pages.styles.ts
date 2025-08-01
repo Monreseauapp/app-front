@@ -7,7 +7,8 @@ const styles = StyleSheet.create({
   formPage: {
     width: "100%",
     paddingHorizontal: 32,
-    paddingVertical: 48,
+    paddingTop: 48,
+    paddingBottom: 48,
     alignItems: "center",
   },
   title: {
@@ -62,7 +63,8 @@ const webStyles = StyleSheet.create({
   formPage: {
     width: "100%",
     paddingHorizontal: width >= 768 ? 32 : 16,
-    paddingVertical: width >= 768 ? 48 : 24,
+    paddingTop: width >= 768 ? 48 : 24,
+    paddingBottom: 48,
     alignItems: "center",
   },
   title: {

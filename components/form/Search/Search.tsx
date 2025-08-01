@@ -1,5 +1,6 @@
 import { Colors } from "@/constants/Colors";
 import { useEffect, useState } from "react";
+
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import styles from "./Search.styles";
 
@@ -37,10 +38,6 @@ export default function Search({
   valid = undefined,
   zIndex = 0,
 }: InputProps) {
-  const { placeholderTextColor }: any = inputStyle || {};
-  if (placeholderTextColor) {
-    inputStyle = { ...inputStyle, placeholderTextColor };
-  }
   const [isFocused, setIsFocused] = useState(false);
   const [filteredList, setFilteredList] = useState<string[]>(list);
 
@@ -55,37 +52,15 @@ export default function Search({
   return (
     <View
       style={{
-        width: "100%",
-        marginBottom: 20,
-        position: "relative",
-        overflow: "visible",
+        ...styles.container,
         zIndex: 10 + zIndex,
       }}
     >
-      <Text
-        style={{
-          fontSize: 20,
-          fontWeight: "bold",
-          paddingBottom: 10,
-          paddingLeft: 16,
-          color: Colors.white,
-          ...titleStyle,
-        }}
-      >
+      <Text style={[styles.title, titleStyle]}>
         {name}{" "}
         {valid !== undefined && <Text style={{ color: Colors.red }}>*</Text>}
         {valid === false && !value && (
-          <Text
-            style={{
-              color: Colors.red,
-              paddingLeft: 16,
-              fontSize: 14,
-              fontWeight: "bold",
-              marginTop: -5,
-            }}
-          >
-            (ce champ est requis)
-          </Text>
+          <Text style={styles.required}>(ce champ est requis)</Text>
         )}
       </Text>
       <TextInput
@@ -99,22 +74,11 @@ export default function Search({
         }}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setTimeout(() => setIsFocused(false), 150)}
-        placeholderTextColor={placeholderTextColor || Colors.violet}
+        placeholderTextColor={Colors.grey}
         placeholder={placeholder}
         ref={inputRef}
         returnKeyType="search"
-        style={{
-          width: "100%",
-          height: 50,
-          backgroundColor: Colors.violet,
-          color: Colors.white,
-          borderRadius: 50,
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-          fontSize: 16,
-          fontWeight: "bold",
-          ...inputStyle,
-        }}
+        style={[styles.input, { outline: isFocused && "auto" }, inputStyle]}
         value={value}
       />
 
@@ -131,11 +95,7 @@ export default function Search({
             >
               <Text
                 style={{
-                  color: Colors.black,
-                  fontSize: 16,
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
-                  borderBottomColor: Colors.violet,
+                  ...styles.item,
                   borderBottomWidth: index !== list.length - 1 ? 1 : 0,
                 }}
               >

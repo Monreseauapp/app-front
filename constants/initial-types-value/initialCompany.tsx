@@ -3,5 +3,8 @@ export const initialCompany = {
   city: "",
   email: "",
   phone: "",
+  SIRET: "",
+  SIREN: "",
+  domainId: "",
   OpentoReco: false,
 };

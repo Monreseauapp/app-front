@@ -7,11 +7,10 @@ import {
   Text,
   View,
 } from "react-native";
-import { styles, webStyles } from "./index.styles";
 
+import { styles, webStyles } from "./index.styles";
 export default function Index() {
   const router = useRouter();
-
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />

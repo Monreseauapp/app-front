@@ -8,23 +8,20 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Platform, ScrollView, Text, View } from "react-native";
 import styles from "./index.styles";
-
 export interface CompleteProject {
   project: Project;
   initiator?: User;
   company?: Company;
 }
-
 export default function MyRecommendations() {
   const { API_URL, companyId } = useContext(AppContext);
   const [updated, setUpdated] = useState<boolean>(false);
   const { projectsReceived, projectsSent } = useProjectFetch(updated);
   const [completeReceived, setCompleteReceived] = useState<CompleteProject[]>(
-    []
+    [],
   );
   const [completeSent, setCompleteSent] = useState<CompleteProject[]>([]);
   const [page, setPage] = useState<string>("sent");
-
   const fetchCompleteProjects = async (projects: Project[]) => {
     const completeProjects: CompleteProject[] = await Promise.all(
       projects.map(async (proj) => {
@@ -45,11 +42,10 @@ export default function MyRecommendations() {
           initiator: initiator,
           company: company,
         };
-      })
+      }),
     );
     return completeProjects;
   };
-
   useEffect(() => {
     const setCompleteRecommendations = async () => {
       const completeReceived = await fetchCompleteProjects(projectsReceived);
@@ -62,7 +58,6 @@ export default function MyRecommendations() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectsReceived, projectsSent]);
-
   return (
     <View
       style={{

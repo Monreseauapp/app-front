@@ -14,7 +14,7 @@ import { AppContext } from "@/context/context";
 import { Company, User } from "@/types";
 import axios from "axios";
 import { useRouter } from "expo-router";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -26,18 +26,16 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { styles, webStyles } from "./modify.styles";
-
 export default function ModifyProfile() {
   const { API_URL, userId, companyId } = useContext(AppContext);
   const router = useRouter();
   const [isCompanyPage, setIsCompanyPage] = useState(false);
   const [user, setUser] = useState<User>(initialUser);
   const [company, setCompany] = useState<Company>(initialCompany);
-
   const handleChange = (
     type: "user" | "company",
     key: keyof User | keyof Company,
-    value: string | number | boolean | undefined
+    value: string | number | boolean | undefined,
   ) => {
     if (key !== "addressComplement") {
       if (type === "company") {
@@ -53,7 +51,6 @@ export default function ModifyProfile() {
       }
     }
   };
-
   useEffect(() => {
     if (!companyId) {
       const fetchUserData = async () => {
@@ -86,7 +83,6 @@ export default function ModifyProfile() {
       fetchCompanyData();
     }
   }, [companyId, userId, API_URL]);
-
   const updateData = async () => {
     axios.patch(`${API_URL}/users/${userId}`, { ...user }).catch((error) => {
       console.error("Error updating user:", error.request);
@@ -99,7 +95,6 @@ export default function ModifyProfile() {
         });
     }
   };
-
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, position: "relative" }}
@@ -127,7 +122,6 @@ export default function ModifyProfile() {
               }}
             />
           )}
-
           <KeyboardAwareScrollView
             style={styles.container}
             contentContainerStyle={{
@@ -175,7 +169,7 @@ export default function ModifyProfile() {
                         isCompanyPage
                           ? "OpentoReco"
                           : "allowRecommendationDataAccess",
-                        value
+                        value,
                       )
                     }
                     width={35}
@@ -195,7 +189,6 @@ export default function ModifyProfile() {
                   }}
                 />
               )}
-
               {!isCompanyPage && (
                 <JobInformations
                   user={user}
@@ -203,7 +196,7 @@ export default function ModifyProfile() {
                     handleChange(
                       isCompanyPage ? "company" : "user",
                       field,
-                      value
+                      value,
                     )
                   }
                 />
@@ -227,7 +220,6 @@ export default function ModifyProfile() {
                     }
                     inputStyle={{
                       ...styles.input,
-                      placeholderTextColor: Colors.grey,
                       height: 100,
                     }}
                     titleStyle={styles.inputTitle}

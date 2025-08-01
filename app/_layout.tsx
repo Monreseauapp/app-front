@@ -1,8 +1,7 @@
 import Context from "@/context/context";
-import { WindowDimensionsProvider } from "@/context/WindowDimensionsContext";
+import WindowDimensionsProvider from "@/context/WindowDimensionsContext";
 import { Stack } from "expo-router";
 import { StatusBar } from "react-native";
-
 export default function RootLayout() {
   return (
     <>
@@ -15,7 +14,6 @@ export default function RootLayout() {
             animated={true}
             translucent
           />
-
           <Stack
             screenOptions={{ headerShown: false, gestureEnabled: true }}
             initialRouteName="(auth)"

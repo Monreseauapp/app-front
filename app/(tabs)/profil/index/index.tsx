@@ -20,14 +20,12 @@ import {
   View,
 } from "react-native";
 import { styles, webStyles } from "./index.styles";
-
 export default function Profil() {
   const { width } = Dimensions.get("window");
   const { API_URL, userId, companyId } = useContext(AppContext);
   const [user, setUser] = useState<(User & { company: Company }) | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewers, setReviewers] = useState<User[]>([]);
-
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
@@ -58,13 +56,12 @@ export default function Profil() {
         }
       };
       fetchData();
-    }, [userId, companyId, API_URL])
+    }, [userId, companyId, API_URL]),
   );
-
   useEffect(() => {
     const fetchReviewers = async () => {
       const userPromises = reviews.map((review) =>
-        axios.get<User>(`${API_URL}/users/${review.userId}`)
+        axios.get<User>(`${API_URL}/users/${review.userId}`),
       );
       const responses = await Promise.all(userPromises);
       setReviewers(responses.map((res) => res.data));
@@ -73,7 +70,6 @@ export default function Profil() {
       fetchReviewers();
     }
   }, [reviews, API_URL]);
-
   return (
     <ScrollView
       style={{ backgroundColor: Colors.white }}
@@ -99,7 +95,7 @@ export default function Profil() {
               source={
                 user?.photoUrl
                   ? { uri: `${API_URL}/files/view/${user.photoUrl}` }
-                  : require("@/assets/images/profilepicture.jpg")
+                  : require("@/assets/images/default-user.jpg")
               }
               style={styles.profilePicture}
             />
@@ -148,137 +144,123 @@ export default function Profil() {
             <Text style={styles.buttonText}>Modifier mon profil</Text>
           </Link>
         </View>
-        <View
-          style={
-            Platform.OS === "web"
-              ? {
-                  width: width >= 768 ? "70%" : "100%",
-                  alignItems: "center",
-                }
-              : { width: "100%", alignItems: "center" }
-          }
-        >
+        {user?.company?.description && reviews.length > 0 && (
           <View
-            style={{ alignItems: "flex-start", marginBottom: 20, width: "90%" }}
+            style={
+              Platform.OS === "web"
+                ? {
+                    width: width >= 768 ? "70%" : "100%",
+                    alignItems: "center",
+                  }
+                : { width: "100%", alignItems: "center" }
+            }
           >
-            {user?.company?.description && (
-              <>
-                <Text style={styles.miniTitle}>Description</Text>
-                <Text style={styles.description}>
-                  {user.company.description}
-                </Text>
-              </>
-            )}
-            {/* <Text style={styles.miniTitle}>Mes certifications</Text>
-          <Text style={styles.description}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
-            officia, vero blanditiis, eaque tempore perferendis eligendi placeat
-            cupiditate commodi atque accusamus asperiores similique recusandae
-            vel inventore pariatur neque vitae? Magni!
-          </Text> */}
-          </View>
-          {/* <View style={styles.projectsContainer}>
-          <Text style={styles.miniTitle}>Supports et réalisations</Text>
-          <View style={styles.projects}>
-            <Image
-              source={require("@/assets/images/wordle.png")}
-              style={styles.image}
-            />
-            <Image
-              source={require("@/assets/images/sudokusolver.png")}
-              style={styles.image}
-            />
-          </View>
-        </View> */}
-          {reviews.length > 0 && (
-            <View style={{ alignItems: "flex-start", width: "90%" }}>
-              <View style={{ width: "100%" }}>
-                <Text style={{ ...styles.miniTitle, marginBottom: 10 }}>
-                  Mes avis ({reviews.length})
-                </Text>
+            <View
+              style={{
+                alignItems: "flex-start",
+                marginBottom: 20,
+                width: "90%",
+              }}
+            >
+              {user?.company?.description && (
+                <>
+                  <Text style={styles.miniTitle}>Description</Text>
+                  <Text style={styles.description}>
+                    {user.company.description}
+                  </Text>
+                </>
+              )}
+            </View>
+            {reviews.length > 0 && (
+              <View style={{ alignItems: "flex-start", width: "90%" }}>
                 <View style={{ width: "100%" }}>
-                  {reviews.map((review) => (
-                    <View key={review.id} style={styles.review}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "flex-start",
-                        }}
-                      >
-                        <Text style={styles.reviewer}>
-                          {(() => {
-                            const reviewer = reviewers.find(
-                              (user) => user.id === review.userId
-                            );
-                            return reviewer
-                              ? `${reviewer.firstName} ${reviewer.lastName}`
-                              : "Utilisateur inconnu";
-                          })()}
-                        </Text>
-                        {[...Array(5)].map((_, i) => (
-                          <StarIcon
-                            key={i}
-                            color={
-                              i < (review.rating || 0)
-                                ? Colors.white
-                                : Colors.black
-                                ? Colors.white
-                                : Colors.black
-                            }
-                            width={20}
-                            height={20}
-                            style={{ marginRight: 2 }}
-                          />
-                        ))}
+                  <Text style={{ ...styles.miniTitle, marginBottom: 10 }}>
+                    Mes avis ({reviews.length})
+                  </Text>
+                  <View style={{ width: "100%" }}>
+                    {reviews.map((review) => (
+                      <View key={review.id} style={styles.review}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "flex-start",
+                          }}
+                        >
+                          <Text style={styles.reviewer}>
+                            {(() => {
+                              const reviewer = reviewers.find(
+                                (user) => user.id === review.userId,
+                              );
+                              return reviewer
+                                ? `${reviewer.firstName} ${reviewer.lastName}`
+                                : "Utilisateur inconnu";
+                            })()}
+                          </Text>
+                          {[...Array(5)].map((_, i) => (
+                            <StarIcon
+                              key={i}
+                              color={
+                                i < (review.rating || 0)
+                                  ? Colors.white
+                                  : Colors.black
+                                    ? Colors.white
+                                    : Colors.black
+                              }
+                              width={20}
+                              height={20}
+                              style={{ marginRight: 2 }}
+                            />
+                          ))}
+                        </View>
+                        <Text style={styles.reviewText}>{review.comment}</Text>
                       </View>
-                      <Text style={styles.reviewText}>{review.comment}</Text>
-                    </View>
-                  ))}
+                    ))}
+                  </View>
                 </View>
-              </View>
-              <View
-                style={{
-                  alignItems: "flex-start",
-                  marginTop: 20,
-                  width: "100%",
-                  marginBottom: 80,
-                }}
-              >
-                <Text style={styles.miniTitle}>Ma note</Text>
                 <View
                   style={{
+                    alignItems: "flex-start",
+                    marginTop: 20,
                     width: "100%",
-                    flexDirection: "row",
-                    marginTop: 15,
-                    alignItems: "center",
-                    justifyContent: "center",
+                    marginBottom: 80,
                   }}
                 >
-                  {[...Array(5)].map((_, i) => (
-                    <StarIcon
-                      key={i}
-                      color={
-                        i <
-                        reviews.reduce(
-                          (acc, review) => acc + (review.rating || 0),
-                          0
-                        ) /
-                          reviews.length
-                          ? Colors.violet
-                          : Colors.black
-                          ? Colors.violet
-                          : Colors.black
-                      }
-                      width={40}
-                      height={40}
-                      style={{ marginRight: 5 }}
-                    />
-                  ))}
+                  <Text style={styles.miniTitle}>Ma note</Text>
+                  <View
+                    style={{
+                      width: "100%",
+                      flexDirection: "row",
+                      marginTop: 15,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {[...Array(5)].map((_, i) => (
+                      <StarIcon
+                        key={i}
+                        color={
+                          i <
+                          reviews.reduce(
+                            (acc, review) => acc + (review.rating || 0),
+                            0,
+                          ) /
+                            reviews.length
+                            ? Colors.violet
+                            : Colors.black
+                              ? Colors.violet
+                              : Colors.black
+                        }
+                        width={40}
+                        height={40}
+                        style={{ marginRight: 5 }}
+                      />
+                    ))}
+                  </View>
                 </View>
               </View>
-            </View>
-          )}
-        </View>
+            )}
+          </View>
+        )}
       </View>
     </ScrollView>
   );

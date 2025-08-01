@@ -24,10 +24,7 @@ export default function JobInformations({
         type="off"
         value={user.jobTitle ?? ""}
         onChangeText={(text) => handleChange("jobTitle", text)}
-        inputStyle={{
-          ...styles.input,
-          placeholderTextColor: Colors.grey,
-        }}
+        inputStyle={styles.input}
         titleStyle={styles.inputTitle}
       />
       <JobDomainSelect

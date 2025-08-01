@@ -21,7 +21,6 @@ interface AddressInputsProps<T extends AddressFields> {
   isDataValid?: boolean | null;
   titleColor?: string;
   inputColor?: string;
-  placeholderColor?: string;
 }
 
 export default function AddressInputs<T extends AddressFields>({
@@ -30,7 +29,6 @@ export default function AddressInputs<T extends AddressFields>({
   isDataValid = null,
   titleColor = Colors.black,
   inputColor = Colors.black,
-  placeholderColor = Colors.grey,
 }: AddressInputsProps<T>) {
   return (
     <View
@@ -49,7 +47,6 @@ export default function AddressInputs<T extends AddressFields>({
         titleStyle={{ color: titleColor }}
         inputStyle={{
           ...styles.input,
-          placeholderTextColor: placeholderColor,
           color: inputColor,
         }}
         value={data.address}
@@ -63,7 +60,6 @@ export default function AddressInputs<T extends AddressFields>({
         titleStyle={{ color: titleColor }}
         inputStyle={{
           ...styles.input,
-          placeholderTextColor: placeholderColor,
           alignSelf: "flex-end",
           color: inputColor,
         }}
@@ -78,7 +74,6 @@ export default function AddressInputs<T extends AddressFields>({
         titleStyle={{ color: titleColor }}
         inputStyle={{
           ...styles.input,
-          placeholderTextColor: placeholderColor,
           color: inputColor,
         }}
         value={data.city}
@@ -93,7 +88,6 @@ export default function AddressInputs<T extends AddressFields>({
         titleStyle={{ color: titleColor }}
         inputStyle={{
           ...styles.input,
-          placeholderTextColor: placeholderColor,
           alignSelf: "flex-end",
           color: inputColor,
         }}
@@ -112,7 +106,6 @@ export default function AddressInputs<T extends AddressFields>({
         titleStyle={{ color: titleColor }}
         inputStyle={{
           ...styles.input,
-          placeholderTextColor: placeholderColor,
           color: inputColor,
         }}
         value={data.country}

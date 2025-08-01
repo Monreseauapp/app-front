@@ -1,7 +1,7 @@
 import RightArrow from "@/assets/icons/right-arrow.svg";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
-import { Company, Recommandation, RecoState, User } from "@/types";
+import { Recommandation, RecoState } from "@/types";
 import { Link } from "expo-router";
 import { useContext } from "react";
 import { Text, View } from "react-native";
@@ -9,9 +9,29 @@ import styles from "./RelatedPeople.styles";
 
 interface RelatedPeopleProps {
   recommendation: Recommandation | undefined;
-  recipient: User | undefined;
-  initiator: User | undefined;
-  company: Company | undefined;
+  recipient:
+    | {
+        id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+      }
+    | undefined;
+  initiator:
+    | {
+        id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+      }
+    | undefined;
+  company:
+    | {
+        id: string;
+        name: string;
+        email: string;
+      }
+    | undefined;
   isCompanyReception: boolean;
 }
 

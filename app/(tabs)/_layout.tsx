@@ -24,9 +24,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-
 const { width } = Dimensions.get("window");
-
 export default function TabLayout() {
   const { isMenuOpen, setIsMenuOpen, userId, companyId, API_URL } =
     useContext(AppContext);
@@ -46,13 +44,11 @@ export default function TabLayout() {
     "/profil",
     "/notification",
   ].some((path) => route.startsWith(path));
-
   useEffect(() => {
     if (!isLoggedIn && userId !== undefined && isTabsRoute) {
       router.replace("/" as unknown as RelativePathString);
     }
   }, [isLoggedIn, userId, router, route, isTabsRoute]);
-
   useEffect(() => {
     const fetchCompany = async () => {
       return await axios
@@ -73,17 +69,17 @@ export default function TabLayout() {
         const company: Company = await fetchCompany();
         if (!hasActiveSubscription) {
           router.replace(
-            `/payment/subscription?email=${company.email}&redirect=${hasAgreedToTerms ? "/home" : encodeURIComponent(`/legal/legalNotice?email=${company.email}&redirect=/home`)}` as RelativePathString
+            `/payment/subscription?email=${company.email}&redirect=${hasAgreedToTerms ? "/home" : encodeURIComponent(`/legal/legalNotice?email=${company.email}&redirect=/home`)}` as RelativePathString,
           );
         } else if (!hasAgreedToTerms) {
           router.replace(
-            `/legal/legalNotice?redirect=/home&email=${company.email}` as RelativePathString
+            `/legal/legalNotice?redirect=/home&email=${company.email}` as RelativePathString,
           );
         }
-      } else if (!isLoading && userId && hasAgreedToTerms != null) {
+      } else if (!isLoading && userId && hasAgreedToTerms !== null) {
         if (!hasAgreedToTerms) {
           router.replace(
-            `/legal/legalNotice?redirect=/home` as RelativePathString
+            `/legal/legalNotice?redirect=/home` as RelativePathString,
           );
         }
       }
@@ -98,7 +94,6 @@ export default function TabLayout() {
     companyId,
     API_URL,
   ]);
-
   const isTabBarInvisible = [
     // "/index",
     "/recommendation",
@@ -107,7 +102,6 @@ export default function TabLayout() {
     "/signin",
     "/signup",
   ].some((path) => route === path || route.startsWith(path + "/"));
-
   const isLogoInvisible = [
     "/index",
     "/legal",
@@ -115,13 +109,11 @@ export default function TabLayout() {
     "/signin",
     "/signup",
   ].some((path) => route === path || route.startsWith(path + "/"));
-
   const isBackButtonVisible = [
     "/notification",
     "/profil",
     "/recommendation",
   ].some((path) => route === path || route.startsWith(path + "/"));
-
   return (
     <View style={{ flex: 1, backgroundColor: Colors.white }}>
       {isBackButtonVisible && (
@@ -145,7 +137,9 @@ export default function TabLayout() {
         backBehavior="history"
         tabBar={(props) =>
           !isTabBarInvisible && (
-            <TouchableWithoutFeedback onPress={() => setIsMenuOpen(false)}>
+            <TouchableWithoutFeedback
+              onPress={() => setIsMenuOpen && setIsMenuOpen(false)}
+            >
               <View
                 style={{
                   ...styles.tabBarContainer,
@@ -160,7 +154,9 @@ export default function TabLayout() {
                     height: isMenuOpen ? "100%" : 0,
                   }}
                 >
-                  <Pressable onPress={() => setIsMenuOpen(!isMenuOpen)}>
+                  <Pressable
+                    onPress={() => setIsMenuOpen && setIsMenuOpen(!isMenuOpen)}
+                  >
                     <Text
                       style={Platform.select({
                         web: webStyles.menuButton,
@@ -232,7 +228,6 @@ export default function TabLayout() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   menuButton: {
     position: "absolute",
@@ -266,7 +261,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 70,
     left: "50%",
-    transform: [{ translateX: "-50%" }],
+    transform: [{ translateX: "-55%" }],
     zIndex: 2,
   },
   backIcon: {
@@ -276,7 +271,6 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
 });
-
 const webStyles = StyleSheet.create({
   menuButton: {
     position: "absolute",
@@ -299,7 +293,7 @@ const webStyles = StyleSheet.create({
     position: "absolute",
     top: width >= 768 ? 15 : 30,
     left: "50%",
-    transform: [{ translateX: "-50%" }],
+    transform: [{ translateX: "-55%" }],
     zIndex: 2,
   },
   backIcon: {

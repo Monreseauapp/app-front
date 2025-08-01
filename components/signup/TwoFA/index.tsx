@@ -3,11 +3,13 @@ import { Image, Pressable, Text, View } from "react-native";
 import { styles } from "./TwoFA.styles";
 
 export default function TwoFA({
+  type,
   qrCode,
   secret,
   email,
   formReset,
 }: {
+  type: string;
   qrCode: Base64URLString;
   secret: string;
   email: string;
@@ -37,13 +39,13 @@ export default function TwoFA({
           onPress={() => {
             router.dismissAll();
             formReset();
-            if (email) {
+            if (type === "company") {
               router.push(
                 `/payment/subscription?email=${email}` as RelativePathString
               );
             } else {
               router.push(
-                "/legal/legalNotice?redirect=/home" as RelativePathString
+                "/legal/legalNotice?redirect=/signin" as RelativePathString
               );
             }
           }}

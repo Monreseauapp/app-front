@@ -83,7 +83,6 @@ export interface User {
   lastLogin?: (Date | string) | null;
   phone: string;
   password: string;
-  domainId?: string;
   companyId?: string | null;
   isAdmin?: boolean;
   retentionDate?: Date | string;
@@ -113,14 +112,29 @@ export interface Company {
   recommendationRate?: string | null;
   email: string;
   phone: string;
+  SIRET: string;
+  SIREN: string;
   website?: string | null;
   photoUrl?: string | null;
   description?: string | null;
+  domainId: string;
   linkedin?: string | null;
   subscriptionId?: string | null;
   ownerId?: string;
   OpentoReco: boolean;
   retentionDate?: Date | string;
+}
+
+export interface CompanyProfile {
+  id?: string;
+  activityDescription?: string | null;
+  targetClient?: string | null;
+  registrationReason?: string | null;
+  certifications?: string | null;
+  similarApplications?: string | null;
+  companyId: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
 }
 
 export interface Subscription {

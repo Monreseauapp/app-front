@@ -10,7 +10,11 @@ import { initialRecommendation } from "@/constants/initial-types-value/initialRe
 import { AppContext } from "@/context/context";
 import { Company, Project, Recommandation, User } from "@/types";
 import axios from "axios";
-import { useLocalSearchParams } from "expo-router";
+import {
+  RelativePathString,
+  useLocalSearchParams,
+  useRouter,
+} from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import {
   Dimensions,
@@ -23,20 +27,19 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import styles from "./form.styles";
-
 type RecommendationFormParams = {
   type: "company" | "lead" | "project";
 };
-
 export type RecommendationFormTitles = {
   label: RecommendationFormParams["type"];
   title: string;
   sendText: string;
 };
-
 export default function RecommendationForm() {
   const { width } = Dimensions.get("window");
   const { API_URL, userId } = useContext(AppContext);
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
   const { type } = useLocalSearchParams<RecommendationFormParams>();
   const titles: RecommendationFormTitles[] = [
     {
@@ -59,19 +62,18 @@ export default function RecommendationForm() {
   const [recommandation, setRecommandation] = useState<Recommandation>({
     ...initialRecommendation,
     initiatorId: userId?.toString() || "",
-    ...(type === "lead" ? { priority: starId + 1 } : {}),
+    ...(type === "lead" ? { priority: starId } : {}),
   });
   const [project, setProject] = useState<Project>({
     ...initialProject,
     userId: userId?.toString() || "",
-    priority: starId + 1,
+    priority: starId,
   });
   const [companies, setCompanies] = useState<Company[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [companyName, setCompanyName] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
   const [isDataValid, setIsDataValid] = useState<boolean | null>(null);
-
   const resetForm = () => {
     setRecommandation(initialRecommendation);
     setProject({
@@ -83,10 +85,9 @@ export default function RecommendationForm() {
     setIsDataValid(null);
     setStarId(0);
   };
-
   const handleChange = (
     key: keyof Recommandation | keyof Project,
-    value: any
+    value: any,
   ) => {
     if (type === "project") {
       setProject((prev) => ({ ...prev, [key]: value }));
@@ -94,7 +95,6 @@ export default function RecommendationForm() {
     }
     setRecommandation((prev) => ({ ...prev, [key]: value }));
   };
-
   useEffect(() => {
     if (type !== "lead") {
       const fetchCompanies = async () => {
@@ -113,7 +113,12 @@ export default function RecommendationForm() {
     };
     fetchUsers();
   }, [type, API_URL]);
-
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (mounted && type !== "company" && type !== "lead" && type !== "project") {
+    router.replace("/recommendation" as RelativePathString);
+  }
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}

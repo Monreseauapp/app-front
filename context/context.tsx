@@ -3,12 +3,12 @@ import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 
 export type AppContextType = {
-  isMenuOpen: boolean;
-  setIsMenuOpen: (isOpen: boolean) => void;
+  isMenuOpen?: boolean;
+  setIsMenuOpen?: (isOpen: boolean) => void;
   API_URL?: string;
   userId?: string | null;
   token?: string | null;
-  setToken: (token: string, expires: number) => void;
+  setToken?: (token: string, expires: number) => void;
   companyId?: string;
   setCompanyId?: (companyId: string) => void;
 };
@@ -46,32 +46,20 @@ function Context({ children }: { children: React.ReactNode }) {
         return;
       }
       if (storedToken) {
-        try {
-          axios.defaults.headers.common["Authorization"] =
-            `Bearer ${storedToken}`;
-          const tokenParts = storedToken.split(".");
-          if (tokenParts.length !== 3) {
-            throw new Error("Invalid token format");
-          }
-          const payloadBase64 = tokenParts[1];
-          const payloadJson = atob(payloadBase64);
-          const payload = JSON.parse(payloadJson);
-          const id = payload.id as string | undefined;
-          if (id) {
-            axios
-              .patch(`${API_URL}/users/${id}`, {
-                lastLogin: new Date().toISOString(),
-              })
-              .catch((error) => {
-                console.error("Error updating last login:", error.response);
-              });
-            setUserId(id);
+        axios.defaults.headers.common["Authorization"] =
+          `Bearer ${storedToken}`;
+        axios
+          .post(`${API_URL}/auth/verify-token`, { token: storedToken })
+          .then((response) => {
+            console.log("Token verified:", response.data);
+            setUserId(response.data.id);
+            setCompanyId(response.data.companyId);
             setToken(storedToken);
-          }
-        } catch (error) {
-          console.error("Error parsing token:", error);
-          setUserId(null);
-        }
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error.request);
+            setUserId(null);
+          });
       } else {
         setUserId(null);
       }

@@ -9,7 +9,7 @@ interface ValidationFormProps {
   rejectionReason: string;
   setRejectionReason: (value: string) => void;
   update: () => void;
-  setUpdated: (value: boolean) => void;
+  setUpdated?: (value: boolean) => void;
 }
 
 export default function ValidationForm({
@@ -64,7 +64,6 @@ export default function ValidationForm({
             width: "90%",
             borderColor: Colors.violet,
             borderWidth: 4,
-            placeholderTextColor: Colors.grey,
             marginTop: -20,
             marginBottom: -10,
           }}
@@ -77,7 +76,7 @@ export default function ValidationForm({
           if (isRejected !== undefined) {
             update();
             setIsRejected(undefined);
-            setUpdated(true);
+            setUpdated && setUpdated(true);
           }
         }}
         style={styles.validationButton}

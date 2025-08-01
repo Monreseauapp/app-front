@@ -1,7 +1,6 @@
 import { Link } from "expo-router";
 import { Platform, Text, View } from "react-native";
 import { styles, webStyles } from "./index.styles";
-
 export default function RecommendationChoice() {
   return (
     <View style={styles.container}>
