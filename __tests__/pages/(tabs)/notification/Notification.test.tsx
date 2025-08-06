@@ -237,6 +237,7 @@ describe("Notification Page", () => {
         item.props.children.includes("Vous avez reçu une recommandation.")
       );
       expect(receivedRecommendations).toHaveLength(1);
+
       const companyRecommendations = getAllByTestId("notification-item").filter(
         (item) =>
           item.props.children.includes(
