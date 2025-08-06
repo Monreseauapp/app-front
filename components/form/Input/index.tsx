@@ -161,7 +161,7 @@ export default function Input({
         placeholderTextColor={Colors.grey}
         placeholder={placeholder}
         ref={inputRef}
-        secureTextEntry={type.includes("password") && passwordVisibility}
+        secureTextEntry={type.includes("password") && !passwordVisibility}
         style={Platform.select({
           web: {
             ...webStyles.input,
@@ -184,7 +184,7 @@ export default function Input({
       />
       {["password", "new-password", "current-password"].includes(type) && (
         <Pressable onPress={handlePasswordVisibility}>
-          {passwordVisibility ? (
+          {!passwordVisibility ? (
             <EyeOff style={styles.eye} />
           ) : (
             <Eye style={styles.eye} />
