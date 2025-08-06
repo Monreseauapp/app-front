@@ -28,6 +28,7 @@ export default function RelatedPeople({
             pathname: "/profil/[id]",
             params: { id: initiator?.id || "" },
           }}
+          testID="initiator-link"
         >
           <Text
             style={[
@@ -45,6 +46,7 @@ export default function RelatedPeople({
             pathname: "/profil/[id]",
             params: { id: company?.ownerId || "" },
           }}
+          testID="company-link"
         >
           <Text
             style={[

@@ -55,7 +55,7 @@ export default function CheckboxList<T>({
                 );
             }}
           />
-          {choice}
+          <Text>{choice}</Text>
         </View>
       ))}
     </View>

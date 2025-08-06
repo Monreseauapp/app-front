@@ -27,6 +27,20 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     color: Colors.violet,
   },
+  limit: {
+    color: Colors.lightGrey,
+    paddingLeft: 16,
+    fontSize: 14,
+    fontWeight: "bold",
+    marginTop: -5,
+  },
+  eye: {
+    width: 24,
+    height: 24,
+    position: "absolute",
+    left: width >= 768 ? "95%" : "90%",
+    bottom: 12,
+  },
 });
 
 const webStyles = StyleSheet.create({

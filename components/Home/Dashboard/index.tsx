@@ -1,5 +1,5 @@
 import PlusIcon from "@/assets/icons/plus.svg";
-import DashboardStats from "@/components/DashboardStats";
+import DashboardStats from "@/components/Home/Dashboard/DashboardStats";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { Recommandation } from "@/types";
@@ -156,6 +156,7 @@ export default function Dashboard() {
               borderRadius: 50,
             }}
             href={"/recommendation" as unknown as RelativePathString}
+            testID="add-recommendation-button"
           >
             <PlusIcon width={50} height={50} color={Colors.white} />
           </Link>

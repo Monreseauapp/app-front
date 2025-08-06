@@ -30,6 +30,7 @@ export default function News() {
                     : styles.notificationContainer
                 }
                 key={index}
+                testID="notification-container"
               >
                 <Text key={index} style={styles.notificationText}>
                   {notification.text}

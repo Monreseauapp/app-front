@@ -1,25 +1,20 @@
-import NotificationPage from "@/app/(tabs)/notification";
-import { render, waitFor } from "@testing-library/react-native";
+import News from "@/components/Home/News";
 import { AppContext } from "@/context/context";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { render, waitFor } from "@testing-library/react-native";
 
 jest.mock("axios");
 
 const axios = require("axios");
 
-const mockContextValue = {
-  userId: "user1",
-  companyId: "comp1",
-  token: "mockToken",
-};
-
-describe("Notification Page", () => {
-  it("renders the title", () => {
-    const { getByText } = render(<NotificationPage />);
-    expect(getByText("MON ACTUALITE")).toBeTruthy();
+describe("Home News", () => {
+  it("renders correctly without notifications", () => {
+    const { getByText, queryAllByTestId } = render(<News />);
+    expect(getByText("Mes 5 dernières actualités")).toBeTruthy();
+    expect(queryAllByTestId("notification-container")).toHaveLength(0);
+    expect(getByText("Vous n'avez pas d'actualités récentes.")).toBeTruthy();
   });
 
-  it("renders the notification list", async () => {
+  it("renders notifications correctly", async () => {
     axios.get.mockImplementation((url: string) => {
       if (url.includes("/recommandation/initiator")) {
         return Promise.resolve({
@@ -218,43 +213,24 @@ describe("Notification Page", () => {
         });
       }
     });
-    const { getAllByTestId } = render(
-      <AppContext.Provider value={mockContextValue}>
-        <NotificationPage />
+    const { getByText, queryAllByTestId } = render(
+      <AppContext.Provider
+        value={{ userId: "user1", companyId: "comp1", token: "test-token" }}
+      >
+        <News />
       </AppContext.Provider>
     );
     await waitFor(() => {
-      expect(getAllByTestId("notification-date-container")).toHaveLength(2);
-      expect(getAllByTestId("notification-item")).toHaveLength(5);
-      const sentRecommendations = getAllByTestId("notification-item").filter(
-        (item) =>
-          item.props.children.includes("Vous avez initié une recommandation.")
-      );
-      expect(sentRecommendations).toHaveLength(1);
-      const receivedRecommendations = getAllByTestId(
-        "notification-item"
-      ).filter((item) =>
-        item.props.children.includes("Vous avez reçu une recommandation.")
-      );
-      expect(receivedRecommendations).toHaveLength(1);
-      const companyRecommendations = getAllByTestId("notification-item").filter(
-        (item) =>
-          item.props.children.includes(
-            "Votre entreprise a reçu une recommandation."
-          )
-      );
-      expect(companyRecommendations).toHaveLength(1);
-      const sentUpdatedProjects = getAllByTestId("notification-item").filter(
-        (item) =>
-          item.props.children.includes(
-            "Un projet que vous avez initié a été mis à jour !"
-          )
-      );
-      expect(sentUpdatedProjects).toHaveLength(1);
-      const sentProjects = getAllByTestId("notification-item").filter((item) =>
-        item.props.children.includes("Vous avez initié un projet.")
-      );
-      expect(sentProjects).toHaveLength(1);
+      expect(queryAllByTestId("notification-container")).toHaveLength(5);
+      expect(getByText("Vous avez initié une recommandation.")).toBeTruthy();
+      expect(getByText("Vous avez reçu une recommandation.")).toBeTruthy();
+      expect(
+        getByText("Votre entreprise a reçu une recommandation.")
+      ).toBeTruthy();
+      expect(
+        getByText("Un projet que vous avez initié a été mis à jour !")
+      ).toBeTruthy();
+      expect(getByText("Vous avez initié un projet.")).toBeTruthy();
     });
   });
 });

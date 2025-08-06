@@ -19,7 +19,7 @@ export default function CustomCheckbox({
 }) {
   const { width: screenWidth } = Dimensions.get("window");
   return (
-    <Pressable onPress={() => onChange(!checked)}>
+    <Pressable onPress={() => onChange(!checked)} testID="custom-checkbox">
       <View
         style={{
           width:
@@ -41,6 +41,7 @@ export default function CustomCheckbox({
               height / (Platform.OS === "web" && screenWidth < 600 ? 2 : 1.5)
             }
             color={markerStyle || Colors.violet}
+            testID="custom-checkbox-checkmark"
           />
         )}
       </View>

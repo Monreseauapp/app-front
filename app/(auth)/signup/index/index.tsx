@@ -1,6 +1,9 @@
 import { Colors } from "@/constants/Colors";
-import { useRouter } from "expo-router";
-import { useLocalSearchParams } from "expo-router/build/hooks";
+import {
+  RelativePathString,
+  useRouter,
+  useLocalSearchParams,
+} from "expo-router";
 import {
   Image,
   Platform,
@@ -11,12 +14,21 @@ import {
   View,
 } from "react-native";
 import { styles, webStyles } from "./index.styles";
-type paramsType = {
-  type: "company" | "guest";
-};
-export default function ConditionScreen() {
+import { useEffect, useState } from "react";
+
+export default function SignUp() {
   const router = useRouter();
-  const params = useLocalSearchParams<paramsType>();
+  const { type } = useLocalSearchParams();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (mounted && type !== "company" && type !== "guest") {
+    router.replace("/" as RelativePathString);
+  }
+
   return (
     <ScrollView
       style={styles.container}
@@ -41,7 +53,7 @@ export default function ConditionScreen() {
             default: styles.title,
           })}
         >
-          PORTAIL {params.type === "company" ? "ENTREPRISES" : "VISITEURS"}
+          PORTAIL {type === "company" ? "ENTREPRISES" : "VISITEURS"}
         </Text>
         <Text
           style={Platform.select({
@@ -51,13 +63,13 @@ export default function ConditionScreen() {
         >
           Avant de continuer,
         </Text>
-        {params.type === "company" && (
+        {type === "company" && (
           <>
             <Text style={styles.text}>
               L&apos;inscription sur <Text style={styles.span}>Mon Réseau</Text>{" "}
               se fait en plusieurs étapes :
             </Text>
-            <View style={styles.listElem}>
+            <View style={styles.listElem} testID="signup-company-steps">
               <Text style={styles.bullet}>{"\u2022"}</Text>
               <Text style={styles.text}>
                 Tout d&apos;abord, un{" "}
@@ -89,9 +101,12 @@ export default function ConditionScreen() {
             </View>
           </>
         )}
-        {params.type === "guest" && (
+        {type === "guest" && (
           <>
-            <Text style={{ ...styles.text, marginTop: 16 }}>
+            <Text
+              style={{ ...styles.text, marginTop: 16 }}
+              testID="signup-guest-steps"
+            >
               Inscrivez-vous, lisez et validez les contrats d&apos;adhésion et{" "}
               <Text style={styles.span}>mentions légales</Text>,
             </Text>
@@ -112,7 +127,7 @@ export default function ConditionScreen() {
           onPress={() => {
             router.push({
               pathname: "/signup/form",
-              params: { type: params.type },
+              params: { type: type },
             });
           }}
           style={{
@@ -122,6 +137,7 @@ export default function ConditionScreen() {
             borderRadius: 50,
             alignSelf: "center",
           }}
+          testID="signup-continue-button"
         >
           <Text
             style={{

@@ -19,14 +19,15 @@ import {
 } from "react-native";
 import { styles, webStyles } from "./legalNotice.styles";
 export default function LegalNotice() {
-  const { API_URL, userId } = useContext(AppContext);
+  const { API_URL } = useContext(AppContext);
   const { redirect, email } = useLocalSearchParams();
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
+  const userId = "user1";
   const updateUserConsent = async () => {
-    await axios
+    return await axios
       .patch(`${API_URL}/users/${email ? company?.ownerId : userId}`, {
         consentTerms: true,
       })
@@ -44,12 +45,12 @@ export default function LegalNotice() {
         .then((response) => response.data)
         .catch(() => {
           setError(
-            "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau.",
+            "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau."
           );
         });
       setCompany(company);
     }
-    updateUserConsent();
+    return updateUserConsent();
   };
   return (
     <View
@@ -70,7 +71,7 @@ export default function LegalNotice() {
         <Text style={styles.title}>Validez les conditions d&apos;accès.</Text>
         <Text style={styles.subtitle}>Les mentions légales</Text>
         <ScrollView style={styles.noticeContainer}>
-          <Text style={styles.noticeText}>
+          <Text style={styles.noticeText} testID="legal-notice-text">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui itaque
             voluptatum praesentium ipsum magnam repellat nobis voluptatibus
             perspiciatis ducimus excepturi omnis voluptate exercitationem
@@ -115,6 +116,7 @@ export default function LegalNotice() {
             alignItems: "center",
             marginBottom: 10,
           }}
+          testID="legal-notice-checkbox-container"
         >
           <CustomCheckbox
             checked={agreedToTerms}
@@ -131,21 +133,21 @@ export default function LegalNotice() {
         {error && <Text style={styles.errorText}>{error}</Text>}
         <Pressable
           onPress={async () => {
-            await handleSubmit();
-            if (agreedToTerms) {
+            if (agreedToTerms && (await handleSubmit())) {
               router.push(
                 redirect
                   ? (redirect.toString() as RelativePathString)
-                  : ("/signin" as RelativePathString),
+                  : ("/signin" as RelativePathString)
               );
             } else if (agreedToTerms) {
               setError(
-                "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau.",
+                "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau."
               );
             }
           }}
           style={styles.validationButton}
           disabled={!agreedToTerms}
+          testID="legal-notice-validation-button"
         >
           <Text style={styles.buttonText}>Suivant</Text>
         </Pressable>

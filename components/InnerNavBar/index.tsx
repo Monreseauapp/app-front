@@ -38,6 +38,7 @@ export default function NavBar({
             idx === activeIndex && styles.navbarButtonActive,
           ]}
           onPress={() => setActiveIndex(idx)}
+          testID="navbar-button"
         >
           <Text
             style={

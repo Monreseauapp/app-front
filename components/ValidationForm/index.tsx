@@ -36,6 +36,7 @@ export default function ValidationForm({
             isRejected && { opacity: 0.5 },
           ]}
           onPress={() => setIsRejected(false)}
+          testID="accept-button"
         >
           <Text style={[styles.text, styles.span, { color: Colors.white }]}>
             ACCEPTER
@@ -48,6 +49,7 @@ export default function ValidationForm({
             !isRejected && isRejected !== undefined && { opacity: 0.5 },
           ]}
           onPress={() => setIsRejected(true)}
+          testID="reject-button"
         >
           <Text style={[styles.text, styles.span, { color: Colors.white }]}>
             REFUSER
@@ -69,6 +71,7 @@ export default function ValidationForm({
           }}
           value={rejectionReason}
           onChangeText={(text) => setRejectionReason(text)}
+          testID="rejection-reason-input"
         />
       )}
       <Pressable
@@ -80,6 +83,7 @@ export default function ValidationForm({
           }
         }}
         style={styles.validationButton}
+        testID="validation-button"
       >
         <Text style={styles.validationText}>Valider</Text>
       </Pressable>
