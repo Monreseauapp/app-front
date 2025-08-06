@@ -19,13 +19,12 @@ import {
 } from "react-native";
 import { styles, webStyles } from "./legalNotice.styles";
 export default function LegalNotice() {
-  const { API_URL } = useContext(AppContext);
+  const { API_URL, userId } = useContext(AppContext);
   const { redirect, email } = useLocalSearchParams();
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
-  const userId = "user1";
   const updateUserConsent = async () => {
     return await axios
       .patch(`${API_URL}/users/${email ? company?.ownerId : userId}`, {
@@ -45,7 +44,7 @@ export default function LegalNotice() {
         .then((response) => response.data)
         .catch(() => {
           setError(
-            "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau."
+            "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau.",
           );
         });
       setCompany(company);
@@ -137,11 +136,11 @@ export default function LegalNotice() {
               router.push(
                 redirect
                   ? (redirect.toString() as RelativePathString)
-                  : ("/signin" as RelativePathString)
+                  : ("/signin" as RelativePathString),
               );
             } else if (agreedToTerms) {
               setError(
-                "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau."
+                "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau.",
               );
             }
           }}
