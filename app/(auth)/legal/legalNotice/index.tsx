@@ -34,7 +34,6 @@ export default function LegalNotice() {
           consentTerms: true,
         },
       )
-
       .then(() => {
         return true;
       })
