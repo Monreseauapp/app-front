@@ -111,7 +111,7 @@ describe("Notification Page", () => {
         return Promise.resolve({
           data: [
             {
-              id: "rec1",
+              id: "rec6",
               createdAt: "2025-07-16T13:36:45.510Z",
               updatedAt: "2025-07-16T13:36:45.510Z",
               priority: 1,
@@ -144,7 +144,7 @@ describe("Notification Page", () => {
               RecoStateCompany: "ACCEPTED",
               rejectionReasonCompany: null,
               companyId: "comp1",
-              initiatorId: "user1",
+              initiatorId: "user6",
               recipientId: "user2",
               retentionDate: null,
             },
@@ -230,13 +230,20 @@ describe("Notification Page", () => {
         (item) =>
           item.props.children.includes("Vous avez initié une recommandation.")
       );
-      expect(sentRecommendations).toHaveLength(2);
+      expect(sentRecommendations).toHaveLength(1);
       const receivedRecommendations = getAllByTestId(
         "notification-item"
       ).filter((item) =>
         item.props.children.includes("Vous avez reçu une recommandation.")
       );
       expect(receivedRecommendations).toHaveLength(1);
+      const companyRecommendations = getAllByTestId("notification-item").filter(
+        (item) =>
+          item.props.children.includes(
+            "Votre entreprise a reçu une recommandation."
+          )
+      );
+      expect(companyRecommendations).toHaveLength(1);
       const sentUpdatedProjects = getAllByTestId("notification-item").filter(
         (item) =>
           item.props.children.includes(

@@ -11,7 +11,7 @@ import {
 } from "@/types";
 import validateFormData from "@/utils/validateFormData";
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
 import { styles, webStyles } from "./pages.styles";
 
@@ -41,6 +41,7 @@ export default function Page3({
   setResponse,
 }: Page3Props) {
   const { API_URL } = useContext(AppContext);
+  const [error, setError] = useState<string | null>(null);
 
   const validateForm = () => {
     const isValid = validateFormData(user) && validateFormData(company);
@@ -63,11 +64,22 @@ export default function Page3({
           new Date().setFullYear(new Date().getFullYear() + 3)
         ).toISOString(),
       })
-      .then((response) => response.data)
+      .then((response) => {
+        const resp = response.data;
+        if (resp.error) {
+          setError(resp.error);
+          return;
+        } else {
+          return resp;
+        }
+      })
       .catch((error) => {
         console.error("Error sending user data:", error.response);
+        setError(error.response?.data?.message);
       });
-    setResponse(response);
+    if (!response) {
+      return;
+    }
     const companyId = await axios
       .post(`${API_URL}/company`, {
         ...company,
@@ -77,10 +89,21 @@ export default function Page3({
           new Date().setFullYear(new Date().getFullYear() + 3)
         ).toISOString(),
       })
-      .then((response) => response.data.id)
+      .then((response) => {
+        const resp = response.data;
+        if (resp.error) {
+          setError(resp.error);
+          return;
+        } else {
+          return resp.id;
+        }
+      })
       .catch((error) => {
         console.error("Error sending company data:", error.response);
       });
+    if (!companyId) {
+      return;
+    }
     await axios.post(`${API_URL}/company-profile`, {
       ...companyProfile,
       companyId: companyId,
@@ -99,12 +122,16 @@ export default function Page3({
       .catch((error) => {
         console.error("Error creating subscription:", error.response);
       });
+    if (!subscription) {
+      return;
+    }
     await axios.patch(`${API_URL}/users/${response.id}`, {
       companyId: companyId,
     });
     await axios.patch(`${API_URL}/company/${companyId}`, {
       subscriptionId: subscription.id,
     });
+    setResponse(response);
   };
 
   return (
@@ -206,11 +233,12 @@ export default function Page3({
           handleChangeCompanyProfile("certifications", value)
         }
       />
-      {isDataValid === false && (
-        <Text style={styles.errorText}>
-          Veuillez remplir tous les champs requis.
-        </Text>
-      )}
+      {isDataValid === false ||
+        (error && (
+          <Text style={styles.errorText}>
+            {error || "Veuillez remplir tous les champs requis."}
+          </Text>
+        ))}
       <Pressable style={styles.validationButton} onPress={validateForm}>
         <Text style={styles.validationText}>Valider</Text>
       </Pressable>

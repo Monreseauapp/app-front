@@ -46,8 +46,13 @@ export default function Search({
     setFilteredList(
       filtered.length > 0 ? filtered : ["Aucun résultat pour votre recherche."]
     );
-    //
   }, [value, list]);
+
+  useEffect(() => {
+    if (autoFocus) {
+      setIsFocused(true);
+    }
+  }, [autoFocus]);
 
   return (
     <View
@@ -67,9 +72,9 @@ export default function Search({
         autoFocus={autoFocus}
         enterKeyHint="search"
         inputMode="search"
-        onChange={(e) => {
+        onChangeText={(text) => {
           if (onChangeText) {
-            onChangeText(e.nativeEvent.text);
+            onChangeText(text);
           }
         }}
         onFocus={() => setIsFocused(true)}
@@ -79,6 +84,7 @@ export default function Search({
         ref={inputRef}
         returnKeyType="search"
         style={[styles.input, { outline: isFocused && "auto" }, inputStyle]}
+        testID="search-input"
         value={value}
       />
 
@@ -87,11 +93,13 @@ export default function Search({
           style={styles.itemsContainer}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={true}
+          testID="search-list"
         >
           {filteredList.map((item, index) => (
             <Pressable
               key={index}
               onPress={() => onChangeText && onChangeText(item)}
+              testID={`search-item`}
             >
               <Text
                 style={{

@@ -72,7 +72,7 @@ export default function Profil() {
   useEffect(() => {
     const fetchReviewersData = async () => {
       const userPromises = reviews.map((review) =>
-        axios.get<User>(`${API_URL}/users/${review.userId}`),
+        axios.get<User>(`${API_URL}/users/${review.userId}`)
       );
       const responses = await Promise.all(userPromises);
       setReviewers(responses.map((res) => res.data));
@@ -117,12 +117,15 @@ export default function Profil() {
                     : require("@/assets/images/default-user.jpg")
                 }
                 style={styles.profilePicture}
+                testID="profile-picture"
               />
-              <Text style={styles.profileName}>
+              <Text style={styles.profileName} testID="profile-name">
                 {user?.firstName || "Prénom"} {user?.lastName || "Nom"}
               </Text>
               {user?.company?.name && (
-                <Text style={styles.profileCompany}>{user?.company?.name}</Text>
+                <Text style={styles.profileCompany} testID="profile-company">
+                  {user?.company?.name}
+                </Text>
               )}
             </View>
             {user?.company && isAnyIcon(user?.company) && (
@@ -133,6 +136,7 @@ export default function Profil() {
                     onPress={() =>
                       Linking.openURL(user?.company?.linkedin || "")
                     }
+                    testID="external-link"
                   >
                     <LinkedinIcon
                       color={Colors.violet}
@@ -147,6 +151,7 @@ export default function Profil() {
                     onPress={() =>
                       Linking.openURL(`tel:${user?.company?.phone}`)
                     }
+                    testID="external-link"
                   >
                     <PhoneIcon color={Colors.white} width={40} height={40} />
                   </Pressable>
@@ -157,6 +162,7 @@ export default function Profil() {
                     onPress={() =>
                       Linking.openURL(`mailto:${user?.company?.email}`)
                     }
+                    testID="external-link"
                   >
                     <MailIcon color={Colors.white} width={40} height={40} />
                   </Pressable>
@@ -167,6 +173,7 @@ export default function Profil() {
                     onPress={() =>
                       Linking.openURL(user?.company?.website || "")
                     }
+                    testID="external-link"
                   >
                     <WebsiteIcon color={Colors.white} width={38} height={38} />
                   </Pressable>
@@ -195,7 +202,10 @@ export default function Profil() {
                 {user?.company?.description && (
                   <>
                     <Text style={styles.miniTitle}>Description</Text>
-                    <Text style={styles.description}>
+                    <Text
+                      style={styles.description}
+                      testID="company-description"
+                    >
                       {user.company.description}
                     </Text>
                   </>
@@ -209,7 +219,11 @@ export default function Profil() {
                     </Text>
                     <View style={{ width: "100%" }}>
                       {reviews.map((review) => (
-                        <View key={review.id} style={styles.review}>
+                        <View
+                          key={review.id}
+                          style={styles.review}
+                          testID="review"
+                        >
                           <View
                             style={{
                               flexDirection: "row",
@@ -219,7 +233,7 @@ export default function Profil() {
                             <Text style={styles.reviewer}>
                               {(() => {
                                 const reviewer = reviewers.find(
-                                  (user) => user.id === review.userId,
+                                  (user) => user.id === review.userId
                                 );
                                 return reviewer
                                   ? `${reviewer.firstName} ${reviewer.lastName}`
@@ -227,17 +241,19 @@ export default function Profil() {
                               })()}
                             </Text>
                             {[...Array(5)].map((_, i) => (
-                              <StarIcon
-                                key={i}
-                                color={
-                                  i < (review.rating || 0)
-                                    ? Colors.white
-                                    : Colors.black
-                                }
-                                width={20}
-                                height={20}
-                                style={{ marginRight: 2 }}
-                              />
+                              <View key={i} testID="star-icon">
+                                <StarIcon
+                                  key={i}
+                                  color={
+                                    i < (review.rating || 0)
+                                      ? Colors.white
+                                      : Colors.black
+                                  }
+                                  width={20}
+                                  height={20}
+                                  style={{ marginRight: 2 }}
+                                />
+                              </View>
                             ))}
                           </View>
                           <Text style={styles.reviewText}>
@@ -272,7 +288,7 @@ export default function Profil() {
                             i <
                             reviews.reduce(
                               (acc, review) => acc + (review.rating || 0),
-                              0,
+                              0
                             ) /
                               reviews.length
                               ? Colors.violet
