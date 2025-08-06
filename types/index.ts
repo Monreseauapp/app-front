@@ -82,7 +82,8 @@ export interface User {
   updatedAt?: Date | string;
   lastLogin?: (Date | string) | null;
   phone: string;
-  password: string;
+  password?: string;
+  twoFaSecret?: string | null;
   companyId?: string | null;
   isAdmin?: boolean;
   retentionDate?: Date | string;
@@ -100,6 +101,7 @@ export interface JobDomain {
 
 export interface Company {
   id?: string;
+  stripeCustomerId: string | null;
   name: string;
   address?: string;
   addressComplement?: string;

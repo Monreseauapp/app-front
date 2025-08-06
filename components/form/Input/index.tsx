@@ -1,8 +1,18 @@
 import { Colors } from "@/constants/Colors";
 import { useState } from "react";
 
-import { Dimensions, Platform, Text, TextInput, View } from "react-native";
+import {
+  Dimensions,
+  Platform,
+  Pressable,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { styles, webStyles } from "./Input.styles";
+import { useTogglePasswordVisibility } from "@/hooks/useTogglePasswordVisibility ";
+import Eye from "@/assets/icons/eye.svg";
+import EyeOff from "@/assets/icons/eye-slash.svg";
 
 type InputProps = {
   name?: string;
@@ -70,6 +80,8 @@ export default function Input({
   ...rest
 }: InputProps & React.ComponentProps<typeof TextInput>) {
   const { width } = Dimensions.get("window");
+  const { passwordVisibility, handlePasswordVisibility } =
+    useTogglePasswordVisibility();
   const [isFocused, setIsFocused] = useState(false);
   let keyboardType: "default" | "email-address" | "numeric" | "phone-pad" =
     "default";
@@ -86,7 +98,13 @@ export default function Input({
     keyboardType = "numeric";
   }
   return (
-    <View style={{ width: `${100 / sameLine}%`, marginBottom: 20 }}>
+    <View
+      style={{
+        width: `${100 / sameLine}%`,
+        marginBottom: 20,
+        position: "relative",
+      }}
+    >
       <Text
         style={[
           Platform.OS === "web" ? webStyles.title : styles.title,
@@ -117,20 +135,24 @@ export default function Input({
             {incorrectMessage || "(ce champ est incorrect)"}
           </Text>
         ) : null}
+        {valid !== false && isDataCorrect !== false && (limit || multiline) && (
+          <Text style={styles.limit}>
+            {value ? `${value.length}/${limit || 255}` : `0/${limit || 255}`}
+          </Text>
+        )}
       </Text>
-
       <TextInput
         autoComplete={type}
         autoFocus={autoFocus}
         keyboardType={keyboardType}
         multiline={multiline}
-        onChange={(e) => {
-          const text = e.nativeEvent.text.slice(0, limit || 255);
+        onChangeText={(text) => {
+          const newText = text.slice(0, limit || 255);
           if (onChangeText) {
             if (keyboardType === "numeric" || keyboardType === "phone-pad") {
-              onChangeText(text.replace(/[^0-9+-]/g, ""));
+              onChangeText(newText.replace(/[^0-9+-]/g, ""));
             } else {
-              onChangeText(text);
+              onChangeText(newText);
             }
           }
         }}
@@ -139,7 +161,7 @@ export default function Input({
         placeholderTextColor={Colors.grey}
         placeholder={placeholder}
         ref={inputRef}
-        secureTextEntry={type.includes("password")}
+        secureTextEntry={type.includes("password") && passwordVisibility}
         style={Platform.select({
           web: {
             ...webStyles.input,
@@ -160,6 +182,15 @@ export default function Input({
         value={value}
         {...rest}
       />
+      {["password", "new-password", "current-password"].includes(type) && (
+        <Pressable onPress={handlePasswordVisibility}>
+          {passwordVisibility ? (
+            <EyeOff style={styles.eye} />
+          ) : (
+            <Eye style={styles.eye} />
+          )}
+        </Pressable>
+      )}
     </View>
   );
 }

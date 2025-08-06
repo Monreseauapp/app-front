@@ -61,6 +61,7 @@ export default function Select({
           ...Platform.select({ web: webStyles.picker, default: styles.picker }),
           ...selectStyle,
         }}
+        testID="select-picker"
       >
         {["Sélectionnez une proposition...", ...choices].map(
           (choice, index) => (

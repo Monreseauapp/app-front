@@ -8,7 +8,7 @@ import { AppContext } from "@/context/context";
 import { Company, SubscriptionType, User } from "@/types";
 import validateFormData from "@/utils/validateFormData";
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
 import { styles, webStyles } from "./pages.styles";
 
@@ -48,6 +48,7 @@ export default function Page2({
   isDataValid = null,
 }: Page2Props) {
   const { API_URL } = useContext(AppContext);
+  const [error, setError] = useState<string | null>(null);
 
   const validateForm = () => {
     const isValid = validateFormData(user);
@@ -66,10 +67,21 @@ export default function Page2({
           new Date().setFullYear(new Date().getFullYear() + 3)
         ).toISOString(),
       })
-      .then((response) => response.data)
+      .then((response) => {
+        const resp = response.data;
+        if (resp.error) {
+          setError(resp.error);
+          return;
+        } else {
+          return resp;
+        }
+      })
       .catch((error) => {
         console.error("Error sending user data:", error.request);
       });
+    if (!resp) {
+      return;
+    }
     setResponse(resp);
   };
 
@@ -97,18 +109,13 @@ export default function Page2({
             offType="number"
             limit={14}
             value={company.SIRET}
-            onChangeText={(text) => handleChangeCompany("SIRET", text)}
+            onChangeText={(text) => {
+              handleChangeCompany("SIRET", text);
+              handleChangeCompany("SIREN", text.slice(0, 9));
+            }}
             valid={isDataValid}
-          />
-          <Input
-            name="SIREN"
-            placeholder="123 456 789"
-            type="off"
-            offType="number"
-            limit={9}
-            value={company.SIREN}
-            onChangeText={(text) => handleChangeCompany("SIREN", text)}
-            valid={isDataValid}
+            isDataCorrect={/^\d{14}$/.test(company.SIRET)}
+            incorrectMessage="Le SIRET doit comporter 14 chiffres."
           />
           <Select
             title="Vous êtes..."
@@ -158,11 +165,12 @@ export default function Page2({
 
       {type === "guest" && (
         <View style={{ width: "100%", alignItems: "center" }}>
-          {isDataValid === false && (
-            <Text style={styles.errorText}>
-              Veuillez remplir tous les champs requis.
-            </Text>
-          )}
+          {isDataValid === false ||
+            (error && (
+              <Text style={styles.errorText}>
+                {error || "Veuillez remplir tous les champs requis."}
+              </Text>
+            ))}
           <Pressable style={styles.button} onPress={validateForm}>
             <Text
               style={{

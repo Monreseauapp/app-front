@@ -55,23 +55,23 @@ export default function Page1({
         }}
       >
         <Input
-          name="Prénom"
-          placeholder="John"
-          type={Platform.OS === "android" ? "name-family" : "family-name"}
-          sameLine={2}
-          value={user.firstName}
-          onChangeText={(text) => handleChangeUser("firstName", text)}
-          valid={isDataValid}
-        />
-        <Input
           name="Nom"
           placeholder="Doe"
           type={Platform.OS === "android" ? "name-given" : "given-name"}
           sameLine={2}
-          titleStyle={{ alignSelf: "flex-end" }}
-          inputStyle={{ alignSelf: "flex-end" }}
           value={user.lastName}
           onChangeText={(text) => handleChangeUser("lastName", text)}
+          valid={isDataValid}
+        />
+        <Input
+          name="Prénom"
+          placeholder="John"
+          type={Platform.OS === "android" ? "name-family" : "family-name"}
+          sameLine={2}
+          titleStyle={{ alignSelf: "flex-end" }}
+          inputStyle={{ alignSelf: "flex-end" }}
+          value={user.firstName}
+          onChangeText={(text) => handleChangeUser("firstName", text)}
           valid={isDataValid}
         />
       </View>
@@ -96,7 +96,7 @@ export default function Page1({
         value={user.password}
         onChangeText={(text) => handleChangeUser("password", text)}
         valid={isDataValid}
-        isDataCorrect={passwordRegex.test(user.password)}
+        isDataCorrect={passwordRegex.test(user.password || "")}
         incorrectMessage="Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial."
       />
       <Pressable
@@ -104,7 +104,7 @@ export default function Page1({
           scrollToPage(1);
         }}
       >
-        <Text style={styles.button}>Suivant</Text>
+        <Text style={styles.button}>Créer son compte</Text>
       </Pressable>
       <Link href={{ pathname: "/signin" as RelativePathString }} asChild>
         <Text

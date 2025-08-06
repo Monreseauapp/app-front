@@ -2,7 +2,7 @@ import { Colors } from "@/constants/Colors";
 import { Text, View } from "react-native";
 import styles from "./DashboardStats.styles";
 
-interface Stat {
+export interface Stat {
   label: string;
   value: string | number;
 }
@@ -20,6 +20,7 @@ export default function DashboardStats({ title, stats }: DashboardStatsProps) {
         alignItems: "center",
         width: "auto",
       }}
+      testID="dashboard-item"
     >
       <View style={{ marginBottom: 10 }}>
         <Text style={{ fontSize: 24, fontWeight: "bold", color: Colors.black }}>

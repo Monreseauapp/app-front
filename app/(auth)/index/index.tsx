@@ -20,6 +20,7 @@ export default function Index() {
           web: webStyles.logo,
           default: styles.logo,
         })}
+        testID="logo"
       />
       <Text
         style={Platform.select({ web: webStyles.title, default: styles.title })}
@@ -53,6 +54,7 @@ export default function Index() {
               params: { type: "company" },
             });
           }}
+          testID="company-button"
         >
           <Text
             style={Platform.select({
@@ -60,7 +62,7 @@ export default function Index() {
               default: styles.buttonText,
             })}
           >
-            Je suis professionnel
+            Je suis un professionnel
           </Text>
         </Pressable>
         <Pressable
@@ -75,6 +77,7 @@ export default function Index() {
               params: { type: "guest" },
             });
           }}
+          testID="guest-button"
         >
           <Text
             style={Platform.select({
@@ -82,7 +85,7 @@ export default function Index() {
               default: styles.buttonText,
             })}
           >
-            Je suis particulier
+            Je suis un particulier
           </Text>
         </Pressable>
       </View>
@@ -90,6 +93,7 @@ export default function Index() {
         // @ts-ignore
         href="/signin"
         style={{ marginTop: 40 }}
+        testID="login-button"
       >
         <Text
           style={Platform.select({

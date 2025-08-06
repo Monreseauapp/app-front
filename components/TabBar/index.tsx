@@ -2,23 +2,13 @@ import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import { Text } from "@react-navigation/elements";
 import { useContext } from "react";
-
 import { Platform, TouchableOpacity, View } from "react-native";
 import { styles, webStyles } from "./TabBar.styles";
 
 export default function TabBar({ state, descriptors, navigation }: any) {
   const { setIsMenuOpen, companyId } = useContext(AppContext);
-  const invisibleRoutes: string[] = [
-    // "index",
-    "recommendation/form",
-    // "notification",
-    // "legal",
-    // "profil/modify",
-    // "profil/[id]",
-    // "signin",
-    // "signup",
-  ];
-  const invisibleRoutesGuest = ["profil", "signin", "signup"];
+  const invisibleRoutes: string[] = ["recommendation/form"];
+  const invisibleRoutesGuest = ["profil"];
 
   const isRouteVisible = (route: string) => {
     return (
