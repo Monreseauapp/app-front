@@ -56,12 +56,12 @@ export default function Profil() {
         }
       };
       fetchData();
-    }, [userId, companyId, API_URL]),
+    }, [userId, companyId, API_URL])
   );
   useEffect(() => {
     const fetchReviewers = async () => {
       const userPromises = reviews.map((review) =>
-        axios.get<User>(`${API_URL}/users/${review.userId}`),
+        axios.get<User>(`${API_URL}/users/${review.userId}`)
       );
       const responses = await Promise.all(userPromises);
       setReviewers(responses.map((res) => res.data));
@@ -204,7 +204,7 @@ export default function Profil() {
                           <Text style={styles.reviewer}>
                             {(() => {
                               const reviewer = reviewers.find(
-                                (user) => user.id === review.userId,
+                                (user) => user.id === review.userId
                               );
                               return reviewer
                                 ? `${reviewer.firstName} ${reviewer.lastName}`
@@ -259,7 +259,7 @@ export default function Profil() {
                           i <
                           reviews.reduce(
                             (acc, review) => acc + (review.rating || 0),
-                            0,
+                            0
                           ) /
                             reviews.length
                             ? Colors.violet
