@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     marginTop: -5,
+    fontStyle: "italic",
   },
   input: {
     paddingHorizontal: 20,
@@ -33,13 +34,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     marginTop: -5,
+    fontStyle: "italic",
   },
   eye: {
     width: 24,
     height: 24,
     position: "absolute",
     left: width >= 768 ? "95%" : "90%",
-    bottom: 12,
+    bottom: width >= 600 ? 13 : 8,
   },
 });
 
@@ -58,6 +60,7 @@ const webStyles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold",
     marginTop: -5,
+    fontStyle: "italic",
   },
   input: {
     width: "100%",

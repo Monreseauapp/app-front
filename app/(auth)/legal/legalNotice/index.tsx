@@ -28,9 +28,12 @@ export default function LegalNotice() {
   const userId = "user1";
   const updateUserConsent = async () => {
     return await axios
-      .patch(`${API_URL}/users/${email ? company?.ownerId : userId}`, {
-        consentTerms: true,
-      })
+      .patch(
+        `${API_URL}/users/${email && company?.ownerId ? company.ownerId : userId}`,
+        {
+          consentTerms: true,
+        },
+      )
       .then(() => {
         return true;
       })
@@ -50,7 +53,7 @@ export default function LegalNotice() {
         });
       setCompany(company);
     }
-    return updateUserConsent();
+    return await updateUserConsent();
   };
   return (
     <View
