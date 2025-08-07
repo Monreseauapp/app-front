@@ -89,7 +89,7 @@ export default function ResetPassword() {
                 default: styles.title,
               })}
             >
-              Rénitalisation de votre mot de passe
+              Réinitialisation de votre mot de passe
             </Text>
             <Input
               name="Nouveau mot de passe"
