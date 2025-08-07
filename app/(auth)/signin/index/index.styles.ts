@@ -55,6 +55,13 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     textDecorationLine: "underline",
   },
+  forgotPasswordText: {
+    color: Colors.white,
+    fontSize: 15,
+    fontWeight: "bold",
+    marginBottom: 8,
+    marginLeft: 16,
+  },
   connectionButton: {
     marginTop: 20,
     marginBottom: 8,

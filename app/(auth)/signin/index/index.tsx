@@ -24,6 +24,7 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string>("");
+  const [forgotPasswordText, setForgotPasswordText] = useState<string>("");
   const login = () => {
     setError("");
     const isConnected = axios
@@ -47,6 +48,31 @@ export default function SignIn() {
         return false;
       });
     return isConnected;
+  };
+
+  const sendEmail = () => {
+    if (email && emailRegex.test(email)) {
+      axios
+        .post(`${API_URL}/auth/request-password-reset`, {
+          email: email,
+        })
+        .then(() => {
+          setForgotPasswordText(
+            "Un e-mail de réinitialisation de mot de passe a été envoyé si vous possédez un compte avec cette adresse mail.",
+          );
+        })
+        .catch(() => {
+          setForgotPasswordText(
+            "Une erreur est survenue lors de l'envoi de l'e-mail. Veuillez réessayer.",
+          );
+        });
+    } else {
+      setForgotPasswordText(
+        "Veuillez entrer votre adresse e-mail et réappuyer sur 'Mot de passe oublié ?' pour réinitialiser votre mot de passe.",
+      );
+    }
+    setEmail("");
+    setPassword("");
   };
   return (
     <KeyboardAvoidingView
@@ -114,19 +140,21 @@ export default function SignIn() {
                   onChangeText={(text) => setPassword(text)}
                   isDataCorrect={passwordRegex.test(password)}
                 />
-                <Text
-                  onPress={() => {
-                    alert(
-                      "Mot de passe oublié ? Veuillez suivre les instructions pour réinitialiser votre mot de passe.",
-                    );
-                  }}
-                  style={Platform.select({
-                    web: webStyles.passwordText,
-                    default: styles.passwordText,
-                  })}
-                >
-                  Mot de passe oublié ????
-                </Text>
+                <Pressable onPress={sendEmail}>
+                  <Text
+                    style={Platform.select({
+                      web: webStyles.passwordText,
+                      default: styles.passwordText,
+                    })}
+                  >
+                    Mot de passe oublié ?
+                  </Text>
+                </Pressable>
+                {forgotPasswordText && (
+                  <Text style={styles.forgotPasswordText}>
+                    {forgotPasswordText}
+                  </Text>
+                )}
               </View>
               {error && <Text style={styles.error}>{error}</Text>}
               <Pressable

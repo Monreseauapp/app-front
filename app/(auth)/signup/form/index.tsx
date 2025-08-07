@@ -167,7 +167,7 @@ export default function FormSignUp() {
               type={type}
               qrCode={response.qrCode}
               secret={response.secret}
-              email={company.email}
+              email={type === "company" ? company.email : user.email}
               formReset={resetForm}
             />
           )}

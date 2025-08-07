@@ -3,7 +3,7 @@ import TabBar from "@/components/TabBar";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
 import useFetchUserStatus from "@/hooks/useFetchUserStatus";
-import { Company } from "@/types";
+import { Company, User } from "@/types";
 import axios from "axios";
 import { BlurView } from "expo-blur";
 import {
@@ -58,6 +58,13 @@ export default function TabLayout() {
           return company;
         });
     };
+    const fetchUser = async () => {
+      return await axios.get(`${API_URL}/users/${userId}`).then((response) => {
+        const user = response.data;
+        return user;
+      });
+    };
+
     const checkRedirect = async () => {
       if (
         !isLoading &&
@@ -77,9 +84,10 @@ export default function TabLayout() {
           );
         }
       } else if (!isLoading && userId && hasAgreedToTerms !== null) {
+        const user: User = await fetchUser();
         if (!hasAgreedToTerms) {
           router.replace(
-            `/legal/legalNotice?redirect=/home` as RelativePathString,
+            `/legal/legalNotice?redirect=/home&email=${user.email}` as RelativePathString,
           );
         }
       }
