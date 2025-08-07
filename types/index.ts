@@ -101,7 +101,7 @@ export interface JobDomain {
 
 export interface Company {
   id?: string;
-  stripeCustomerId: string | null;
+  stripeCustomerId?: string | null;
   name: string;
   address?: string;
   addressComplement?: string;
