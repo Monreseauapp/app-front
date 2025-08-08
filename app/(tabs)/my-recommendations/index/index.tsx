@@ -42,7 +42,7 @@ export default function MyRecommendations() {
     CompleteRecommendation[]
   >([]);
   const [completeSent, setCompleteSent] = useState<CompleteRecommendation[]>(
-    []
+    [],
   );
   const [page, setPage] = useState<string>("sent");
   const currentList = page === "sent" ? completeSent : completeReceived;

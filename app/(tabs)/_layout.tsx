@@ -76,18 +76,18 @@ export default function TabLayout() {
         const company: Company = await fetchCompany();
         if (!hasActiveSubscription) {
           router.replace(
-            `/payment/subscription?email=${company.email}&redirect=${hasAgreedToTerms ? "/home" : encodeURIComponent(`/legal/legalNotice?email=${company.email}&redirect=/home`)}` as RelativePathString
+            `/payment/subscription?email=${company.email}&redirect=${hasAgreedToTerms ? "/home" : encodeURIComponent(`/legal/legalNotice?email=${company.email}&redirect=/home`)}` as RelativePathString,
           );
         } else if (!hasAgreedToTerms) {
           router.replace(
-            `/legal/legalNotice?redirect=/home&email=${company.email}` as RelativePathString
+            `/legal/legalNotice?redirect=/home&email=${company.email}` as RelativePathString,
           );
         }
       } else if (!isLoading && userId && hasAgreedToTerms !== null) {
         const user: User = await fetchUser();
         if (!hasAgreedToTerms) {
           router.replace(
-            `/legal/legalNotice?redirect=/home&email=${user.email}` as RelativePathString
+            `/legal/legalNotice?redirect=/home&email=${user.email}` as RelativePathString,
           );
         }
       }
@@ -103,7 +103,7 @@ export default function TabLayout() {
     API_URL,
   ]);
   const isTabBarInvisible = ["/legal", "/signin", "/signup"].some(
-    (path) => route === path || route.startsWith(path + "/")
+    (path) => route === path || route.startsWith(path + "/"),
   );
   const isLogoInvisible = [
     "/index",

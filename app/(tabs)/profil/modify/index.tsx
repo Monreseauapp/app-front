@@ -35,7 +35,7 @@ export default function ModifyProfile() {
   const handleChange = (
     type: "user" | "company",
     key: keyof User | keyof Company,
-    value: string | number | boolean | undefined
+    value: string | number | boolean | undefined,
   ) => {
     if (type === "company") {
       setCompany((prevCompany) => ({
@@ -152,7 +152,7 @@ export default function ModifyProfile() {
                         isCompanyPage
                           ? "OpentoReco"
                           : "allowRecommendationDataAccess",
-                        value
+                        value,
                       )
                     }
                     width={35}
