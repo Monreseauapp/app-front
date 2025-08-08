@@ -20,6 +20,7 @@ import {
   View,
 } from "react-native";
 import { styles, webStyles } from "./id.styles";
+import { Buffer } from "buffer";
 export default function Profil() {
   const { API_URL } = useContext(AppContext);
   const { width } = Dimensions.get("window");
