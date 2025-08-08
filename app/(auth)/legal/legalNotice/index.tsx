@@ -1,14 +1,14 @@
 import CustomCheckbox from "@/components/form/CustomCheckbox";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/context/context";
-import { Company } from "@/types";
+import { Company, User } from "@/types";
 import axios from "axios";
 import {
   RelativePathString,
   useLocalSearchParams,
   useRouter,
 } from "expo-router";
-import { useContext, useState } from "react";
+import { use, useContext, useState } from "react";
 import {
   Image,
   Platform,
@@ -24,15 +24,14 @@ export default function LegalNotice() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [company, setCompany] = useState<Company | null>(null);
+  const [user, setUser] = useState<(User & { company: Company | null }) | null>(
+    null,
+  );
   const updateUserConsent = async () => {
     return await axios
-      .patch(
-        `${API_URL}/users/${email && company?.ownerId ? company.ownerId : userId}`,
-        {
-          consentTerms: true,
-        },
-      )
+      .patch(`${API_URL}/users/${email && user?.id ? user.id : userId}`, {
+        consentTerms: true,
+      })
       .then(() => {
         return true;
       })
@@ -42,15 +41,15 @@ export default function LegalNotice() {
   };
   const handleSubmit = async () => {
     if (email) {
-      const company = await axios
-        .get(`${API_URL}/company/email/${email}`)
+      const user = await axios
+        .get(`${API_URL}/users/email/${email}`)
         .then((response) => response.data)
         .catch(() => {
           setError(
             "Une erreur s'est produite lors de la validation des conditions. Essayer à nouveau.",
           );
         });
-      setCompany(company);
+      setUser(user);
     }
     return await updateUserConsent();
   };
