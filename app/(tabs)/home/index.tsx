@@ -20,6 +20,7 @@ export default function Home() {
   const { width } = Dimensions.get("window");
   const { API_URL, userId, companyId } = useContext(AppContext);
   const [user, setUser] = useState<User | null>(null);
+  const [imageUri, setImageUri] = useState<string | null>(null);
   const MONTHS: Record<number, string> = {
     1: "janvier",
     2: "février",
@@ -53,6 +54,18 @@ export default function Home() {
       fetchUserData();
     }
   }, [userId, companyId, API_URL]);
+  useEffect(() => {
+    if (user?.photoUrl) {
+      axios
+        .get(`${API_URL}/files/view/${user.photoUrl}`, {
+          responseType: "arraybuffer",
+        })
+        .then((res) => {
+          const base64 = Buffer.from(res.data, "binary").toString("base64");
+          setImageUri(`data:image/jpeg;base64,${base64}`);
+        });
+    }
+  }, [user?.photoUrl, API_URL]);
   return (
     <ScrollView
       style={{
@@ -113,7 +126,7 @@ export default function Home() {
                 <Image
                   source={
                     user?.photoUrl
-                      ? { uri: `${API_URL}/files/view/${user.photoUrl}` }
+                      ? { uri: imageUri }
                       : require("@/assets/images/default-user.jpg")
                   }
                   style={styles.image}

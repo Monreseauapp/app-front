@@ -38,6 +38,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  noNotifications: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: Colors.black,
+    textAlign: "center",
+    marginTop: 20,
+    width: "80%",
+  },
 });
 
 const webStyles = StyleSheet.create({

@@ -7,8 +7,12 @@ import { styles, webStyles } from "./TabBar.styles";
 
 export default function TabBar({ state, descriptors, navigation }: any) {
   const { setIsMenuOpen, companyId } = useContext(AppContext);
-  const invisibleRoutes: string[] = ["recommendation/form"];
-  const invisibleRoutesGuest = ["profil"];
+  const invisibleRoutes: string[] = [
+    "recommendation/form",
+    "profil/modify",
+    "demoSignature",
+  ];
+  const invisibleRoutesGuest = ["profil", "demoSignature"];
 
   const isRouteVisible = (route: string) => {
     return (
