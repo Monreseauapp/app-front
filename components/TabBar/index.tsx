@@ -11,6 +11,7 @@ export default function TabBar({ state, descriptors, navigation }: any) {
     "recommendation/form",
     "profil/modify",
     "demoSignature",
+    "profil/[id]",
   ];
   const invisibleRoutesGuest = ["profil", "demoSignature"];
 

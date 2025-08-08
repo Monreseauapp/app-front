@@ -1,5 +1,4 @@
 export const initialRecommendation = {
-  companyId: "",
   firstName: "",
   lastName: "",
   phone: "",
