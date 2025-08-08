@@ -1,6 +1,5 @@
 export default function validateFormData<T extends object>(data: T) {
   return Object.keys(data).every((key) => {
-    console.log(key, (data as any)[key]);
     return (
       !["", null, undefined].includes((data as any)[key]) &&
       !(
