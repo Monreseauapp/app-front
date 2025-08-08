@@ -184,7 +184,7 @@ export interface Recommandation {
   rejectionReasonRecipient?: string | null;
   RecoStateCompany?: RecoState;
   rejectionReasonCompany?: string | null;
-  companyId: string;
+  companyId?: string;
   initiatorId: string;
   recipientId?: string | null;
   retentionDate?: (Date | string) | null;
