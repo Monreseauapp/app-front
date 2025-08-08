@@ -146,6 +146,7 @@ export default function Page3({
         placeholder=""
         type="off"
         multiline={true}
+        value={companyProfile.activityDescription || ""}
         onChangeText={(value) =>
           handleChangeCompanyProfile("activityDescription", value)
         }
@@ -210,6 +211,7 @@ export default function Page3({
         placeholder="Expliquez-nous en quelques mots votre expérience."
         type="off"
         multiline={true}
+        value={companyProfile.similarApplications || ""}
         onChangeText={(value) =>
           handleChangeCompanyProfile("similarApplications", value)
         }
