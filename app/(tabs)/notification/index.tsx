@@ -49,7 +49,7 @@ export default function NotificationPage() {
           gap: 30,
         }}
       >
-        {notificationsByDate &&
+        {notificationsByDate ? (
           notificationsByDate.map(([date, notificationList], index) => (
             <View
               style={styles.notificationContainer}
@@ -80,7 +80,12 @@ export default function NotificationPage() {
                   ))}
               </View>
             </View>
-          ))}
+          ))
+        ) : (
+          <Text style={styles.noNotifications}>
+            Aucune notification pour le moment.
+          </Text>
+        )}
       </ScrollView>
     </View>
   );

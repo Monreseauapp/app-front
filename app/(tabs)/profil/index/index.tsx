@@ -26,6 +26,8 @@ export default function Profil() {
   const [user, setUser] = useState<(User & { company: Company }) | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewers, setReviewers] = useState<User[]>([]);
+  const [imageUri, setImageUri] = useState<string | null>(null);
+
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
@@ -70,6 +72,18 @@ export default function Profil() {
       fetchReviewers();
     }
   }, [reviews, API_URL]);
+  useEffect(() => {
+    if (user?.photoUrl) {
+      axios
+        .get(`${API_URL}/files/view/${user.photoUrl}`, {
+          responseType: "arraybuffer",
+        })
+        .then((res) => {
+          const base64 = Buffer.from(res.data, "binary").toString("base64");
+          setImageUri(`data:image/jpeg;base64,${base64}`);
+        });
+    }
+  }, [user?.photoUrl, API_URL]);
   return (
     <ScrollView
       style={{ backgroundColor: Colors.white }}
@@ -94,7 +108,7 @@ export default function Profil() {
             <Image
               source={
                 user?.photoUrl
-                  ? { uri: `${API_URL}/files/view/${user.photoUrl}` }
+                  ? { uri: imageUri }
                   : require("@/assets/images/default-user.jpg")
               }
               style={styles.profilePicture}
