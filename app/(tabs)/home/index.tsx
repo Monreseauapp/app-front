@@ -16,6 +16,7 @@ import {
   View,
 } from "react-native";
 import { styles, webStyles } from "./home.styles";
+import { Buffer } from "buffer";
 export default function Home() {
   const { width } = Dimensions.get("window");
   const { API_URL, userId, companyId } = useContext(AppContext);
