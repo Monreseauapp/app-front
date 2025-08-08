@@ -206,7 +206,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="recommendation/index/index"
           options={{
-            title: "Recommandations",
+            title: "Faire une recommandation",
           }}
         />
         <Tabs.Screen

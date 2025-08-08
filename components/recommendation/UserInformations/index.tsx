@@ -3,7 +3,7 @@ import Input from "@/components/form/Input";
 import Search from "@/components/form/Search/Search";
 import { Colors } from "@/constants/Colors";
 import { Project, Recommandation, User } from "@/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PersonTypeSelector from "../PersonTypeSelector";
 import PersonalInformations from "./PersonalInformations";
 import { styles } from "./UserInformations.styles";
@@ -33,6 +33,7 @@ export default function UserInformations({
   isDataValid,
 }: UserInformationsProps) {
   const [internUser, setInternUser] = useState<boolean>(true);
+
   return (
     <>
       {type !== "project" ? (
@@ -72,7 +73,7 @@ export default function UserInformations({
                   }
                   handleChange("recipientId", user?.id || "");
                 }}
-                valid={internUser && isDataValid}
+                valid={isDataValid}
               />
             </>
           ) : (
