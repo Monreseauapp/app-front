@@ -8,5 +8,4 @@ export const initialRecommendation = {
   companyCity: "",
   companyEmail: "",
   companyPhone: "",
-  initiatorId: "",
 };
