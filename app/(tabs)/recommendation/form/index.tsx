@@ -61,12 +61,10 @@ export default function RecommendationForm() {
   const [starId, setStarId] = useState<number>(0);
   const [recommandation, setRecommandation] = useState<Recommandation>({
     ...initialRecommendation,
-    initiatorId: userId?.toString() || "",
     ...(type === "lead" ? { priority: starId } : {}),
   });
   const [project, setProject] = useState<Project>({
     ...initialProject,
-    userId: userId?.toString() || "",
     priority: starId,
   });
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -87,7 +85,7 @@ export default function RecommendationForm() {
   };
   const handleChange = (
     key: keyof Recommandation | keyof Project,
-    value: any,
+    value: any
   ) => {
     if (type === "project") {
       setProject((prev) => ({ ...prev, [key]: value }));
@@ -108,7 +106,7 @@ export default function RecommendationForm() {
     const fetchUsers = async () => {
       axios.get(`${API_URL}/users`).then((response) => {
         const resp = response.data;
-        setUsers(resp.filter((user: User) => user.companyId));
+        setUsers(resp);
       });
     };
     fetchUsers();

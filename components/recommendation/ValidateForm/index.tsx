@@ -28,7 +28,7 @@ export default function ValidateForm({
   resetForm,
 }: ValidateFormProps) {
   const router = useRouter();
-  const { API_URL } = useContext(AppContext);
+  const { API_URL, userId } = useContext(AppContext);
 
   const validateForm = () => {
     const data = type === "project" ? project : recommandation;
@@ -49,6 +49,7 @@ export default function ValidateForm({
     axios
       .post(`${API_URL}/recommandation`, {
         ...recommandation,
+        initiatorId: userId?.toString(),
         startDate: new Date(),
         updatedAt: new Date(),
         retentionDate: new Date(
@@ -64,6 +65,7 @@ export default function ValidateForm({
     axios
       .post(`${API_URL}/project`, {
         ...project,
+        userId: userId?.toString() || "",
         startDate: new Date(),
         updatedAt: new Date(),
         retentionDate: new Date(

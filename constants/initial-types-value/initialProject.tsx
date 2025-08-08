@@ -7,5 +7,4 @@ export const initialProject = {
   ProjectChoiceCompany: ProjectChoiceState.PENDING,
   companyNumber: 0,
   isPublic: true,
-  userId: "",
 };

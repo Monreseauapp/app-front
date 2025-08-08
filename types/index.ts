@@ -185,7 +185,7 @@ export interface Recommandation {
   RecoStateCompany?: RecoState;
   rejectionReasonCompany?: string | null;
   companyId?: string;
-  initiatorId: string;
+  initiatorId?: string;
   recipientId?: string | null;
   retentionDate?: (Date | string) | null;
 }
@@ -213,7 +213,7 @@ export interface Project {
   projectState?: ProjectState;
   ProjectChoiceCompany: ProjectChoiceState;
   RejectionReasonCompany?: string | null;
-  userId: string;
+  userId?: string;
   retentionDate?: (Date | string) | null;
 }
 
