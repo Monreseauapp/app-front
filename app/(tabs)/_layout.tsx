@@ -102,14 +102,9 @@ export default function TabLayout() {
     companyId,
     API_URL,
   ]);
-  const isTabBarInvisible = [
-    // "/index",
-    "/recommendation",
-    "/legal",
-    "/profil/modify",
-    "/signin",
-    "/signup",
-  ].some((path) => route === path || route.startsWith(path + "/"));
+  const isTabBarInvisible = ["/legal", "/signin", "/signup"].some(
+    (path) => route === path || route.startsWith(path + "/"),
+  );
   const isLogoInvisible = [
     "/index",
     "/legal",
@@ -124,7 +119,7 @@ export default function TabLayout() {
   ].some((path) => route === path || route.startsWith(path + "/"));
   return (
     <View style={{ flex: 1, backgroundColor: Colors.white }}>
-      {isBackButtonVisible && (
+      {history && isBackButtonVisible && (
         <Pressable
           style={Platform.OS === "web" ? webStyles.backIcon : styles.backIcon}
           onPress={() => history && router.back()}
