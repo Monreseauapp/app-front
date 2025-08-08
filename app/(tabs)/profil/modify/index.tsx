@@ -37,57 +37,40 @@ export default function ModifyProfile() {
     key: keyof User | keyof Company,
     value: string | number | boolean | undefined,
   ) => {
-    if (key !== "addressComplement") {
-      if (type === "company") {
-        setCompany((prevCompany) => ({
-          ...prevCompany,
-          [key]: value,
-        }));
-      } else {
-        setUser((prevUser) => ({
-          ...prevUser,
-          [key]: value,
-        }));
-      }
+    if (type === "company") {
+      setCompany((prevCompany) => ({
+        ...prevCompany,
+        [key]: value,
+      }));
+    } else {
+      setUser((prevUser) => ({
+        ...prevUser,
+        [key]: value,
+      }));
     }
   };
   useEffect(() => {
-    if (!companyId) {
-      const fetchUserData = async () => {
-        axios
-          .get(`${API_URL}/users/${userId}`)
-          .then((response) => {
-            const { password, ...userData } = response.data;
-            setUser(userData);
-          })
-          .catch((error) => {
-            console.error("Error fetching user data:", error.request);
-          });
-      };
-      fetchUserData();
-      setCompany(initialCompany);
-    } else {
-      const fetchCompanyData = async () => {
-        axios
-          .get(`${API_URL}/users/${userId}/company`)
-          .then((response) => {
-            const data = response.data;
-            const { company, password, ...userData } = data;
-            setUser(userData);
+    const fetchUserData = async () => {
+      axios
+        .get(`${API_URL}/users/${userId}`)
+        .then((response) => {
+          const { password, companyId, company, ...userData } = response.data;
+          setUser(userData);
+          if (companyId) {
             setCompany(company);
-          })
-          .catch((error) => {
-            console.error("Error fetching company data:", error.request);
-          });
-      };
-      fetchCompanyData();
-    }
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error.request);
+        });
+    };
+    fetchUserData();
   }, [companyId, userId, API_URL]);
   const updateData = async () => {
     axios.patch(`${API_URL}/users/${userId}`, { ...user }).catch((error) => {
       console.error("Error updating user:", error.request);
     });
-    if (company) {
+    if (company.id) {
       axios
         .patch(`${API_URL}/company/${company.id}`, { ...company })
         .catch((error) => {
@@ -189,18 +172,14 @@ export default function ModifyProfile() {
                   }}
                 />
               )}
-              {!isCompanyPage && (
-                <JobInformations
-                  user={user}
-                  handleChange={(field, value) =>
-                    handleChange(
-                      isCompanyPage ? "company" : "user",
-                      field,
-                      value,
-                    )
-                  }
-                />
-              )}
+              <JobInformations
+                user={user}
+                company={company}
+                handleChange={(field, value) =>
+                  handleChange(isCompanyPage ? "company" : "user", field, value)
+                }
+                isCompanyPage={isCompanyPage}
+              />
               <LinksInputs
                 user={user}
                 company={company}

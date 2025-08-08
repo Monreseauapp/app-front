@@ -70,7 +70,7 @@ export default function MyRecommendations() {
         tabs={["Envoyées", "Reçues"]}
         activeIndex={page === "sent" ? 0 : 1}
         setActiveIndex={() => setPage(page === "sent" ? "received" : "sent")}
-        style={{ alignSelf: "center", marginLeft: "-4%" }}
+        style={{ alignSelf: "center" }}
       />
       <KeyboardAvoidingView
         style={{ flex: 1, width: "100%" }}

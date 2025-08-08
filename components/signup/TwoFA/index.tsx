@@ -45,7 +45,7 @@ export default function TwoFA({
               );
             } else {
               router.push(
-                "/legal/legalNotice?redirect=/signin" as RelativePathString
+                `/legal/legalNotice?redirect=/signin&email=${email}` as RelativePathString
               );
             }
           }}
